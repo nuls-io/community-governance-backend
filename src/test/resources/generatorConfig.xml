@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="testTables" targetRuntime="MyBatis3">
+        <!-- 使用插件 -->
+        <!-- 生成hashCode()和equals()方法的插件 -->
+<!--        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />-->
+
+        <!-- bean类序列化插件 -->
+<!--        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />-->
+
+        <!-- sql like 查询是否区分大小写插件 -->
+<!--        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin" />-->
+
+        <!-- 生成toString() 方法插件 -->
+<!--        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />-->
+
+        <!-- 重命名Bean查询条件类的类名，默认命名Example -->
+        <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+            <!-- 此处是将 Example 改名为 Param -->
+            <property name="searchString" value="Example$"/>
+            <property name="replaceString" value="Param"/>
+        </plugin>
+
+
+        <commentGenerator>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        <!--数据库连接的信息：驱动类、连接地址、用户名、密码   mysql数据库连接-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/pocm" userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
+            NUMERIC 类型解析为java.math.BigDecimal -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- targetProject:生成PO类的位置 -->
+        <javaModelGenerator targetPackage="io.nuls.dapp.communitygovernance.model"
+                            targetProject="./src/test/java">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false" />
+            <!-- 从数据库返回的值被清理前后的空格 -->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!-- targetProject:mapper映射文件生成的位置 -->
+        <sqlMapGenerator targetPackage="io.nuls.dapp.communitygovernance.mapperxml"
+                         targetProject="./src/test/java">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+        <!-- targetPackage：mapper接口生成的位置 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="io.nuls.dapp.communitygovernance.mapper"
+                             targetProject="./src/test/java">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+        <!-- 指定数据库表 -->
+<!--        <table tableName="tb_block_header"  ></table>-->
+
+        <table tableName="tb_release" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>
+<!--        <table tableName="tb_release_tx_related"  ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>-->
+<!--        <table tableName="tb_token_allocation"  ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>-->
+<!--        <table tableName="tb_release_mining_base_info"  ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>-->
+<!--        <table tableName="tb_deposit_detail_info"  ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>-->
+<!--        <table tableName="tb_mining_detail_info"  ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>-->
+<!--        <table tableName="tb_authorization"  ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>-->
+<!--        <table tableName="tb_release_agents"  ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>-->
+
+        <!-- 有些表的字段需要指定java类型
+         <table schema="" tableName="">
+            <columnOverride column="" javaType="" />
+        </table> -->
+    </context>
+</generatorConfiguration>

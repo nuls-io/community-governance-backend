@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: POCM
+  profiles:
+    active: dev
+  jackson:
+    #date-format: yyyy-MM-dd HH:mm:ss
+    #joda-date-time-format: yyyy-MM-dd HH:mm:ss
+    #default-property-inclusion:
+    time-zone: UTC
+server:
+  context-path: /
+  port: 8080
+  compression:
+    enabled: true
+  use-forward-headers: true
+
+#mybatis config
+mybatis:
+  configuration:
+    cache-enabled: true
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+    multiple-result-sets-enabled: true
+    use-column-label: true
+    auto-mapping-behavior: full
+    default-statement-timeout: 2000
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath*:mapper/*Mapper.xml
+pagehelper:
+  helper-dialect: mysql

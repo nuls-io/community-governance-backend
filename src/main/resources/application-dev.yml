@@ -1,0 +1,20 @@
+spring:
+  resources:
+    static-locations:
+    - file:/data/html
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/pocm?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+logging:
+  config: classpath:logger/app-dev.xml
+#app config
+app:
+  devMode: true
+  provider:
+    host: http://127.0.0.1:18004/
+  contract:
+    address: "NseBjBn7JTUF94zCY6U4jkkLZupwBwnW"
+    refund-address: "Nsdv1Hbu4TokdgbXreypXmVttYKdPT1g"
+    refund-password: "nuls123456"
