@@ -1,4 +1,4 @@
-package io.nuls.dapp.communitygovernance.model.vote;
+package io.nuls.dapp.communitygovernance.model;
 
 public class TbAgencyRelation {
     private String agent;
@@ -6,6 +6,10 @@ public class TbAgencyRelation {
     private String mandator;
 
     private Byte status;
+
+    private Long createTime;
+
+    private Long updateTime;
 
     public String getAgent() {
         return agent;
@@ -29,5 +33,21 @@ public class TbAgencyRelation {
 
     public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
+
+    public Long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
     }
 }

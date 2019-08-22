@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.nuls.dapp.communitygovernance.mapper.TbVoteMapper">
+  <resultMap id="BaseResultMap" type="io.nuls.dapp.communitygovernance.model.TbVote">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="contract_address" jdbcType="VARCHAR" property="contractAddress" />
+    <result column="contract_vote_id" jdbcType="BIGINT" property="contractVoteId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="has_multiple_select" jdbcType="TINYINT" property="hasMultipleSelect" />
+    <result column="min_select_count" jdbcType="TINYINT" property="minSelectCount" />
+    <result column="max_select_count" jdbcType="TINYINT" property="maxSelectCount" />
+    <result column="vote_can_modify" jdbcType="TINYINT" property="voteCanModify" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="deposit" jdbcType="DECIMAL" property="deposit" />
+    <result column="fee" jdbcType="DECIMAL" property="fee" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="counts" jdbcType="INTEGER" property="counts" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="block_height" jdbcType="BIGINT" property="blockHeight" />
+    <result column="blocks" jdbcType="BIGINT" property="blocks" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="user_alias" jdbcType="VARCHAR" property="userAlias" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, contract_address, contract_vote_id, title, description, has_multiple_select, 
+    min_select_count, max_select_count, vote_can_modify, start_time, end_time, deposit, 
+    fee, status, counts, amount, block_height, blocks, creator, user_alias, create_time, 
+    update_time
+  </sql>
+  <select id="selectByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteParam" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_vote
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_vote
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_vote
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteParam">
+    delete from tb_vote
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="io.nuls.dapp.communitygovernance.model.TbVote">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_vote (contract_address, contract_vote_id, title, 
+      description, has_multiple_select, min_select_count, 
+      max_select_count, vote_can_modify, start_time, 
+      end_time, deposit, fee, 
+      status, counts, amount, 
+      block_height, blocks, creator, 
+      user_alias, create_time, update_time
+      )
+    values (#{contractAddress,jdbcType=VARCHAR}, #{contractVoteId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{hasMultipleSelect,jdbcType=TINYINT}, #{minSelectCount,jdbcType=TINYINT}, 
+      #{maxSelectCount,jdbcType=TINYINT}, #{voteCanModify,jdbcType=TINYINT}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{deposit,jdbcType=DECIMAL}, #{fee,jdbcType=DECIMAL}, 
+      #{status,jdbcType=TINYINT}, #{counts,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, 
+      #{blockHeight,jdbcType=BIGINT}, #{blocks,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, 
+      #{userAlias,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="io.nuls.dapp.communitygovernance.model.TbVote">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_vote
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="contractAddress != null">
+        contract_address,
+      </if>
+      <if test="contractVoteId != null">
+        contract_vote_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="hasMultipleSelect != null">
+        has_multiple_select,
+      </if>
+      <if test="minSelectCount != null">
+        min_select_count,
+      </if>
+      <if test="maxSelectCount != null">
+        max_select_count,
+      </if>
+      <if test="voteCanModify != null">
+        vote_can_modify,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="deposit != null">
+        deposit,
+      </if>
+      <if test="fee != null">
+        fee,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="counts != null">
+        counts,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="blockHeight != null">
+        block_height,
+      </if>
+      <if test="blocks != null">
+        blocks,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="userAlias != null">
+        user_alias,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="contractAddress != null">
+        #{contractAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="contractVoteId != null">
+        #{contractVoteId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="hasMultipleSelect != null">
+        #{hasMultipleSelect,jdbcType=TINYINT},
+      </if>
+      <if test="minSelectCount != null">
+        #{minSelectCount,jdbcType=TINYINT},
+      </if>
+      <if test="maxSelectCount != null">
+        #{maxSelectCount,jdbcType=TINYINT},
+      </if>
+      <if test="voteCanModify != null">
+        #{voteCanModify,jdbcType=TINYINT},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deposit != null">
+        #{deposit,jdbcType=DECIMAL},
+      </if>
+      <if test="fee != null">
+        #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="counts != null">
+        #{counts,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="blockHeight != null">
+        #{blockHeight,jdbcType=BIGINT},
+      </if>
+      <if test="blocks != null">
+        #{blocks,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="userAlias != null">
+        #{userAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteParam" resultType="java.lang.Long">
+    select count(*) from tb_vote
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_vote
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractAddress != null">
+        contract_address = #{record.contractAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractVoteId != null">
+        contract_vote_id = #{record.contractVoteId,jdbcType=BIGINT},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hasMultipleSelect != null">
+        has_multiple_select = #{record.hasMultipleSelect,jdbcType=TINYINT},
+      </if>
+      <if test="record.minSelectCount != null">
+        min_select_count = #{record.minSelectCount,jdbcType=TINYINT},
+      </if>
+      <if test="record.maxSelectCount != null">
+        max_select_count = #{record.maxSelectCount,jdbcType=TINYINT},
+      </if>
+      <if test="record.voteCanModify != null">
+        vote_can_modify = #{record.voteCanModify,jdbcType=TINYINT},
+      </if>
+      <if test="record.startTime != null">
+        start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deposit != null">
+        deposit = #{record.deposit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.fee != null">
+        fee = #{record.fee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.counts != null">
+        counts = #{record.counts,jdbcType=INTEGER},
+      </if>
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.blockHeight != null">
+        block_height = #{record.blockHeight,jdbcType=BIGINT},
+      </if>
+      <if test="record.blocks != null">
+        blocks = #{record.blocks,jdbcType=BIGINT},
+      </if>
+      <if test="record.creator != null">
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userAlias != null">
+        user_alias = #{record.userAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_vote
+    set id = #{record.id,jdbcType=INTEGER},
+      contract_address = #{record.contractAddress,jdbcType=VARCHAR},
+      contract_vote_id = #{record.contractVoteId,jdbcType=BIGINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      has_multiple_select = #{record.hasMultipleSelect,jdbcType=TINYINT},
+      min_select_count = #{record.minSelectCount,jdbcType=TINYINT},
+      max_select_count = #{record.maxSelectCount,jdbcType=TINYINT},
+      vote_can_modify = #{record.voteCanModify,jdbcType=TINYINT},
+      start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      deposit = #{record.deposit,jdbcType=DECIMAL},
+      fee = #{record.fee,jdbcType=DECIMAL},
+      status = #{record.status,jdbcType=TINYINT},
+      counts = #{record.counts,jdbcType=INTEGER},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      block_height = #{record.blockHeight,jdbcType=BIGINT},
+      blocks = #{record.blocks,jdbcType=BIGINT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      user_alias = #{record.userAlias,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=BIGINT},
+      update_time = #{record.updateTime,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="io.nuls.dapp.communitygovernance.model.TbVote">
+    update tb_vote
+    <set>
+      <if test="contractAddress != null">
+        contract_address = #{contractAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="contractVoteId != null">
+        contract_vote_id = #{contractVoteId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="hasMultipleSelect != null">
+        has_multiple_select = #{hasMultipleSelect,jdbcType=TINYINT},
+      </if>
+      <if test="minSelectCount != null">
+        min_select_count = #{minSelectCount,jdbcType=TINYINT},
+      </if>
+      <if test="maxSelectCount != null">
+        max_select_count = #{maxSelectCount,jdbcType=TINYINT},
+      </if>
+      <if test="voteCanModify != null">
+        vote_can_modify = #{voteCanModify,jdbcType=TINYINT},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deposit != null">
+        deposit = #{deposit,jdbcType=DECIMAL},
+      </if>
+      <if test="fee != null">
+        fee = #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="counts != null">
+        counts = #{counts,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="blockHeight != null">
+        block_height = #{blockHeight,jdbcType=BIGINT},
+      </if>
+      <if test="blocks != null">
+        blocks = #{blocks,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="userAlias != null">
+        user_alias = #{userAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="io.nuls.dapp.communitygovernance.model.TbVote">
+    update tb_vote
+    set contract_address = #{contractAddress,jdbcType=VARCHAR},
+      contract_vote_id = #{contractVoteId,jdbcType=BIGINT},
+      title = #{title,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      has_multiple_select = #{hasMultipleSelect,jdbcType=TINYINT},
+      min_select_count = #{minSelectCount,jdbcType=TINYINT},
+      max_select_count = #{maxSelectCount,jdbcType=TINYINT},
+      vote_can_modify = #{voteCanModify,jdbcType=TINYINT},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      deposit = #{deposit,jdbcType=DECIMAL},
+      fee = #{fee,jdbcType=DECIMAL},
+      status = #{status,jdbcType=TINYINT},
+      counts = #{counts,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DECIMAL},
+      block_height = #{blockHeight,jdbcType=BIGINT},
+      blocks = #{blocks,jdbcType=BIGINT},
+      creator = #{creator,jdbcType=VARCHAR},
+      user_alias = #{userAlias,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

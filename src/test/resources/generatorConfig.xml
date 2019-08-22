@@ -69,7 +69,7 @@
 
         <table tableName="tb_agency_relation" ></table>
         <table tableName="tb_applicant" ></table>
-        <table tableName="vote" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>
+        <table tableName="tb_vote" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>
         <table tableName="tb_vote_item" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>
         <table tableName="vote_record" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>
 

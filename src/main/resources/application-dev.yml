@@ -13,7 +13,7 @@ logging:
 app:
   devMode: true
   provider:
-    host: http://101.132.33.140:8003/
+    host: http://192.168.1.36:18004/
   contract:
     address: "NseBjBn7JTUF94zCY6U4jkkLZupwBwnW"
     refund-address: "Nsdv1Hbu4TokdgbXreypXmVttYKdPT1g"

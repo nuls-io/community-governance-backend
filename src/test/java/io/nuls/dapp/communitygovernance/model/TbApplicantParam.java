@@ -1,8 +1,7 @@
-package io.nuls.dapp.communitygovernance.model.vote;
+package io.nuls.dapp.communitygovernance.model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class TbApplicantParam {
@@ -426,63 +425,63 @@ public class TbApplicantParam {
             return (Criteria) this;
         }
 
-        public Criteria andCreatedTimeIsNull() {
-            addCriterion("created_time is null");
+        public Criteria andCreateTimeIsNull() {
+            addCriterion("create_time is null");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedTimeIsNotNull() {
-            addCriterion("created_time is not null");
+        public Criteria andCreateTimeIsNotNull() {
+            addCriterion("create_time is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedTimeEqualTo(Date value) {
-            addCriterion("created_time =", value, "createdTime");
+        public Criteria andCreateTimeEqualTo(Long value) {
+            addCriterion("create_time =", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedTimeNotEqualTo(Date value) {
-            addCriterion("created_time <>", value, "createdTime");
+        public Criteria andCreateTimeNotEqualTo(Long value) {
+            addCriterion("create_time <>", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedTimeGreaterThan(Date value) {
-            addCriterion("created_time >", value, "createdTime");
+        public Criteria andCreateTimeGreaterThan(Long value) {
+            addCriterion("create_time >", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("created_time >=", value, "createdTime");
+        public Criteria andCreateTimeGreaterThanOrEqualTo(Long value) {
+            addCriterion("create_time >=", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedTimeLessThan(Date value) {
-            addCriterion("created_time <", value, "createdTime");
+        public Criteria andCreateTimeLessThan(Long value) {
+            addCriterion("create_time <", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedTimeLessThanOrEqualTo(Date value) {
-            addCriterion("created_time <=", value, "createdTime");
+        public Criteria andCreateTimeLessThanOrEqualTo(Long value) {
+            addCriterion("create_time <=", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedTimeIn(List<Date> values) {
-            addCriterion("created_time in", values, "createdTime");
+        public Criteria andCreateTimeIn(List<Long> values) {
+            addCriterion("create_time in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedTimeNotIn(List<Date> values) {
-            addCriterion("created_time not in", values, "createdTime");
+        public Criteria andCreateTimeNotIn(List<Long> values) {
+            addCriterion("create_time not in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedTimeBetween(Date value1, Date value2) {
-            addCriterion("created_time between", value1, value2, "createdTime");
+        public Criteria andCreateTimeBetween(Long value1, Long value2) {
+            addCriterion("create_time between", value1, value2, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreatedTimeNotBetween(Date value1, Date value2) {
-            addCriterion("created_time not between", value1, value2, "createdTime");
+        public Criteria andCreateTimeNotBetween(Long value1, Long value2) {
+            addCriterion("create_time not between", value1, value2, "createTime");
             return (Criteria) this;
         }
 
@@ -496,52 +495,52 @@ public class TbApplicantParam {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeEqualTo(Date value) {
+        public Criteria andUpdateTimeEqualTo(Long value) {
             addCriterion("update_time =", value, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeNotEqualTo(Date value) {
+        public Criteria andUpdateTimeNotEqualTo(Long value) {
             addCriterion("update_time <>", value, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeGreaterThan(Date value) {
+        public Criteria andUpdateTimeGreaterThan(Long value) {
             addCriterion("update_time >", value, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeGreaterThanOrEqualTo(Date value) {
+        public Criteria andUpdateTimeGreaterThanOrEqualTo(Long value) {
             addCriterion("update_time >=", value, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeLessThan(Date value) {
+        public Criteria andUpdateTimeLessThan(Long value) {
             addCriterion("update_time <", value, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeLessThanOrEqualTo(Date value) {
+        public Criteria andUpdateTimeLessThanOrEqualTo(Long value) {
             addCriterion("update_time <=", value, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeIn(List<Date> values) {
+        public Criteria andUpdateTimeIn(List<Long> values) {
             addCriterion("update_time in", values, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeNotIn(List<Date> values) {
+        public Criteria andUpdateTimeNotIn(List<Long> values) {
             addCriterion("update_time not in", values, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeBetween(Date value1, Date value2) {
+        public Criteria andUpdateTimeBetween(Long value1, Long value2) {
             addCriterion("update_time between", value1, value2, "updateTime");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateTimeNotBetween(Date value1, Date value2) {
+        public Criteria andUpdateTimeNotBetween(Long value1, Long value2) {
             addCriterion("update_time not between", value1, value2, "updateTime");
             return (Criteria) this;
         }

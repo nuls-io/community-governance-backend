@@ -5,6 +5,8 @@
     <result column="agent" jdbcType="VARCHAR" property="agent" />
     <result column="mandator" jdbcType="VARCHAR" property="mandator" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    agent, mandator, status
+    agent, mandator, status, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbAgencyRelationParam" resultMap="BaseResultMap">
     select
@@ -88,10 +90,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="io.nuls.dapp.communitygovernance.model.TbAgencyRelation">
-    insert into tb_agency_relation (agent, mandator, status
-      )
-    values (#{agent,jdbcType=VARCHAR}, #{mandator,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}
-      )
+    insert into tb_agency_relation (agent, mandator, status, 
+      create_time, update_time)
+    values (#{agent,jdbcType=VARCHAR}, #{mandator,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="io.nuls.dapp.communitygovernance.model.TbAgencyRelation">
     insert into tb_agency_relation
@@ -105,6 +107,12 @@
       <if test="status != null">
         status,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="agent != null">
@@ -115,6 +123,12 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -136,6 +150,12 @@
       <if test="record.status != null">
         status = #{record.status,jdbcType=TINYINT},
       </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=BIGINT},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -145,7 +165,9 @@
     update tb_agency_relation
     set agent = #{record.agent,jdbcType=VARCHAR},
       mandator = #{record.mandator,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=TINYINT}
+      status = #{record.status,jdbcType=TINYINT},
+      create_time = #{record.createTime,jdbcType=BIGINT},
+      update_time = #{record.updateTime,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>

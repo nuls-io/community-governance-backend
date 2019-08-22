@@ -1,7 +1,6 @@
-package io.nuls.dapp.communitygovernance.model.vote;
+package io.nuls.dapp.communitygovernance.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class TbApplicant {
     private String address;
@@ -14,9 +13,9 @@ public class TbApplicant {
 
     private BigDecimal amount;
 
-    private Date createdTime;
+    private Long createTime;
 
-    private Date updateTime;
+    private Long updateTime;
 
     private String desc;
 
@@ -60,19 +59,19 @@ public class TbApplicant {
         this.amount = amount;
     }
 
-    public Date getCreatedTime() {
-        return createdTime;
+    public Long getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
+    public Long getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Long updateTime) {
         this.updateTime = updateTime;
     }
 

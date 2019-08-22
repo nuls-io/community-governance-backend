@@ -67,8 +67,6 @@ public class BlockSimpleServiceImpl implements BlockSimpleService {
 
     /**
      * 保存
-     *
-     * @param height
      */
     private void save(SimpleBlockHeader blockHeader) {
         blockHeader.setCreateTime(now());

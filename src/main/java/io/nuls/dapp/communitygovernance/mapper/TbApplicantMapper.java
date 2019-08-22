@@ -1,11 +1,13 @@
-package io.nuls.dapp.communitygovernance.mapper.vote;
+package io.nuls.dapp.communitygovernance.mapper;
 
-import io.nuls.dapp.communitygovernance.model.vote.TbApplicant;
-import io.nuls.dapp.communitygovernance.model.vote.TbApplicantParam;
+import io.nuls.dapp.communitygovernance.model.TbApplicant;
+import io.nuls.dapp.communitygovernance.model.TbApplicantParam;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface TbApplicantMapper {
     long countByExample(TbApplicantParam example);
 
