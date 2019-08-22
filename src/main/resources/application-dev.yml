@@ -3,9 +3,9 @@ spring:
     static-locations:
     - file:/data/html
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/pocm?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/cg?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
-    password: root
+    password: 123456
     driver-class-name: com.mysql.jdbc.Driver
 logging:
   config: classpath:logger/app-dev.xml
@@ -13,7 +13,7 @@ logging:
 app:
   devMode: true
   provider:
-    host: http://127.0.0.1:18004/
+    host: http://101.132.33.140:8003/
   contract:
     address: "NseBjBn7JTUF94zCY6U4jkkLZupwBwnW"
     refund-address: "Nsdv1Hbu4TokdgbXreypXmVttYKdPT1g"

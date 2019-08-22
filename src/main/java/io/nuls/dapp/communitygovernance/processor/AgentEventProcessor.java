@@ -34,6 +34,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AgentEventProcessor implements IEventProcessor {
+
     @Override
     public void execute(String hash, int txType, ContractData contractData, EventJson eventJson) throws Exception {
         //TODO pierre auto-generated method stub
