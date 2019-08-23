@@ -34,4 +34,9 @@ public interface Constant {
     byte INVALID = 0;
     /** 有效的 */
     byte VALID = 1;
+
+    /** 否 对应数据库数据状态*/
+    byte NO = 0;
+    /** 是 */
+    byte YES = 1;
 }
