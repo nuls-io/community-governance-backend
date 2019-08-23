@@ -26,37 +26,33 @@ package io.nuls.dapp.communitygovernance.processor.proxy;
 
 import com.alibaba.fastjson.JSONObject;
 import io.nuls.dapp.communitygovernance.constant.Constant;
-import io.nuls.dapp.communitygovernance.event.proxy.SetAgentEvent;
+import io.nuls.dapp.communitygovernance.event.proxy.RevokeAgentEvent;
 import io.nuls.dapp.communitygovernance.mapper.TbAgencyRelationMapper;
-import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.model.TbAgencyRelation;
+import io.nuls.dapp.communitygovernance.model.TbAgencyRelationParam;
+import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
 import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import io.nuls.v2.txdata.ContractData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
 /**
- * 处理设置代理事件
  * @author: Charlie
  * @date: 2019/8/22
  */
-@Service
-public class SetAgentEventProcessor implements IEventProcessor {
-
+public class RevokeAgentEventProcessor implements IEventProcessor {
     final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Resource
     private TbAgencyRelationMapper tbAgencyRelationMapper;
 
     @Value("${app.contract.address}")
     private String contractAddress;
 
-    private static final String SET_AGENT_EVENT = "SetAgentEvent";
+    private static final String REVOKE_AGENT_EVENT = "RevokeAgentEvent";
 
     @Override
     public void execute(String hash, int txType, ContractData contractData, EventJson eventJson) throws Exception {
@@ -65,19 +61,17 @@ public class SetAgentEventProcessor implements IEventProcessor {
             return;
         }
         String event = eventJson.getEvent();
-        if(!SET_AGENT_EVENT.equals(event)){
+        if(!REVOKE_AGENT_EVENT.equals(event)){
             return;
         }
         JSONObject payload = eventJson.getPayload();
-        SetAgentEvent setAgentEvent = payload.toJavaObject(SetAgentEvent.class);
+        RevokeAgentEvent revokeAgentEvent = payload.toJavaObject(RevokeAgentEvent.class);
+        TbAgencyRelationParam tbAgencyRelationParam = new TbAgencyRelationParam();
+        tbAgencyRelationParam.createCriteria().andMandatorEqualTo(revokeAgentEvent.getMandatorAddress()).andStatusEqualTo(Constant.VALID);
         TbAgencyRelation tbAgencyRelation = new TbAgencyRelation();
-        tbAgencyRelation.setAgent(setAgentEvent.getAgentAddress());
-        tbAgencyRelation.setMandator(setAgentEvent.getMandatorAddress());
-        tbAgencyRelation.setStatus(Constant.VALID);
-        Long now = TimeUtil.now();
-        tbAgencyRelation.setCreateTime(now);
-        tbAgencyRelation.setUpdateTime(now);
-        tbAgencyRelationMapper.insert(tbAgencyRelation);
-        logger.debug("SetAgentEvent success height:{}", eventJson.getBlockNumber());
+        tbAgencyRelation.setStatus(Constant.INVALID);
+        tbAgencyRelation.setUpdateTime(TimeUtil.now());
+        tbAgencyRelationMapper.updateByExampleSelective(tbAgencyRelation, tbAgencyRelationParam);
+        logger.debug("RevokeAgentEvent success height:{}", eventJson.getBlockNumber());
     }
 }

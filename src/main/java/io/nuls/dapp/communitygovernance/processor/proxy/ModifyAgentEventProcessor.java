@@ -26,10 +26,11 @@ package io.nuls.dapp.communitygovernance.processor.proxy;
 
 import com.alibaba.fastjson.JSONObject;
 import io.nuls.dapp.communitygovernance.constant.Constant;
-import io.nuls.dapp.communitygovernance.event.proxy.SetAgentEvent;
+import io.nuls.dapp.communitygovernance.event.proxy.ModifyAgentEvent;
 import io.nuls.dapp.communitygovernance.mapper.TbAgencyRelationMapper;
-import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.model.TbAgencyRelation;
+import io.nuls.dapp.communitygovernance.model.TbAgencyRelationParam;
+import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
 import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import io.nuls.v2.txdata.ContractData;
@@ -41,22 +42,19 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 /**
- * 处理设置代理事件
  * @author: Charlie
  * @date: 2019/8/22
  */
 @Service
-public class SetAgentEventProcessor implements IEventProcessor {
-
+public class ModifyAgentEventProcessor implements IEventProcessor {
     final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Resource
     private TbAgencyRelationMapper tbAgencyRelationMapper;
 
     @Value("${app.contract.address}")
     private String contractAddress;
 
-    private static final String SET_AGENT_EVENT = "SetAgentEvent";
+    private static final String MODIFY_AGENT_EVENT = "ModifyAgentEvent";
 
     @Override
     public void execute(String hash, int txType, ContractData contractData, EventJson eventJson) throws Exception {
@@ -65,19 +63,26 @@ public class SetAgentEventProcessor implements IEventProcessor {
             return;
         }
         String event = eventJson.getEvent();
-        if(!SET_AGENT_EVENT.equals(event)){
+        if(!MODIFY_AGENT_EVENT.equals(event)){
             return;
         }
         JSONObject payload = eventJson.getPayload();
-        SetAgentEvent setAgentEvent = payload.toJavaObject(SetAgentEvent.class);
+        ModifyAgentEvent modifyAgentEvent = payload.toJavaObject(ModifyAgentEvent.class);
+        TbAgencyRelationParam tbAgencyRelationParam = new TbAgencyRelationParam();
+        tbAgencyRelationParam.createCriteria().andMandatorEqualTo(modifyAgentEvent.getMandatorAddress()).andStatusEqualTo(Constant.VALID);
+       /* List<TbAgencyRelation> tbAgencyRelations = tbAgencyRelationMapper.selectByExample(tbAgencyRelationParam);
+        if(tbAgencyRelations.size() > 1){
+            logger.error("数据错误, 委托者{}, 存在多个有效代理", modifyAgentEvent.getMandatorAddress());
+            return;
+        }else if(tbAgencyRelations.size() == 0){
+            logger.error("数据错误, 委托者{}, 没有设置代理", modifyAgentEvent.getMandatorAddress());
+            return;
+        }
+        TbAgencyRelation tbAgencyRelation = tbAgencyRelations.get(0);*/
         TbAgencyRelation tbAgencyRelation = new TbAgencyRelation();
-        tbAgencyRelation.setAgent(setAgentEvent.getAgentAddress());
-        tbAgencyRelation.setMandator(setAgentEvent.getMandatorAddress());
-        tbAgencyRelation.setStatus(Constant.VALID);
-        Long now = TimeUtil.now();
-        tbAgencyRelation.setCreateTime(now);
-        tbAgencyRelation.setUpdateTime(now);
-        tbAgencyRelationMapper.insert(tbAgencyRelation);
-        logger.debug("SetAgentEvent success height:{}", eventJson.getBlockNumber());
+        tbAgencyRelation.setAgent(modifyAgentEvent.getNewAgentAddress());
+        tbAgencyRelation.setUpdateTime(TimeUtil.now());
+        tbAgencyRelationMapper.updateByExampleSelective(tbAgencyRelation, tbAgencyRelationParam);
+        logger.debug("ModifyAgentEvent success height:{}", eventJson.getBlockNumber());
     }
 }

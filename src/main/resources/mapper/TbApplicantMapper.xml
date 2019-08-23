@@ -7,6 +7,7 @@
     <result column="director" jdbcType="TINYINT" property="director" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="status" jdbcType="TINYINT" property="status" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
   </resultMap>
@@ -72,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    address, type, director, email, amount, create_time, update_time
+    address, type, director, email, amount, status, create_time, update_time
   </sql>
   <sql id="Blob_Column_List">
     desc
@@ -127,11 +128,13 @@
   </delete>
   <insert id="insert" parameterType="io.nuls.dapp.communitygovernance.model.TbApplicant">
     insert into tb_applicant (address, type, director, 
-      email, amount, create_time, 
-      update_time, desc)
+      email, amount, status, 
+      create_time, update_time, desc
+      )
     values (#{address,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{director,jdbcType=TINYINT}, 
-      #{email,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{createTime,jdbcType=BIGINT}, 
-      #{updateTime,jdbcType=BIGINT}, #{desc,jdbcType=LONGVARCHAR})
+      #{email,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{status,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{desc,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="io.nuls.dapp.communitygovernance.model.TbApplicant">
     insert into tb_applicant
@@ -150,6 +153,9 @@
       </if>
       <if test="amount != null">
         amount,
+      </if>
+      <if test="status != null">
+        status,
       </if>
       <if test="createTime != null">
         create_time,
@@ -176,6 +182,9 @@
       </if>
       <if test="amount != null">
         #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=BIGINT},
@@ -212,6 +221,9 @@
       <if test="record.amount != null">
         amount = #{record.amount,jdbcType=DECIMAL},
       </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=BIGINT},
       </if>
@@ -233,6 +245,7 @@
       director = #{record.director,jdbcType=TINYINT},
       email = #{record.email,jdbcType=VARCHAR},
       amount = #{record.amount,jdbcType=DECIMAL},
+      status = #{record.status,jdbcType=TINYINT},
       create_time = #{record.createTime,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=BIGINT},
       desc = #{record.desc,jdbcType=LONGVARCHAR}
@@ -247,6 +260,7 @@
       director = #{record.director,jdbcType=TINYINT},
       email = #{record.email,jdbcType=VARCHAR},
       amount = #{record.amount,jdbcType=DECIMAL},
+      status = #{record.status,jdbcType=TINYINT},
       create_time = #{record.createTime,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=BIGINT}
     <if test="_parameter != null">
@@ -268,6 +282,9 @@
       <if test="amount != null">
         amount = #{amount,jdbcType=DECIMAL},
       </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=BIGINT},
       </if>
@@ -286,6 +303,7 @@
       director = #{director,jdbcType=TINYINT},
       email = #{email,jdbcType=VARCHAR},
       amount = #{amount,jdbcType=DECIMAL},
+      status = #{status,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=BIGINT},
       desc = #{desc,jdbcType=LONGVARCHAR}
@@ -297,6 +315,7 @@
       director = #{director,jdbcType=TINYINT},
       email = #{email,jdbcType=VARCHAR},
       amount = #{amount,jdbcType=DECIMAL},
+      status = #{status,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=BIGINT}
     where address = #{address,jdbcType=VARCHAR}

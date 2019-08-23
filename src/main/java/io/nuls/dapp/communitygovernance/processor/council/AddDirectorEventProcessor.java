@@ -22,41 +22,33 @@
  * SOFTWARE.
  */
 
-package io.nuls.dapp.communitygovernance.processor.proxy;
+package io.nuls.dapp.communitygovernance.processor.council;
 
 import com.alibaba.fastjson.JSONObject;
-import io.nuls.dapp.communitygovernance.constant.Constant;
-import io.nuls.dapp.communitygovernance.event.proxy.SetAgentEvent;
-import io.nuls.dapp.communitygovernance.mapper.TbAgencyRelationMapper;
+import io.nuls.dapp.communitygovernance.event.council.AddDirectorEvent;
+import io.nuls.dapp.communitygovernance.mapper.TbApplicantMapper;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
-import io.nuls.dapp.communitygovernance.model.TbAgencyRelation;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
-import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import io.nuls.v2.txdata.ContractData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
 /**
- * 处理设置代理事件
  * @author: Charlie
- * @date: 2019/8/22
+ * @date: 2019/8/23
  */
-@Service
-public class SetAgentEventProcessor implements IEventProcessor {
-
+public class AddDirectorEventProcessor implements IEventProcessor {
     final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Resource
-    private TbAgencyRelationMapper tbAgencyRelationMapper;
+    private TbApplicantMapper tbApplicantMapper;
 
     @Value("${app.contract.address}")
     private String contractAddress;
 
-    private static final String SET_AGENT_EVENT = "SetAgentEvent";
+    private static final String ADD_DIRECTOR_EVENT = "AddDirectorEvent";
 
     @Override
     public void execute(String hash, int txType, ContractData contractData, EventJson eventJson) throws Exception {
@@ -65,19 +57,10 @@ public class SetAgentEventProcessor implements IEventProcessor {
             return;
         }
         String event = eventJson.getEvent();
-        if(!SET_AGENT_EVENT.equals(event)){
+        if(!ADD_DIRECTOR_EVENT.equals(event)){
             return;
         }
         JSONObject payload = eventJson.getPayload();
-        SetAgentEvent setAgentEvent = payload.toJavaObject(SetAgentEvent.class);
-        TbAgencyRelation tbAgencyRelation = new TbAgencyRelation();
-        tbAgencyRelation.setAgent(setAgentEvent.getAgentAddress());
-        tbAgencyRelation.setMandator(setAgentEvent.getMandatorAddress());
-        tbAgencyRelation.setStatus(Constant.VALID);
-        Long now = TimeUtil.now();
-        tbAgencyRelation.setCreateTime(now);
-        tbAgencyRelation.setUpdateTime(now);
-        tbAgencyRelationMapper.insert(tbAgencyRelation);
-        logger.debug("SetAgentEvent success height:{}", eventJson.getBlockNumber());
+        AddDirectorEvent addDirectorEvent = payload.toJavaObject(AddDirectorEvent.class);
     }
 }

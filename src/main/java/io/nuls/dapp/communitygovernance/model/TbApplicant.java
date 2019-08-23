@@ -13,6 +13,8 @@ public class TbApplicant {
 
     private BigDecimal amount;
 
+    private Byte status;
+
     private Long createTime;
 
     private Long updateTime;
@@ -57,6 +59,14 @@ public class TbApplicant {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
     public Long getCreateTime() {
