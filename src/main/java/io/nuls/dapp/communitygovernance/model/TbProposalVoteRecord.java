@@ -1,13 +1,17 @@
 package io.nuls.dapp.communitygovernance.model;
 
-public class TbApplicantRecord {
+import java.math.BigDecimal;
+
+public class TbProposalVoteRecord {
     private Integer id;
 
-    private String applicant;
+    private Integer proposalId;
 
     private String voter;
 
-    private Byte status;
+    private Byte result;
+
+    private BigDecimal votes;
 
     private Long createTime;
 
@@ -21,12 +25,12 @@ public class TbApplicantRecord {
         this.id = id;
     }
 
-    public String getApplicant() {
-        return applicant;
+    public Integer getProposalId() {
+        return proposalId;
     }
 
-    public void setApplicant(String applicant) {
-        this.applicant = applicant == null ? null : applicant.trim();
+    public void setProposalId(Integer proposalId) {
+        this.proposalId = proposalId;
     }
 
     public String getVoter() {
@@ -37,12 +41,20 @@ public class TbApplicantRecord {
         this.voter = voter == null ? null : voter.trim();
     }
 
-    public Byte getStatus() {
-        return status;
+    public Byte getResult() {
+        return result;
     }
 
-    public void setStatus(Byte status) {
-        this.status = status;
+    public void setResult(Byte result) {
+        this.result = result;
+    }
+
+    public BigDecimal getVotes() {
+        return votes;
+    }
+
+    public void setVotes(BigDecimal votes) {
+        this.votes = votes;
     }
 
     public Long getCreateTime() {

@@ -47,10 +47,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author: Charlie
@@ -128,12 +125,13 @@ public class VoteDirectorEventProcessor implements IEventProcessor {
             BigDecimal current = tbApplicant.getAmount().subtract(number);
             BigDecimal surplus = current.compareTo(BigDecimal.ZERO) > 0 ? current : BigDecimal.ZERO;
             tbApplicant.setAmount(surplus);
+            tbApplicant.setCount(tbApplicant.getCount() - 1);
             tbApplicant.setUpdateTime(TimeUtil.now());
             tbApplicantMapper.updateByExampleSelective(tbApplicant, tbApplicantParam);
         }
 
         //统计新增的投票记录
-//        List<String> newList = new ArrayList<>();
+        Set<String> newSet = new HashSet<>();
         for(String applicant : voteDirectorEvent.getApplicantAddress()){
             boolean exist = false;
             for(TbApplicantRecord tbApplicantRecord : tbApplicantRecords){
@@ -144,7 +142,7 @@ public class VoteDirectorEventProcessor implements IEventProcessor {
             }
             if(!exist){
                 //记录新增的被投票人
-//                newList.add(applicant);
+                newSet.add(applicant);
                 TbApplicantRecord record = new TbApplicantRecord();
                 long now = TimeUtil.now();
                 record.setStatus(Constant.VALID);
@@ -162,6 +160,10 @@ public class VoteDirectorEventProcessor implements IEventProcessor {
             //为被投票者更新最新票数
             tbApplicant.setAmount(tbApplicant.getAmount().add(number));
             tbApplicant.setUpdateTime(TimeUtil.now());
+            //如果是投票者本次新增的被投票者，则为被投票者计算投票人总数
+            if(!newSet.contains(tbApplicant.getAddress())){
+                tbApplicant.setCount(tbApplicant.getCount() + 1);
+            }
             tbApplicantMapper.updateByExampleSelective(tbApplicant, tbApplicantParam);
         }
         logger.debug("VoteDirectorEvent success height:{}", eventJson.getBlockNumber());

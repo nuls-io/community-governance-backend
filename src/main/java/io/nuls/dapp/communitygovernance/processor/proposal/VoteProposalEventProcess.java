@@ -22,16 +22,13 @@
  * SOFTWARE.
  */
 
-package io.nuls.dapp.communitygovernance.processor.council;
+package io.nuls.dapp.communitygovernance.processor.proposal;
 
 import com.alibaba.fastjson.JSONObject;
-import io.nuls.dapp.communitygovernance.constant.Constant;
-import io.nuls.dapp.communitygovernance.event.council.ApplyEvent;
-import io.nuls.dapp.communitygovernance.mapper.TbApplicantMapper;
-import io.nuls.dapp.communitygovernance.model.TbApplicant;
+import io.nuls.dapp.communitygovernance.event.proposal.VoteProposalEvent;
+import io.nuls.dapp.communitygovernance.mapper.TbProposalMapper;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
-import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import io.nuls.v2.txdata.ContractData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,23 +36,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 
 /**
  * @author: Charlie
- * @date: 2019/8/23
+ * @date: 2019/8/26
  */
 @Service
-public class ApplyEventProcessor implements IEventProcessor {
+public class VoteProposalEventProcess implements IEventProcessor {
     final Logger logger = LoggerFactory.getLogger(getClass());
     @Resource
-    private TbApplicantMapper tbApplicantMapper;
-
+    private TbProposalMapper tbProposalMapper;
     @Value("${app.contract.address}")
     private String contractAddress;
 
-    private static final String APPLY_EVENT = "ApplyEvent";
-
+    private static final String VOTE_PROPOSAL_EVENT = "VoteProposalEvent";
     @Override
     public void execute(String hash, int txType, ContractData contractData, EventJson eventJson) throws Exception {
         String contractAddress = eventJson.getContractAddress();
@@ -63,24 +57,10 @@ public class ApplyEventProcessor implements IEventProcessor {
             return;
         }
         String event = eventJson.getEvent();
-        if(!APPLY_EVENT.equals(event)){
+        if(!VOTE_PROPOSAL_EVENT.equals(event)){
             return;
         }
         JSONObject payload = eventJson.getPayload();
-        ApplyEvent applyEvent = payload.toJavaObject(ApplyEvent.class);
-        TbApplicant tbApplicant = new TbApplicant();
-        tbApplicant.setAddress(applyEvent.getAddress());
-        tbApplicant.setType((byte) applyEvent.getType());
-        tbApplicant.setDesc(applyEvent.getDesc());
-        tbApplicant.setEmail(applyEvent.getEmail());
-        tbApplicant.setDirector(Constant.NO);
-        tbApplicant.setCount(0);
-        tbApplicant.setAmount(BigDecimal.ZERO);
-        tbApplicant.setStatus(Constant.VALID);
-        long now = TimeUtil.now();
-        tbApplicant.setCreateTime(now);
-        tbApplicant.setUpdateTime(now);
-        tbApplicantMapper.insert(tbApplicant);
-        logger.debug("ApplyEvent success height:{}", eventJson.getBlockNumber());
+        VoteProposalEvent voteProposalEvent = payload.toJavaObject(VoteProposalEvent.class);
     }
 }

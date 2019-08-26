@@ -1,16 +1,17 @@
 package io.nuls.dapp.communitygovernance.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TbApplicantRecordParam {
+public class TbProposalVoteRecordParam {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public TbApplicantRecordParam() {
+    public TbProposalVoteRecordParam() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -164,73 +165,63 @@ public class TbApplicantRecordParam {
             return (Criteria) this;
         }
 
-        public Criteria andApplicantIsNull() {
-            addCriterion("applicant is null");
+        public Criteria andProposalIdIsNull() {
+            addCriterion("proposal_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andApplicantIsNotNull() {
-            addCriterion("applicant is not null");
+        public Criteria andProposalIdIsNotNull() {
+            addCriterion("proposal_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andApplicantEqualTo(String value) {
-            addCriterion("applicant =", value, "applicant");
+        public Criteria andProposalIdEqualTo(Integer value) {
+            addCriterion("proposal_id =", value, "proposalId");
             return (Criteria) this;
         }
 
-        public Criteria andApplicantNotEqualTo(String value) {
-            addCriterion("applicant <>", value, "applicant");
+        public Criteria andProposalIdNotEqualTo(Integer value) {
+            addCriterion("proposal_id <>", value, "proposalId");
             return (Criteria) this;
         }
 
-        public Criteria andApplicantGreaterThan(String value) {
-            addCriterion("applicant >", value, "applicant");
+        public Criteria andProposalIdGreaterThan(Integer value) {
+            addCriterion("proposal_id >", value, "proposalId");
             return (Criteria) this;
         }
 
-        public Criteria andApplicantGreaterThanOrEqualTo(String value) {
-            addCriterion("applicant >=", value, "applicant");
+        public Criteria andProposalIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("proposal_id >=", value, "proposalId");
             return (Criteria) this;
         }
 
-        public Criteria andApplicantLessThan(String value) {
-            addCriterion("applicant <", value, "applicant");
+        public Criteria andProposalIdLessThan(Integer value) {
+            addCriterion("proposal_id <", value, "proposalId");
             return (Criteria) this;
         }
 
-        public Criteria andApplicantLessThanOrEqualTo(String value) {
-            addCriterion("applicant <=", value, "applicant");
+        public Criteria andProposalIdLessThanOrEqualTo(Integer value) {
+            addCriterion("proposal_id <=", value, "proposalId");
             return (Criteria) this;
         }
 
-        public Criteria andApplicantLike(String value) {
-            addCriterion("applicant like", value, "applicant");
+        public Criteria andProposalIdIn(List<Integer> values) {
+            addCriterion("proposal_id in", values, "proposalId");
             return (Criteria) this;
         }
 
-        public Criteria andApplicantNotLike(String value) {
-            addCriterion("applicant not like", value, "applicant");
+        public Criteria andProposalIdNotIn(List<Integer> values) {
+            addCriterion("proposal_id not in", values, "proposalId");
             return (Criteria) this;
         }
 
-        public Criteria andApplicantIn(List<String> values) {
-            addCriterion("applicant in", values, "applicant");
+        public Criteria andProposalIdBetween(Integer value1, Integer value2) {
+            addCriterion("proposal_id between", value1, value2, "proposalId");
             return (Criteria) this;
         }
 
-        public Criteria andApplicantNotIn(List<String> values) {
-            addCriterion("applicant not in", values, "applicant");
-            return (Criteria) this;
-        }
-
-        public Criteria andApplicantBetween(String value1, String value2) {
-            addCriterion("applicant between", value1, value2, "applicant");
-            return (Criteria) this;
-        }
-
-        public Criteria andApplicantNotBetween(String value1, String value2) {
-            addCriterion("applicant not between", value1, value2, "applicant");
+        public Criteria andProposalIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("proposal_id not between", value1, value2, "proposalId");
             return (Criteria) this;
         }
 
@@ -304,63 +295,123 @@ public class TbApplicantRecordParam {
             return (Criteria) this;
         }
 
-        public Criteria andStatusIsNull() {
-            addCriterion("status is null");
+        public Criteria andResultIsNull() {
+            addCriterion("result is null");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIsNotNull() {
-            addCriterion("status is not null");
+        public Criteria andResultIsNotNull() {
+            addCriterion("result is not null");
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(Byte value) {
-            addCriterion("status =", value, "status");
+        public Criteria andResultEqualTo(Byte value) {
+            addCriterion("result =", value, "result");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(Byte value) {
-            addCriterion("status <>", value, "status");
+        public Criteria andResultNotEqualTo(Byte value) {
+            addCriterion("result <>", value, "result");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(Byte value) {
-            addCriterion("status >", value, "status");
+        public Criteria andResultGreaterThan(Byte value) {
+            addCriterion("result >", value, "result");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(Byte value) {
-            addCriterion("status >=", value, "status");
+        public Criteria andResultGreaterThanOrEqualTo(Byte value) {
+            addCriterion("result >=", value, "result");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(Byte value) {
-            addCriterion("status <", value, "status");
+        public Criteria andResultLessThan(Byte value) {
+            addCriterion("result <", value, "result");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(Byte value) {
-            addCriterion("status <=", value, "status");
+        public Criteria andResultLessThanOrEqualTo(Byte value) {
+            addCriterion("result <=", value, "result");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<Byte> values) {
-            addCriterion("status in", values, "status");
+        public Criteria andResultIn(List<Byte> values) {
+            addCriterion("result in", values, "result");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<Byte> values) {
-            addCriterion("status not in", values, "status");
+        public Criteria andResultNotIn(List<Byte> values) {
+            addCriterion("result not in", values, "result");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(Byte value1, Byte value2) {
-            addCriterion("status between", value1, value2, "status");
+        public Criteria andResultBetween(Byte value1, Byte value2) {
+            addCriterion("result between", value1, value2, "result");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(Byte value1, Byte value2) {
-            addCriterion("status not between", value1, value2, "status");
+        public Criteria andResultNotBetween(Byte value1, Byte value2) {
+            addCriterion("result not between", value1, value2, "result");
+            return (Criteria) this;
+        }
+
+        public Criteria andVotesIsNull() {
+            addCriterion("votes is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVotesIsNotNull() {
+            addCriterion("votes is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVotesEqualTo(BigDecimal value) {
+            addCriterion("votes =", value, "votes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVotesNotEqualTo(BigDecimal value) {
+            addCriterion("votes <>", value, "votes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVotesGreaterThan(BigDecimal value) {
+            addCriterion("votes >", value, "votes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVotesGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("votes >=", value, "votes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVotesLessThan(BigDecimal value) {
+            addCriterion("votes <", value, "votes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVotesLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("votes <=", value, "votes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVotesIn(List<BigDecimal> values) {
+            addCriterion("votes in", values, "votes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVotesNotIn(List<BigDecimal> values) {
+            addCriterion("votes not in", values, "votes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVotesBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("votes between", value1, value2, "votes");
+            return (Criteria) this;
+        }
+
+        public Criteria andVotesNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("votes not between", value1, value2, "votes");
             return (Criteria) this;
         }
 

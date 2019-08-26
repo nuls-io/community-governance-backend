@@ -22,13 +22,16 @@
  * SOFTWARE.
  */
 
-package io.nuls.dapp.communitygovernance.processor.council;
+package io.nuls.dapp.communitygovernance.processor.proposal;
 
 import com.alibaba.fastjson.JSONObject;
 import io.nuls.dapp.communitygovernance.constant.Constant;
-import io.nuls.dapp.communitygovernance.event.council.ApplyEvent;
-import io.nuls.dapp.communitygovernance.mapper.TbApplicantMapper;
-import io.nuls.dapp.communitygovernance.model.TbApplicant;
+import io.nuls.dapp.communitygovernance.event.proposal.AuditProposalEvent;
+import io.nuls.dapp.communitygovernance.mapper.TbProposalAuditMapper;
+import io.nuls.dapp.communitygovernance.mapper.TbProposalMapper;
+import io.nuls.dapp.communitygovernance.model.TbProposal;
+import io.nuls.dapp.communitygovernance.model.TbProposalAudit;
+import io.nuls.dapp.communitygovernance.model.TbProposalParam;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
 import io.nuls.dapp.communitygovernance.util.TimeUtil;
@@ -39,23 +42,23 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author: Charlie
- * @date: 2019/8/23
+ * @date: 2019/8/26
  */
 @Service
-public class ApplyEventProcessor implements IEventProcessor {
+public class AuditProposalEventProcessor implements IEventProcessor {
     final Logger logger = LoggerFactory.getLogger(getClass());
     @Resource
-    private TbApplicantMapper tbApplicantMapper;
-
+    private TbProposalAuditMapper tbProposalAuditMapper;
+    @Resource
+    private TbProposalMapper tbProposalMapper;
     @Value("${app.contract.address}")
     private String contractAddress;
 
-    private static final String APPLY_EVENT = "ApplyEvent";
-
+    private static final String AUDIT_PROPOSAL_EVENT = "AuditProposalEvent";
     @Override
     public void execute(String hash, int txType, ContractData contractData, EventJson eventJson) throws Exception {
         String contractAddress = eventJson.getContractAddress();
@@ -63,24 +66,34 @@ public class ApplyEventProcessor implements IEventProcessor {
             return;
         }
         String event = eventJson.getEvent();
-        if(!APPLY_EVENT.equals(event)){
+        if(!AUDIT_PROPOSAL_EVENT.equals(event)){
             return;
         }
         JSONObject payload = eventJson.getPayload();
-        ApplyEvent applyEvent = payload.toJavaObject(ApplyEvent.class);
-        TbApplicant tbApplicant = new TbApplicant();
-        tbApplicant.setAddress(applyEvent.getAddress());
-        tbApplicant.setType((byte) applyEvent.getType());
-        tbApplicant.setDesc(applyEvent.getDesc());
-        tbApplicant.setEmail(applyEvent.getEmail());
-        tbApplicant.setDirector(Constant.NO);
-        tbApplicant.setCount(0);
-        tbApplicant.setAmount(BigDecimal.ZERO);
-        tbApplicant.setStatus(Constant.VALID);
+        AuditProposalEvent auditProposalEvent = payload.toJavaObject(AuditProposalEvent.class);
+        TbProposalAudit tbProposalAudit = new TbProposalAudit();
+        tbProposalAudit.setProposalId(auditProposalEvent.getId());
+        tbProposalAudit.setAddress(auditProposalEvent.getAddress());
+        tbProposalAudit.setStatus((byte) auditProposalEvent.getState());
+        tbProposalAudit.setReason(auditProposalEvent.getReason());
         long now = TimeUtil.now();
-        tbApplicant.setCreateTime(now);
-        tbApplicant.setUpdateTime(now);
-        tbApplicantMapper.insert(tbApplicant);
-        logger.debug("ApplyEvent success height:{}", eventJson.getBlockNumber());
+        tbProposalAudit.setCreateTime(now);
+        tbProposalAuditMapper.insert(tbProposalAudit);
+
+        if(null != auditProposalEvent.getProposalStatus()){
+            //需要修改提案状态
+            TbProposalParam tbProposalParam = new TbProposalParam();
+            tbProposalParam.createCriteria().andProposalIdEqualTo(auditProposalEvent.getId());
+            TbProposal tbProposal = new TbProposal();
+            tbProposal.setStatus(auditProposalEvent.getProposalStatus());
+            tbProposal.setUpdateTime(now);
+            if(auditProposalEvent.getProposalStatus() == Constant.VOTING){
+                //开始投票时设置投票时间段
+                tbProposal.setStartTime(new Date(auditProposalEvent.getStartTime() * 1000));
+                tbProposal.setEndTime(new Date(auditProposalEvent.getEndTime() * 1000));
+            }
+            tbProposalMapper.updateByExampleSelective(tbProposal, tbProposalParam);
+        }
+        logger.debug("AuditProposalEvent success height:{}", eventJson.getBlockNumber());
     }
 }

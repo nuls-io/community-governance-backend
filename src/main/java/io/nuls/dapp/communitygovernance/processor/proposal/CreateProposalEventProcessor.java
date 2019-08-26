@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-package io.nuls.dapp.communitygovernance.processor.council;
+package io.nuls.dapp.communitygovernance.processor.proposal;
 
 import com.alibaba.fastjson.JSONObject;
 import io.nuls.dapp.communitygovernance.constant.Constant;
-import io.nuls.dapp.communitygovernance.event.council.ApplyEvent;
-import io.nuls.dapp.communitygovernance.mapper.TbApplicantMapper;
-import io.nuls.dapp.communitygovernance.model.TbApplicant;
+import io.nuls.dapp.communitygovernance.event.proposal.CreateProposalEvent;
+import io.nuls.dapp.communitygovernance.mapper.TbProposalMapper;
+import io.nuls.dapp.communitygovernance.model.TbProposal;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
 import io.nuls.dapp.communitygovernance.util.TimeUtil;
@@ -43,44 +43,46 @@ import java.math.BigDecimal;
 
 /**
  * @author: Charlie
- * @date: 2019/8/23
+ * @date: 2019/8/26
  */
 @Service
-public class ApplyEventProcessor implements IEventProcessor {
+public class CreateProposalEventProcessor implements IEventProcessor {
     final Logger logger = LoggerFactory.getLogger(getClass());
     @Resource
-    private TbApplicantMapper tbApplicantMapper;
-
+    private TbProposalMapper tbProposalMapper;
     @Value("${app.contract.address}")
     private String contractAddress;
 
-    private static final String APPLY_EVENT = "ApplyEvent";
+    private static final String CREATE_PROPOSAL_EVENT = "CreateProposalEvent";
 
     @Override
     public void execute(String hash, int txType, ContractData contractData, EventJson eventJson) throws Exception {
         String contractAddress = eventJson.getContractAddress();
-        if(!contractAddress.equals(contractAddress)){
+        if (!contractAddress.equals(contractAddress)) {
             return;
         }
         String event = eventJson.getEvent();
-        if(!APPLY_EVENT.equals(event)){
+        if (!CREATE_PROPOSAL_EVENT.equals(event)) {
             return;
         }
         JSONObject payload = eventJson.getPayload();
-        ApplyEvent applyEvent = payload.toJavaObject(ApplyEvent.class);
-        TbApplicant tbApplicant = new TbApplicant();
-        tbApplicant.setAddress(applyEvent.getAddress());
-        tbApplicant.setType((byte) applyEvent.getType());
-        tbApplicant.setDesc(applyEvent.getDesc());
-        tbApplicant.setEmail(applyEvent.getEmail());
-        tbApplicant.setDirector(Constant.NO);
-        tbApplicant.setCount(0);
-        tbApplicant.setAmount(BigDecimal.ZERO);
-        tbApplicant.setStatus(Constant.VALID);
+        CreateProposalEvent createProposalEvent = payload.toJavaObject(CreateProposalEvent.class);
+        TbProposal tbProposal = new TbProposal();
+        tbProposal.setProposalId(createProposalEvent.getId());
+        tbProposal.setName(createProposalEvent.getName());
+        tbProposal.setDesc(createProposalEvent.getDesc());
+        tbProposal.setType((byte) createProposalEvent.getType());
+        tbProposal.setEmail(createProposalEvent.getEmail());
+        tbProposal.setOwner(createProposalEvent.getOwner());
+        tbProposal.setStatus(Constant.INREVIEW);
+        tbProposal.setCounts(0);
+        tbProposal.setFavour(BigDecimal.ZERO);
+        tbProposal.setAgainst(BigDecimal.ZERO);
+        tbProposal.setAbstention(BigDecimal.ZERO);
+        tbProposal.setRefund((byte) 0);
         long now = TimeUtil.now();
-        tbApplicant.setCreateTime(now);
-        tbApplicant.setUpdateTime(now);
-        tbApplicantMapper.insert(tbApplicant);
-        logger.debug("ApplyEvent success height:{}", eventJson.getBlockNumber());
+        tbProposal.setCreateTime(now);
+        tbProposal.setUpdateTime(now);
+        logger.debug("CreateProposalEvent success height:{}", eventJson.getBlockNumber());
     }
 }

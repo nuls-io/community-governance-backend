@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.nuls.dapp.communitygovernance.mapper.TbProposalMapper">
+  <resultMap id="BaseResultMap" type="io.nuls.dapp.communitygovernance.model.TbProposal">
+    <id column="proposal_id" jdbcType="INTEGER" property="proposalId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="owner" jdbcType="VARCHAR" property="owner" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="counts" jdbcType="INTEGER" property="counts" />
+    <result column="favour" jdbcType="DECIMAL" property="favour" />
+    <result column="against" jdbcType="DECIMAL" property="against" />
+    <result column="abstention" jdbcType="DECIMAL" property="abstention" />
+    <result column="refund" jdbcType="TINYINT" property="refund" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="io.nuls.dapp.communitygovernance.model.TbProposal">
+    <result column="desc" jdbcType="LONGVARCHAR" property="desc" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    proposal_id, name, type, email, owner, status, start_time, end_time, counts, favour, 
+    against, abstention, refund, create_time, update_time
+  </sql>
+  <sql id="Blob_Column_List">
+    desc
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="io.nuls.dapp.communitygovernance.model.TbProposalParam" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_proposal
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbProposalParam" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_proposal
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_proposal
+    where proposal_id = #{proposalId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_proposal
+    where proposal_id = #{proposalId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbProposalParam">
+    delete from tb_proposal
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="io.nuls.dapp.communitygovernance.model.TbProposal">
+    insert into tb_proposal (proposal_id, name, type, 
+      email, owner, status, 
+      start_time, end_time, counts, 
+      favour, against, abstention, 
+      refund, create_time, update_time, 
+      desc)
+    values (#{proposalId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
+      #{email,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{counts,jdbcType=INTEGER}, 
+      #{favour,jdbcType=DECIMAL}, #{against,jdbcType=DECIMAL}, #{abstention,jdbcType=DECIMAL}, 
+      #{refund,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, 
+      #{desc,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="io.nuls.dapp.communitygovernance.model.TbProposal">
+    insert into tb_proposal
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="proposalId != null">
+        proposal_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="owner != null">
+        owner,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="counts != null">
+        counts,
+      </if>
+      <if test="favour != null">
+        favour,
+      </if>
+      <if test="against != null">
+        against,
+      </if>
+      <if test="abstention != null">
+        abstention,
+      </if>
+      <if test="refund != null">
+        refund,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="desc != null">
+        desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="proposalId != null">
+        #{proposalId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="owner != null">
+        #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="counts != null">
+        #{counts,jdbcType=INTEGER},
+      </if>
+      <if test="favour != null">
+        #{favour,jdbcType=DECIMAL},
+      </if>
+      <if test="against != null">
+        #{against,jdbcType=DECIMAL},
+      </if>
+      <if test="abstention != null">
+        #{abstention,jdbcType=DECIMAL},
+      </if>
+      <if test="refund != null">
+        #{refund,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="desc != null">
+        #{desc,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbProposalParam" resultType="java.lang.Long">
+    select count(*) from tb_proposal
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_proposal
+    <set>
+      <if test="record.proposalId != null">
+        proposal_id = #{record.proposalId,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=TINYINT},
+      </if>
+      <if test="record.email != null">
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.owner != null">
+        owner = #{record.owner,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.startTime != null">
+        start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.counts != null">
+        counts = #{record.counts,jdbcType=INTEGER},
+      </if>
+      <if test="record.favour != null">
+        favour = #{record.favour,jdbcType=DECIMAL},
+      </if>
+      <if test="record.against != null">
+        against = #{record.against,jdbcType=DECIMAL},
+      </if>
+      <if test="record.abstention != null">
+        abstention = #{record.abstention,jdbcType=DECIMAL},
+      </if>
+      <if test="record.refund != null">
+        refund = #{record.refund,jdbcType=TINYINT},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.desc != null">
+        desc = #{record.desc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update tb_proposal
+    set proposal_id = #{record.proposalId,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=TINYINT},
+      email = #{record.email,jdbcType=VARCHAR},
+      owner = #{record.owner,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      counts = #{record.counts,jdbcType=INTEGER},
+      favour = #{record.favour,jdbcType=DECIMAL},
+      against = #{record.against,jdbcType=DECIMAL},
+      abstention = #{record.abstention,jdbcType=DECIMAL},
+      refund = #{record.refund,jdbcType=TINYINT},
+      create_time = #{record.createTime,jdbcType=BIGINT},
+      update_time = #{record.updateTime,jdbcType=BIGINT},
+      desc = #{record.desc,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_proposal
+    set proposal_id = #{record.proposalId,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=TINYINT},
+      email = #{record.email,jdbcType=VARCHAR},
+      owner = #{record.owner,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      start_time = #{record.startTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      counts = #{record.counts,jdbcType=INTEGER},
+      favour = #{record.favour,jdbcType=DECIMAL},
+      against = #{record.against,jdbcType=DECIMAL},
+      abstention = #{record.abstention,jdbcType=DECIMAL},
+      refund = #{record.refund,jdbcType=TINYINT},
+      create_time = #{record.createTime,jdbcType=BIGINT},
+      update_time = #{record.updateTime,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="io.nuls.dapp.communitygovernance.model.TbProposal">
+    update tb_proposal
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="owner != null">
+        owner = #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="counts != null">
+        counts = #{counts,jdbcType=INTEGER},
+      </if>
+      <if test="favour != null">
+        favour = #{favour,jdbcType=DECIMAL},
+      </if>
+      <if test="against != null">
+        against = #{against,jdbcType=DECIMAL},
+      </if>
+      <if test="abstention != null">
+        abstention = #{abstention,jdbcType=DECIMAL},
+      </if>
+      <if test="refund != null">
+        refund = #{refund,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="desc != null">
+        desc = #{desc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where proposal_id = #{proposalId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="io.nuls.dapp.communitygovernance.model.TbProposal">
+    update tb_proposal
+    set name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      email = #{email,jdbcType=VARCHAR},
+      owner = #{owner,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      counts = #{counts,jdbcType=INTEGER},
+      favour = #{favour,jdbcType=DECIMAL},
+      against = #{against,jdbcType=DECIMAL},
+      abstention = #{abstention,jdbcType=DECIMAL},
+      refund = #{refund,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      desc = #{desc,jdbcType=LONGVARCHAR}
+    where proposal_id = #{proposalId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="io.nuls.dapp.communitygovernance.model.TbProposal">
+    update tb_proposal
+    set name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      email = #{email,jdbcType=VARCHAR},
+      owner = #{owner,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      counts = #{counts,jdbcType=INTEGER},
+      favour = #{favour,jdbcType=DECIMAL},
+      against = #{against,jdbcType=DECIMAL},
+      abstention = #{abstention,jdbcType=DECIMAL},
+      refund = #{refund,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT}
+    where proposal_id = #{proposalId,jdbcType=INTEGER}
+  </update>
+</mapper>

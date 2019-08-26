@@ -2,18 +2,16 @@ package io.nuls.dapp.communitygovernance.model;
 
 import java.math.BigDecimal;
 
-public class TbVoteRecord {
+public class TbProposalVoteRecord {
     private Integer id;
 
-    private Integer voteId;
-
-    private Integer itemId;
-
-    private BigDecimal weight;
+    private Integer proposalId;
 
     private String voter;
 
-    private String cancelType;
+    private Byte result;
+
+    private BigDecimal votes;
 
     private Long createTime;
 
@@ -27,28 +25,12 @@ public class TbVoteRecord {
         this.id = id;
     }
 
-    public Integer getVoteId() {
-        return voteId;
+    public Integer getProposalId() {
+        return proposalId;
     }
 
-    public void setVoteId(Integer voteId) {
-        this.voteId = voteId;
-    }
-
-    public Integer getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
-    }
-
-    public BigDecimal getWeight() {
-        return weight;
-    }
-
-    public void setWeight(BigDecimal weight) {
-        this.weight = weight;
+    public void setProposalId(Integer proposalId) {
+        this.proposalId = proposalId;
     }
 
     public String getVoter() {
@@ -59,12 +41,20 @@ public class TbVoteRecord {
         this.voter = voter == null ? null : voter.trim();
     }
 
-    public String getCancelType() {
-        return cancelType;
+    public Byte getResult() {
+        return result;
     }
 
-    public void setCancelType(String cancelType) {
-        this.cancelType = cancelType == null ? null : cancelType.trim();
+    public void setResult(Byte result) {
+        this.result = result;
+    }
+
+    public BigDecimal getVotes() {
+        return votes;
+    }
+
+    public void setVotes(BigDecimal votes) {
+        this.votes = votes;
     }
 
     public Long getCreateTime() {
