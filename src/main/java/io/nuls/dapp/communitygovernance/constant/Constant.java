@@ -35,6 +35,9 @@ public interface Constant {
     /** 有效的 */
     byte VALID = 1;
 
+    /** 已退还押金*/
+    byte REFUNDED = 0;
+
     /** 否 对应数据库数据状态*/
     byte NO = 0;
     /** 是 */

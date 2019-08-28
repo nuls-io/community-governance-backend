@@ -25,10 +25,14 @@
 package io.nuls.dapp.communitygovernance.processor.proposal;
 
 import com.alibaba.fastjson.JSONObject;
+import io.nuls.dapp.communitygovernance.constant.Constant;
 import io.nuls.dapp.communitygovernance.event.proposal.RedemptionProposalEvent;
 import io.nuls.dapp.communitygovernance.mapper.TbProposalMapper;
+import io.nuls.dapp.communitygovernance.model.TbProposal;
+import io.nuls.dapp.communitygovernance.model.TbProposalParam;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
+import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import io.nuls.v2.txdata.ContractData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +66,12 @@ public class RedemptionProposalEventProcessor implements IEventProcessor {
         }
         JSONObject payload = eventJson.getPayload();
         RedemptionProposalEvent redemptionProposalEvent = payload.toJavaObject(RedemptionProposalEvent.class);
-//        redemptionProposalEvent.getProposalId();
+        TbProposalParam tbProposalParam = new TbProposalParam();
+        tbProposalParam.createCriteria().andProposalIdEqualTo(redemptionProposalEvent.getProposalId());
+        TbProposal tbProposal = new TbProposal();
+        tbProposal.setRefund(Constant.REFUNDED);
+        tbProposal.setUpdateTime(TimeUtil.now());
+        tbProposalMapper.updateByExampleSelective(tbProposal, tbProposalParam);
+        logger.debug("RedemptionProposalEvent success height:{}", eventJson.getBlockNumber());
     }
 }
