@@ -18,6 +18,9 @@
         <!-- 生成toString() 方法插件 -->
 <!--        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />-->
 
+        <!-- 使用个自定义javaTypeResolver接口 -->
+
+
         <!-- 重命名Bean查询条件类的类名，默认命名Example -->
         <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
             <!-- 此处是将 Example 改名为 Param -->
@@ -69,18 +72,18 @@
 
 <!--        <table tableName="tb_agency_relation" ></table>-->
 <!--        <table tableName="tb_applicant" ></table>-->
-<!--        <table tableName="tb_vote" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>-->
-<!--        <table tableName="tb_vote_item" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>-->
-<!--        <table tableName="tb_vote_record" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>-->
+        <table tableName="tb_vote" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>
+        <table tableName="tb_vote_item" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>
+        <table tableName="tb_vote_record" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>
 <!--        <table tableName="tb_applicant_record" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>-->
-        <table tableName="tb_applicant" ></table>
-        <table tableName="tb_proposal" ></table>
-        <table tableName="tb_proposal_audit" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>
-        <table tableName="tb_proposal_vote_record" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>
+<!--        <table tableName="tb_applicant" ></table>-->
+<!--        <table tableName="tb_proposal" ></table>-->
+<!--        <table tableName="tb_proposal_audit" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>-->
+<!--        <table tableName="tb_proposal_vote_record" ><generatedKey column="id" sqlStatement="MySql" identity="true" /></table>-->
 
-        <!-- 有些表的字段需要指定java类型
-         <table schema="" tableName="">
-            <columnOverride column="" javaType="" />
-        </table> -->
+        <!-- 有些表的字段需要指定java类型 -->
+         <table tableName="tb_vote">
+            <columnOverride column="deposit" javaType="java.math.BigInteger" />
+        </table>
     </context>
 </generatorConfiguration>

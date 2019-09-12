@@ -24,8 +24,11 @@
 
 package io.nuls.dapp.communitygovernance.processor.vote;
 
+import com.alibaba.fastjson.JSONObject;
+import io.nuls.dapp.communitygovernance.event.vote.VoteCreateEvent;
 import io.nuls.dapp.communitygovernance.mapper.TbVoteItemMapper;
 import io.nuls.dapp.communitygovernance.mapper.TbVoteMapper;
+import io.nuls.dapp.communitygovernance.model.TbVote;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
 import io.nuls.v2.txdata.ContractData;
@@ -52,6 +55,22 @@ public class VoteCreateEventProcessor implements IEventProcessor {
     private static final String VOTE_CREATE_EVENT = "VoteCreateEvent";
     @Override
     public void execute(String hash, int txType, ContractData contractData, EventJson eventJson) throws Exception {
+        String contractAddress = eventJson.getContractAddress();
+        if(!contractAddress.equals(contractAddress)){
+            return;
+        }
+        String event = eventJson.getEvent();
+        if(!VOTE_CREATE_EVENT.equals(event)){
+            return;
+        }
+        JSONObject payload = eventJson.getPayload();
+        VoteCreateEvent voteCreateEvent = payload.toJavaObject(VoteCreateEvent.class);
+        TbVote tbVote = new TbVote();
+        tbVote.setContractAddress(contractAddress);
+        tbVote.setContractVoteId(voteCreateEvent.getVoteId());
+        tbVote.setTitle(voteCreateEvent.getTitle());
+        tbVote.setDescription(voteCreateEvent.getDesc());
+        tbVote.setDeposit(voteCreateEvent.getRecognizance());
 
     }
 }

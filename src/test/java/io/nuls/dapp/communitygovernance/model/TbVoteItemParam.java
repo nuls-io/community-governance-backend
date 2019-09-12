@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TbProposalVoteRecordParam {
+public class TbVoteItemParam {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public TbProposalVoteRecordParam() {
+    public TbVoteItemParam() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -165,253 +165,313 @@ public class TbProposalVoteRecordParam {
             return (Criteria) this;
         }
 
-        public Criteria andProposalIdIsNull() {
-            addCriterion("proposal_id is null");
+        public Criteria andVoteIdIsNull() {
+            addCriterion("vote_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andProposalIdIsNotNull() {
-            addCriterion("proposal_id is not null");
+        public Criteria andVoteIdIsNotNull() {
+            addCriterion("vote_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProposalIdEqualTo(Integer value) {
-            addCriterion("proposal_id =", value, "proposalId");
+        public Criteria andVoteIdEqualTo(Integer value) {
+            addCriterion("vote_id =", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andProposalIdNotEqualTo(Integer value) {
-            addCriterion("proposal_id <>", value, "proposalId");
+        public Criteria andVoteIdNotEqualTo(Integer value) {
+            addCriterion("vote_id <>", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andProposalIdGreaterThan(Integer value) {
-            addCriterion("proposal_id >", value, "proposalId");
+        public Criteria andVoteIdGreaterThan(Integer value) {
+            addCriterion("vote_id >", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andProposalIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("proposal_id >=", value, "proposalId");
+        public Criteria andVoteIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("vote_id >=", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andProposalIdLessThan(Integer value) {
-            addCriterion("proposal_id <", value, "proposalId");
+        public Criteria andVoteIdLessThan(Integer value) {
+            addCriterion("vote_id <", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andProposalIdLessThanOrEqualTo(Integer value) {
-            addCriterion("proposal_id <=", value, "proposalId");
+        public Criteria andVoteIdLessThanOrEqualTo(Integer value) {
+            addCriterion("vote_id <=", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andProposalIdIn(List<Integer> values) {
-            addCriterion("proposal_id in", values, "proposalId");
+        public Criteria andVoteIdIn(List<Integer> values) {
+            addCriterion("vote_id in", values, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andProposalIdNotIn(List<Integer> values) {
-            addCriterion("proposal_id not in", values, "proposalId");
+        public Criteria andVoteIdNotIn(List<Integer> values) {
+            addCriterion("vote_id not in", values, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andProposalIdBetween(Integer value1, Integer value2) {
-            addCriterion("proposal_id between", value1, value2, "proposalId");
+        public Criteria andVoteIdBetween(Integer value1, Integer value2) {
+            addCriterion("vote_id between", value1, value2, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andProposalIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("proposal_id not between", value1, value2, "proposalId");
+        public Criteria andVoteIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("vote_id not between", value1, value2, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoterIsNull() {
-            addCriterion("voter is null");
+        public Criteria andContentIsNull() {
+            addCriterion("content is null");
             return (Criteria) this;
         }
 
-        public Criteria andVoterIsNotNull() {
-            addCriterion("voter is not null");
+        public Criteria andContentIsNotNull() {
+            addCriterion("content is not null");
             return (Criteria) this;
         }
 
-        public Criteria andVoterEqualTo(String value) {
-            addCriterion("voter =", value, "voter");
+        public Criteria andContentEqualTo(String value) {
+            addCriterion("content =", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andVoterNotEqualTo(String value) {
-            addCriterion("voter <>", value, "voter");
+        public Criteria andContentNotEqualTo(String value) {
+            addCriterion("content <>", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andVoterGreaterThan(String value) {
-            addCriterion("voter >", value, "voter");
+        public Criteria andContentGreaterThan(String value) {
+            addCriterion("content >", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andVoterGreaterThanOrEqualTo(String value) {
-            addCriterion("voter >=", value, "voter");
+        public Criteria andContentGreaterThanOrEqualTo(String value) {
+            addCriterion("content >=", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andVoterLessThan(String value) {
-            addCriterion("voter <", value, "voter");
+        public Criteria andContentLessThan(String value) {
+            addCriterion("content <", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andVoterLessThanOrEqualTo(String value) {
-            addCriterion("voter <=", value, "voter");
+        public Criteria andContentLessThanOrEqualTo(String value) {
+            addCriterion("content <=", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andVoterLike(String value) {
-            addCriterion("voter like", value, "voter");
+        public Criteria andContentLike(String value) {
+            addCriterion("content like", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andVoterNotLike(String value) {
-            addCriterion("voter not like", value, "voter");
+        public Criteria andContentNotLike(String value) {
+            addCriterion("content not like", value, "content");
             return (Criteria) this;
         }
 
-        public Criteria andVoterIn(List<String> values) {
-            addCriterion("voter in", values, "voter");
+        public Criteria andContentIn(List<String> values) {
+            addCriterion("content in", values, "content");
             return (Criteria) this;
         }
 
-        public Criteria andVoterNotIn(List<String> values) {
-            addCriterion("voter not in", values, "voter");
+        public Criteria andContentNotIn(List<String> values) {
+            addCriterion("content not in", values, "content");
             return (Criteria) this;
         }
 
-        public Criteria andVoterBetween(String value1, String value2) {
-            addCriterion("voter between", value1, value2, "voter");
+        public Criteria andContentBetween(String value1, String value2) {
+            addCriterion("content between", value1, value2, "content");
             return (Criteria) this;
         }
 
-        public Criteria andVoterNotBetween(String value1, String value2) {
-            addCriterion("voter not between", value1, value2, "voter");
+        public Criteria andContentNotBetween(String value1, String value2) {
+            addCriterion("content not between", value1, value2, "content");
             return (Criteria) this;
         }
 
-        public Criteria andResultIsNull() {
-            addCriterion("result is null");
+        public Criteria andSortIsNull() {
+            addCriterion("sort is null");
             return (Criteria) this;
         }
 
-        public Criteria andResultIsNotNull() {
-            addCriterion("result is not null");
+        public Criteria andSortIsNotNull() {
+            addCriterion("sort is not null");
             return (Criteria) this;
         }
 
-        public Criteria andResultEqualTo(Byte value) {
-            addCriterion("result =", value, "result");
+        public Criteria andSortEqualTo(Byte value) {
+            addCriterion("sort =", value, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andResultNotEqualTo(Byte value) {
-            addCriterion("result <>", value, "result");
+        public Criteria andSortNotEqualTo(Byte value) {
+            addCriterion("sort <>", value, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andResultGreaterThan(Byte value) {
-            addCriterion("result >", value, "result");
+        public Criteria andSortGreaterThan(Byte value) {
+            addCriterion("sort >", value, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andResultGreaterThanOrEqualTo(Byte value) {
-            addCriterion("result >=", value, "result");
+        public Criteria andSortGreaterThanOrEqualTo(Byte value) {
+            addCriterion("sort >=", value, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andResultLessThan(Byte value) {
-            addCriterion("result <", value, "result");
+        public Criteria andSortLessThan(Byte value) {
+            addCriterion("sort <", value, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andResultLessThanOrEqualTo(Byte value) {
-            addCriterion("result <=", value, "result");
+        public Criteria andSortLessThanOrEqualTo(Byte value) {
+            addCriterion("sort <=", value, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andResultIn(List<Byte> values) {
-            addCriterion("result in", values, "result");
+        public Criteria andSortIn(List<Byte> values) {
+            addCriterion("sort in", values, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andResultNotIn(List<Byte> values) {
-            addCriterion("result not in", values, "result");
+        public Criteria andSortNotIn(List<Byte> values) {
+            addCriterion("sort not in", values, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andResultBetween(Byte value1, Byte value2) {
-            addCriterion("result between", value1, value2, "result");
+        public Criteria andSortBetween(Byte value1, Byte value2) {
+            addCriterion("sort between", value1, value2, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andResultNotBetween(Byte value1, Byte value2) {
-            addCriterion("result not between", value1, value2, "result");
+        public Criteria andSortNotBetween(Byte value1, Byte value2) {
+            addCriterion("sort not between", value1, value2, "sort");
             return (Criteria) this;
         }
 
-        public Criteria andVotesIsNull() {
-            addCriterion("votes is null");
+        public Criteria andCountsIsNull() {
+            addCriterion("counts is null");
             return (Criteria) this;
         }
 
-        public Criteria andVotesIsNotNull() {
-            addCriterion("votes is not null");
+        public Criteria andCountsIsNotNull() {
+            addCriterion("counts is not null");
             return (Criteria) this;
         }
 
-        public Criteria andVotesEqualTo(BigDecimal value) {
-            addCriterion("votes =", value, "votes");
+        public Criteria andCountsEqualTo(Integer value) {
+            addCriterion("counts =", value, "counts");
             return (Criteria) this;
         }
 
-        public Criteria andVotesNotEqualTo(BigDecimal value) {
-            addCriterion("votes <>", value, "votes");
+        public Criteria andCountsNotEqualTo(Integer value) {
+            addCriterion("counts <>", value, "counts");
             return (Criteria) this;
         }
 
-        public Criteria andVotesGreaterThan(BigDecimal value) {
-            addCriterion("votes >", value, "votes");
+        public Criteria andCountsGreaterThan(Integer value) {
+            addCriterion("counts >", value, "counts");
             return (Criteria) this;
         }
 
-        public Criteria andVotesGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("votes >=", value, "votes");
+        public Criteria andCountsGreaterThanOrEqualTo(Integer value) {
+            addCriterion("counts >=", value, "counts");
             return (Criteria) this;
         }
 
-        public Criteria andVotesLessThan(BigDecimal value) {
-            addCriterion("votes <", value, "votes");
+        public Criteria andCountsLessThan(Integer value) {
+            addCriterion("counts <", value, "counts");
             return (Criteria) this;
         }
 
-        public Criteria andVotesLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("votes <=", value, "votes");
+        public Criteria andCountsLessThanOrEqualTo(Integer value) {
+            addCriterion("counts <=", value, "counts");
             return (Criteria) this;
         }
 
-        public Criteria andVotesIn(List<BigDecimal> values) {
-            addCriterion("votes in", values, "votes");
+        public Criteria andCountsIn(List<Integer> values) {
+            addCriterion("counts in", values, "counts");
             return (Criteria) this;
         }
 
-        public Criteria andVotesNotIn(List<BigDecimal> values) {
-            addCriterion("votes not in", values, "votes");
+        public Criteria andCountsNotIn(List<Integer> values) {
+            addCriterion("counts not in", values, "counts");
             return (Criteria) this;
         }
 
-        public Criteria andVotesBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("votes between", value1, value2, "votes");
+        public Criteria andCountsBetween(Integer value1, Integer value2) {
+            addCriterion("counts between", value1, value2, "counts");
             return (Criteria) this;
         }
 
-        public Criteria andVotesNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("votes not between", value1, value2, "votes");
+        public Criteria andCountsNotBetween(Integer value1, Integer value2) {
+            addCriterion("counts not between", value1, value2, "counts");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountIsNull() {
+            addCriterion("amount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountIsNotNull() {
+            addCriterion("amount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountEqualTo(BigDecimal value) {
+            addCriterion("amount =", value, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountNotEqualTo(BigDecimal value) {
+            addCriterion("amount <>", value, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountGreaterThan(BigDecimal value) {
+            addCriterion("amount >", value, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("amount >=", value, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountLessThan(BigDecimal value) {
+            addCriterion("amount <", value, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("amount <=", value, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountIn(List<BigDecimal> values) {
+            addCriterion("amount in", values, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountNotIn(List<BigDecimal> values) {
+            addCriterion("amount not in", values, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("amount between", value1, value2, "amount");
+            return (Criteria) this;
+        }
+
+        public Criteria andAmountNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("amount not between", value1, value2, "amount");
             return (Criteria) this;
         }
 

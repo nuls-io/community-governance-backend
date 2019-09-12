@@ -24,8 +24,9 @@
 
 package io.nuls.dapp.communitygovernance.processor.vote;
 
+import com.alibaba.fastjson.JSONObject;
+import io.nuls.dapp.communitygovernance.event.vote.VoteInitEvent;
 import io.nuls.dapp.communitygovernance.mapper.TbVoteItemMapper;
-import io.nuls.dapp.communitygovernance.mapper.TbVoteMapper;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
 import io.nuls.v2.txdata.ContractData;
@@ -41,8 +42,8 @@ import javax.annotation.Resource;
  */
 public class VoteInitEventProcessor implements IEventProcessor {
     final Logger logger = LoggerFactory.getLogger(getClass());
-    @Resource
-    private TbVoteMapper tbVoteMapper;
+//    @Resource
+//    private TbVoteMapper tbVoteMapper;
     @Resource
     private TbVoteItemMapper tbVoteItemMapper;
     @Value("${app.contract.address}")
@@ -50,6 +51,15 @@ public class VoteInitEventProcessor implements IEventProcessor {
     private static final String VOTE_INIT_EVENT = "VoteInitEvent";
     @Override
     public void execute(String hash, int txType, ContractData contractData, EventJson eventJson) throws Exception {
-
+        String contractAddress = eventJson.getContractAddress();
+        if(!contractAddress.equals(contractAddress)){
+            return;
+        }
+        String event = eventJson.getEvent();
+        if(!VOTE_INIT_EVENT.equals(event)){
+            return;
+        }
+        JSONObject payload = eventJson.getPayload();
+        VoteInitEvent voteInitEvent = payload.toJavaObject(VoteInitEvent.class);
     }
 }

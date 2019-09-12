@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="io.nuls.dapp.communitygovernance.mapper.TbProposalVoteRecordMapper">
-  <resultMap id="BaseResultMap" type="io.nuls.dapp.communitygovernance.model.TbProposalVoteRecord">
+<mapper namespace="io.nuls.dapp.communitygovernance.mapper.TbVoteRecordMapper">
+  <resultMap id="BaseResultMap" type="io.nuls.dapp.communitygovernance.model.TbVoteRecord">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="proposal_id" jdbcType="INTEGER" property="proposalId" />
+    <result column="vote_id" jdbcType="INTEGER" property="voteId" />
+    <result column="item_id" jdbcType="INTEGER" property="itemId" />
+    <result column="weight" jdbcType="DECIMAL" property="weight" />
     <result column="voter" jdbcType="VARCHAR" property="voter" />
-    <result column="result" jdbcType="TINYINT" property="result" />
-    <result column="votes" jdbcType="DECIMAL" property="votes" />
+    <result column="cancel_type" jdbcType="VARCHAR" property="cancelType" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
   </resultMap>
@@ -69,15 +70,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, proposal_id, voter, result, votes, create_time, update_time
+    id, vote_id, item_id, weight, voter, cancel_type, create_time, update_time
   </sql>
-  <select id="selectByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbProposalVoteRecordParam" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteRecordParam" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_proposal_vote_record
+    from tb_vote_record
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,47 +89,50 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from tb_proposal_vote_record
+    from tb_vote_record
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from tb_proposal_vote_record
+    delete from tb_vote_record
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbProposalVoteRecordParam">
-    delete from tb_proposal_vote_record
+  <delete id="deleteByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteRecordParam">
+    delete from tb_vote_record
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="io.nuls.dapp.communitygovernance.model.TbProposalVoteRecord">
+  <insert id="insert" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteRecord">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_proposal_vote_record (proposal_id, voter, result, 
-      votes, create_time, update_time
-      )
-    values (#{proposalId,jdbcType=INTEGER}, #{voter,jdbcType=VARCHAR}, #{result,jdbcType=TINYINT}, 
-      #{votes,jdbcType=DECIMAL}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}
-      )
+    insert into tb_vote_record (vote_id, item_id, weight, 
+      voter, cancel_type, create_time, 
+      update_time)
+    values (#{voteId,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, #{weight,jdbcType=DECIMAL}, 
+      #{voter,jdbcType=VARCHAR}, #{cancelType,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="io.nuls.dapp.communitygovernance.model.TbProposalVoteRecord">
+  <insert id="insertSelective" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteRecord">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_proposal_vote_record
+    insert into tb_vote_record
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="proposalId != null">
-        proposal_id,
+      <if test="voteId != null">
+        vote_id,
+      </if>
+      <if test="itemId != null">
+        item_id,
+      </if>
+      <if test="weight != null">
+        weight,
       </if>
       <if test="voter != null">
         voter,
       </if>
-      <if test="result != null">
-        result,
-      </if>
-      <if test="votes != null">
-        votes,
+      <if test="cancelType != null">
+        cancel_type,
       </if>
       <if test="createTime != null">
         create_time,
@@ -138,17 +142,20 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="proposalId != null">
-        #{proposalId,jdbcType=INTEGER},
+      <if test="voteId != null">
+        #{voteId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null">
+        #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=DECIMAL},
       </if>
       <if test="voter != null">
         #{voter,jdbcType=VARCHAR},
       </if>
-      <if test="result != null">
-        #{result,jdbcType=TINYINT},
-      </if>
-      <if test="votes != null">
-        #{votes,jdbcType=DECIMAL},
+      <if test="cancelType != null">
+        #{cancelType,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=BIGINT},
@@ -158,29 +165,32 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbProposalVoteRecordParam" resultType="java.lang.Long">
-    select count(*) from tb_proposal_vote_record
+  <select id="countByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteRecordParam" resultType="java.lang.Long">
+    select count(*) from tb_vote_record
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update tb_proposal_vote_record
+    update tb_vote_record
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.proposalId != null">
-        proposal_id = #{record.proposalId,jdbcType=INTEGER},
+      <if test="record.voteId != null">
+        vote_id = #{record.voteId,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemId != null">
+        item_id = #{record.itemId,jdbcType=INTEGER},
+      </if>
+      <if test="record.weight != null">
+        weight = #{record.weight,jdbcType=DECIMAL},
       </if>
       <if test="record.voter != null">
         voter = #{record.voter,jdbcType=VARCHAR},
       </if>
-      <if test="record.result != null">
-        result = #{record.result,jdbcType=TINYINT},
-      </if>
-      <if test="record.votes != null">
-        votes = #{record.votes,jdbcType=DECIMAL},
+      <if test="record.cancelType != null">
+        cancel_type = #{record.cancelType,jdbcType=VARCHAR},
       </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=BIGINT},
@@ -194,32 +204,36 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update tb_proposal_vote_record
+    update tb_vote_record
     set id = #{record.id,jdbcType=INTEGER},
-      proposal_id = #{record.proposalId,jdbcType=INTEGER},
+      vote_id = #{record.voteId,jdbcType=INTEGER},
+      item_id = #{record.itemId,jdbcType=INTEGER},
+      weight = #{record.weight,jdbcType=DECIMAL},
       voter = #{record.voter,jdbcType=VARCHAR},
-      result = #{record.result,jdbcType=TINYINT},
-      votes = #{record.votes,jdbcType=DECIMAL},
+      cancel_type = #{record.cancelType,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=BIGINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="io.nuls.dapp.communitygovernance.model.TbProposalVoteRecord">
-    update tb_proposal_vote_record
+  <update id="updateByPrimaryKeySelective" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteRecord">
+    update tb_vote_record
     <set>
-      <if test="proposalId != null">
-        proposal_id = #{proposalId,jdbcType=INTEGER},
+      <if test="voteId != null">
+        vote_id = #{voteId,jdbcType=INTEGER},
+      </if>
+      <if test="itemId != null">
+        item_id = #{itemId,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null">
+        weight = #{weight,jdbcType=DECIMAL},
       </if>
       <if test="voter != null">
         voter = #{voter,jdbcType=VARCHAR},
       </if>
-      <if test="result != null">
-        result = #{result,jdbcType=TINYINT},
-      </if>
-      <if test="votes != null">
-        votes = #{votes,jdbcType=DECIMAL},
+      <if test="cancelType != null">
+        cancel_type = #{cancelType,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=BIGINT},
@@ -230,12 +244,13 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="io.nuls.dapp.communitygovernance.model.TbProposalVoteRecord">
-    update tb_proposal_vote_record
-    set proposal_id = #{proposalId,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteRecord">
+    update tb_vote_record
+    set vote_id = #{voteId,jdbcType=INTEGER},
+      item_id = #{itemId,jdbcType=INTEGER},
+      weight = #{weight,jdbcType=DECIMAL},
       voter = #{voter,jdbcType=VARCHAR},
-      result = #{result,jdbcType=TINYINT},
-      votes = #{votes,jdbcType=DECIMAL},
+      cancel_type = #{cancelType,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=INTEGER}
