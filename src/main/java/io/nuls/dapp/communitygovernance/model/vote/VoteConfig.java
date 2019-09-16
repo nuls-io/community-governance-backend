@@ -71,7 +71,7 @@ public class VoteConfig {
         this.maxSelectCount = maxSelectCount;
     }
 
-    public boolean isVoteCanModify() {
+    public boolean getVoteCanModify() {
         return voteCanModify;
     }
 

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class TbVoteItem {
     private Integer id;
 
-    private Integer voteId;
+    private Long voteId;
 
     private String content;
 
@@ -27,11 +27,11 @@ public class TbVoteItem {
         this.id = id;
     }
 
-    public Integer getVoteId() {
+    public Long getVoteId() {
         return voteId;
     }
 
-    public void setVoteId(Integer voteId) {
+    public void setVoteId(Long voteId) {
         this.voteId = voteId;
     }
 

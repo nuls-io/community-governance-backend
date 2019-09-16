@@ -37,11 +37,7 @@ public class TbVote {
 
     private Long blockHeight;
 
-    private Long blocks;
-
     private String creator;
-
-    private String userAlias;
 
     private Long createTime;
 
@@ -175,28 +171,12 @@ public class TbVote {
         this.blockHeight = blockHeight;
     }
 
-    public Long getBlocks() {
-        return blocks;
-    }
-
-    public void setBlocks(Long blocks) {
-        this.blocks = blocks;
-    }
-
     public String getCreator() {
         return creator;
     }
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
-    }
-
-    public String getUserAlias() {
-        return userAlias;
-    }
-
-    public void setUserAlias(String userAlias) {
-        this.userAlias = userAlias == null ? null : userAlias.trim();
     }
 
     public Long getCreateTime() {

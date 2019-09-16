@@ -175,52 +175,52 @@ public class TbVoteItemParam {
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdEqualTo(Integer value) {
+        public Criteria andVoteIdEqualTo(Long value) {
             addCriterion("vote_id =", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdNotEqualTo(Integer value) {
+        public Criteria andVoteIdNotEqualTo(Long value) {
             addCriterion("vote_id <>", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdGreaterThan(Integer value) {
+        public Criteria andVoteIdGreaterThan(Long value) {
             addCriterion("vote_id >", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andVoteIdGreaterThanOrEqualTo(Long value) {
             addCriterion("vote_id >=", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdLessThan(Integer value) {
+        public Criteria andVoteIdLessThan(Long value) {
             addCriterion("vote_id <", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdLessThanOrEqualTo(Integer value) {
+        public Criteria andVoteIdLessThanOrEqualTo(Long value) {
             addCriterion("vote_id <=", value, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdIn(List<Integer> values) {
+        public Criteria andVoteIdIn(List<Long> values) {
             addCriterion("vote_id in", values, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdNotIn(List<Integer> values) {
+        public Criteria andVoteIdNotIn(List<Long> values) {
             addCriterion("vote_id not in", values, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdBetween(Integer value1, Integer value2) {
+        public Criteria andVoteIdBetween(Long value1, Long value2) {
             addCriterion("vote_id between", value1, value2, "voteId");
             return (Criteria) this;
         }
 
-        public Criteria andVoteIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andVoteIdNotBetween(Long value1, Long value2) {
             addCriterion("vote_id not between", value1, value2, "voteId");
             return (Criteria) this;
         }

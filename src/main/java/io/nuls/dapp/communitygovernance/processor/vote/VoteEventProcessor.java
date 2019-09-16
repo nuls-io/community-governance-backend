@@ -43,8 +43,6 @@ import javax.annotation.Resource;
  */
 public class VoteEventProcessor implements IEventProcessor {
     final Logger logger = LoggerFactory.getLogger(getClass());
-//    @Resource
-//    private TbVoteMapper tbVoteMapper;
     @Resource
     private TbVoteItemMapper tbVoteItemMapper;
     @Resource

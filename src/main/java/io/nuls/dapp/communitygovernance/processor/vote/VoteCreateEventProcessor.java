@@ -29,14 +29,18 @@ import io.nuls.dapp.communitygovernance.event.vote.VoteCreateEvent;
 import io.nuls.dapp.communitygovernance.mapper.TbVoteItemMapper;
 import io.nuls.dapp.communitygovernance.mapper.TbVoteMapper;
 import io.nuls.dapp.communitygovernance.model.TbVote;
+import io.nuls.dapp.communitygovernance.model.TbVoteItem;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
+import io.nuls.dapp.communitygovernance.model.vote.VoteItem;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
+import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import io.nuls.v2.txdata.ContractData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 /**
  * @author: Charlie
@@ -71,6 +75,25 @@ public class VoteCreateEventProcessor implements IEventProcessor {
         tbVote.setTitle(voteCreateEvent.getTitle());
         tbVote.setDescription(voteCreateEvent.getDesc());
         tbVote.setDeposit(voteCreateEvent.getRecognizance());
-
+        tbVote.setStatus((byte) voteCreateEvent.getStatus());
+        tbVote.setCounts(0);
+        tbVote.setAmount(new BigDecimal(0));
+        tbVote.setBlockHeight(eventJson.getBlockNumber());
+        tbVote.setCreator(voteCreateEvent.getOwner());
+        long now = TimeUtil.now();
+        tbVote.setCreateTime(now);
+        tbVote.setUpdateTime(now);
+        tbVoteMapper.insertSelective(tbVote);
+        for(VoteItem voteItem : voteCreateEvent.getItems()) {
+            TbVoteItem tbVoteItem = new TbVoteItem();
+            tbVoteItem.setVoteId(voteItem.getId());
+            tbVoteItem.setContent(voteItem.getContent());
+            tbVoteItem.setAmount(new BigDecimal(0));
+            tbVoteItem.setCounts(0);
+            tbVoteItem.setCreateTime(now);
+            tbVoteItem.setUpdateTime(now);
+            tbVoteItemMapper.insertSelective(tbVoteItem);
+        }
+        logger.debug("VoteCreateEvent success height:{}", eventJson.getBlockNumber());
     }
 }

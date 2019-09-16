@@ -26,7 +26,9 @@ package io.nuls.dapp.communitygovernance.processor.vote;
 
 import com.alibaba.fastjson.JSONObject;
 import io.nuls.dapp.communitygovernance.event.vote.VoteInitEvent;
-import io.nuls.dapp.communitygovernance.mapper.TbVoteItemMapper;
+import io.nuls.dapp.communitygovernance.mapper.TbVoteMapper;
+import io.nuls.dapp.communitygovernance.model.TbVote;
+import io.nuls.dapp.communitygovernance.model.TbVoteParam;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
 import io.nuls.v2.txdata.ContractData;
@@ -35,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * @author: Charlie
@@ -42,24 +45,36 @@ import javax.annotation.Resource;
  */
 public class VoteInitEventProcessor implements IEventProcessor {
     final Logger logger = LoggerFactory.getLogger(getClass());
-//    @Resource
-//    private TbVoteMapper tbVoteMapper;
     @Resource
-    private TbVoteItemMapper tbVoteItemMapper;
+    private TbVoteMapper tbVoteMapper;
     @Value("${app.contract.address}")
     private String contractAddress;
     private static final String VOTE_INIT_EVENT = "VoteInitEvent";
+
     @Override
     public void execute(String hash, int txType, ContractData contractData, EventJson eventJson) throws Exception {
         String contractAddress = eventJson.getContractAddress();
-        if(!contractAddress.equals(contractAddress)){
+        if (!contractAddress.equals(contractAddress)) {
             return;
         }
         String event = eventJson.getEvent();
-        if(!VOTE_INIT_EVENT.equals(event)){
+        if (!VOTE_INIT_EVENT.equals(event)) {
             return;
         }
         JSONObject payload = eventJson.getPayload();
         VoteInitEvent voteInitEvent = payload.toJavaObject(VoteInitEvent.class);
+        TbVoteParam TbVoteParam = new TbVoteParam();
+        TbVoteParam.createCriteria().andContractVoteIdEqualTo(voteInitEvent.getVoteId());
+
+        TbVote tbVote = new TbVote();
+        boolean isMultipleSelect = voteInitEvent.getVoteConfig().isMultipleSelect();
+        tbVote.setHasMultipleSelect(isMultipleSelect ? (byte) 1 : (byte) 0);
+        tbVote.setMinSelectCount((byte) voteInitEvent.getVoteConfig().getMinSelectCount());
+        tbVote.setMaxSelectCount((byte) voteInitEvent.getVoteConfig().getMaxSelectCount());
+        boolean voteCanModify = voteInitEvent.getVoteConfig().getVoteCanModify();
+        tbVote.setVoteCanModify(voteCanModify ? (byte) 1 : (byte) 0);
+        tbVote.setStartTime(new Date(voteInitEvent.getVoteConfig().getStartTime()));
+        tbVote.setEndTime(new Date(voteInitEvent.getVoteConfig().getEndTime()));
+        tbVoteMapper.updateByExampleSelective(tbVote, TbVoteParam);
     }
 }

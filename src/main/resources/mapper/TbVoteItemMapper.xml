@@ -3,7 +3,7 @@
 <mapper namespace="io.nuls.dapp.communitygovernance.mapper.TbVoteItemMapper">
   <resultMap id="BaseResultMap" type="io.nuls.dapp.communitygovernance.model.TbVoteItem">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="vote_id" jdbcType="INTEGER" property="voteId" />
+    <result column="vote_id" jdbcType="BIGINT" property="voteId" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="sort" jdbcType="TINYINT" property="sort" />
     <result column="counts" jdbcType="INTEGER" property="counts" />
@@ -109,7 +109,7 @@
     insert into tb_vote_item (vote_id, content, sort, 
       counts, amount, create_time, 
       update_time)
-    values (#{voteId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{sort,jdbcType=TINYINT}, 
+    values (#{voteId,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{sort,jdbcType=TINYINT}, 
       #{counts,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{createTime,jdbcType=BIGINT}, 
       #{updateTime,jdbcType=BIGINT})
   </insert>
@@ -143,7 +143,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="voteId != null">
-        #{voteId,jdbcType=INTEGER},
+        #{voteId,jdbcType=BIGINT},
       </if>
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
@@ -178,7 +178,7 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.voteId != null">
-        vote_id = #{record.voteId,jdbcType=INTEGER},
+        vote_id = #{record.voteId,jdbcType=BIGINT},
       </if>
       <if test="record.content != null">
         content = #{record.content,jdbcType=VARCHAR},
@@ -206,7 +206,7 @@
   <update id="updateByExample" parameterType="map">
     update tb_vote_item
     set id = #{record.id,jdbcType=INTEGER},
-      vote_id = #{record.voteId,jdbcType=INTEGER},
+      vote_id = #{record.voteId,jdbcType=BIGINT},
       content = #{record.content,jdbcType=VARCHAR},
       sort = #{record.sort,jdbcType=TINYINT},
       counts = #{record.counts,jdbcType=INTEGER},
@@ -221,7 +221,7 @@
     update tb_vote_item
     <set>
       <if test="voteId != null">
-        vote_id = #{voteId,jdbcType=INTEGER},
+        vote_id = #{voteId,jdbcType=BIGINT},
       </if>
       <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
@@ -246,7 +246,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteItem">
     update tb_vote_item
-    set vote_id = #{voteId,jdbcType=INTEGER},
+    set vote_id = #{voteId,jdbcType=BIGINT},
       content = #{content,jdbcType=VARCHAR},
       sort = #{sort,jdbcType=TINYINT},
       counts = #{counts,jdbcType=INTEGER},
