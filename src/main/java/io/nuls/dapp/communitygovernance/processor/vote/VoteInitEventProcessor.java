@@ -76,5 +76,6 @@ public class VoteInitEventProcessor implements IEventProcessor {
         tbVote.setStartTime(new Date(voteInitEvent.getVoteConfig().getStartTime()));
         tbVote.setEndTime(new Date(voteInitEvent.getVoteConfig().getEndTime()));
         tbVoteMapper.updateByExampleSelective(tbVote, TbVoteParam);
+        logger.debug("VoteInitEvent success height:{}", eventJson.getBlockNumber());
     }
 }
