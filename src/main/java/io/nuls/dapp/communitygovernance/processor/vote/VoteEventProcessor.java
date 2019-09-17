@@ -29,6 +29,7 @@ import io.nuls.core.basic.Result;
 import io.nuls.dapp.communitygovernance.config.ServerContext;
 import io.nuls.dapp.communitygovernance.constant.Constant;
 import io.nuls.dapp.communitygovernance.event.vote.VoteEvent;
+import io.nuls.dapp.communitygovernance.mapper.TbPlayerMapper;
 import io.nuls.dapp.communitygovernance.mapper.TbVoteItemMapper;
 import io.nuls.dapp.communitygovernance.mapper.TbVoteMapper;
 import io.nuls.dapp.communitygovernance.mapper.TbVoteRecordMapper;
@@ -60,6 +61,8 @@ public class VoteEventProcessor implements IEventProcessor {
     private TbVoteItemMapper tbVoteItemMapper;
     @Resource
     private TbVoteRecordMapper tbVoteRecordMapper;
+    @Resource
+    private TbPlayerMapper tbPlayerMapper;
     @Value("${app.contract.address}")
     private String contractAddress;
     private static final String VOTE_EVENT = "VoteEvent";
@@ -173,6 +176,13 @@ public class VoteEventProcessor implements IEventProcessor {
         tbVote.setUpdateTime(now);
 
         tbVoteMapper.updateByPrimaryKeySelective(tbVote);
+
+        //记录新投票参与者
+        TbPlayerParam tbPlayerParam = new TbPlayerParam();
+        tbPlayerParam.createCriteria().andAddressEqualTo(voteEvent.getVoterAddress());
+        if(tbPlayerMapper.countByExample(tbPlayerParam) == 0L){
+            tbPlayerMapper.insert(new TbPlayer(voteEvent.getVoterAddress()));
+        }
         logger.debug("VoteEvent success height:{}", eventJson.getBlockNumber());
     }
 }

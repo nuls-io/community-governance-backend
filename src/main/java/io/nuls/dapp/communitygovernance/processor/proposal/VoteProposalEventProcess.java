@@ -29,11 +29,10 @@ import io.nuls.core.basic.Result;
 import io.nuls.dapp.communitygovernance.config.ServerContext;
 import io.nuls.dapp.communitygovernance.constant.Constant;
 import io.nuls.dapp.communitygovernance.event.proposal.VoteProposalEvent;
+import io.nuls.dapp.communitygovernance.mapper.TbPlayerMapper;
 import io.nuls.dapp.communitygovernance.mapper.TbProposalMapper;
 import io.nuls.dapp.communitygovernance.mapper.TbProposalVoteRecordMapper;
-import io.nuls.dapp.communitygovernance.model.TbProposal;
-import io.nuls.dapp.communitygovernance.model.TbProposalParam;
-import io.nuls.dapp.communitygovernance.model.TbProposalVoteRecord;
+import io.nuls.dapp.communitygovernance.model.*;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
 import io.nuls.dapp.communitygovernance.util.TimeUtil;
@@ -59,6 +58,8 @@ public class VoteProposalEventProcess implements IEventProcessor {
     private TbProposalMapper tbProposalMapper;
     @Resource
     private TbProposalVoteRecordMapper tbProposalVoteRecordMapper;
+    @Resource
+    private TbPlayerMapper tbPlayerMapper;
     @Value("${app.contract.address}")
     private String contractAddress;
 
@@ -110,6 +111,14 @@ public class VoteProposalEventProcess implements IEventProcessor {
         }
         tbProposal.setUpdateTime(TimeUtil.now());
         tbProposalMapper.updateByExampleSelective(tbProposal, tbProposalParam);
+
+        //记录新投票参与者
+        TbPlayerParam tbPlayerParam = new TbPlayerParam();
+        tbPlayerParam.createCriteria().andAddressEqualTo(voterAddress);
+        if(tbPlayerMapper.countByExample(tbPlayerParam) == 0L){
+            tbPlayerMapper.insert(new TbPlayer(voterAddress));
+        }
+
         logger.debug("VoteProposalEvent success height:{}", eventJson.getBlockNumber());
     }
 }
