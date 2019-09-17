@@ -7,9 +7,9 @@ public class TbVoteItem {
 
     private Long voteId;
 
-    private String content;
+    private Long itemId;
 
-    private Byte sort;
+    private String content;
 
     private Integer counts;
 
@@ -35,20 +35,20 @@ public class TbVoteItem {
         this.voteId = voteId;
     }
 
+    public Long getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
+    }
+
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
-    }
-
-    public Byte getSort() {
-        return sort;
-    }
-
-    public void setSort(Byte sort) {
-        this.sort = sort;
     }
 
     public Integer getCounts() {

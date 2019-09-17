@@ -75,4 +75,13 @@ public interface Constant {
     byte ADOPTED = 4;
     /** 未通过*/
     byte REJECTED = 5;
+
+    /** 投票待确认*/
+    int STATUS_WAIT_INIT = 0;
+    /** 投票未开始*/
+    int STATUS_WAIT_VOTE = 1;
+    /** 投票中*/
+    int STATUS_VOTEING = 2;
+    /** 投票已结束*/
+    int STATUS_CLOSE = 3;
 }

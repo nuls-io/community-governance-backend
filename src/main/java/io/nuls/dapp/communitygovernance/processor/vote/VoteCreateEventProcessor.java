@@ -77,7 +77,7 @@ public class VoteCreateEventProcessor implements IEventProcessor {
         tbVote.setDeposit(voteCreateEvent.getRecognizance());
         tbVote.setStatus((byte) voteCreateEvent.getStatus());
         tbVote.setCounts(0);
-        tbVote.setAmount(new BigDecimal(0));
+        tbVote.setAmount(new BigDecimal("0"));
         tbVote.setBlockHeight(eventJson.getBlockNumber());
         tbVote.setCreator(voteCreateEvent.getOwner());
         long now = TimeUtil.now();
@@ -88,7 +88,7 @@ public class VoteCreateEventProcessor implements IEventProcessor {
             TbVoteItem tbVoteItem = new TbVoteItem();
             tbVoteItem.setVoteId(voteItem.getId());
             tbVoteItem.setContent(voteItem.getContent());
-            tbVoteItem.setAmount(new BigDecimal(0));
+            tbVoteItem.setAmount(new BigDecimal("0"));
             tbVoteItem.setCounts(0);
             tbVoteItem.setCreateTime(now);
             tbVoteItem.setUpdateTime(now);

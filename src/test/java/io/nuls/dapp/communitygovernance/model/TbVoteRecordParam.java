@@ -235,52 +235,52 @@ public class TbVoteRecordParam {
             return (Criteria) this;
         }
 
-        public Criteria andItemIdEqualTo(Integer value) {
+        public Criteria andItemIdEqualTo(Long value) {
             addCriterion("item_id =", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andItemIdNotEqualTo(Integer value) {
+        public Criteria andItemIdNotEqualTo(Long value) {
             addCriterion("item_id <>", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andItemIdGreaterThan(Integer value) {
+        public Criteria andItemIdGreaterThan(Long value) {
             addCriterion("item_id >", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andItemIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andItemIdGreaterThanOrEqualTo(Long value) {
             addCriterion("item_id >=", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andItemIdLessThan(Integer value) {
+        public Criteria andItemIdLessThan(Long value) {
             addCriterion("item_id <", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andItemIdLessThanOrEqualTo(Integer value) {
+        public Criteria andItemIdLessThanOrEqualTo(Long value) {
             addCriterion("item_id <=", value, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andItemIdIn(List<Integer> values) {
+        public Criteria andItemIdIn(List<Long> values) {
             addCriterion("item_id in", values, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andItemIdNotIn(List<Integer> values) {
+        public Criteria andItemIdNotIn(List<Long> values) {
             addCriterion("item_id not in", values, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andItemIdBetween(Integer value1, Integer value2) {
+        public Criteria andItemIdBetween(Long value1, Long value2) {
             addCriterion("item_id between", value1, value2, "itemId");
             return (Criteria) this;
         }
 
-        public Criteria andItemIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andItemIdNotBetween(Long value1, Long value2) {
             addCriterion("item_id not between", value1, value2, "itemId");
             return (Criteria) this;
         }
@@ -425,62 +425,52 @@ public class TbVoteRecordParam {
             return (Criteria) this;
         }
 
-        public Criteria andCancelTypeEqualTo(String value) {
+        public Criteria andCancelTypeEqualTo(Byte value) {
             addCriterion("cancel_type =", value, "cancelType");
             return (Criteria) this;
         }
 
-        public Criteria andCancelTypeNotEqualTo(String value) {
+        public Criteria andCancelTypeNotEqualTo(Byte value) {
             addCriterion("cancel_type <>", value, "cancelType");
             return (Criteria) this;
         }
 
-        public Criteria andCancelTypeGreaterThan(String value) {
+        public Criteria andCancelTypeGreaterThan(Byte value) {
             addCriterion("cancel_type >", value, "cancelType");
             return (Criteria) this;
         }
 
-        public Criteria andCancelTypeGreaterThanOrEqualTo(String value) {
+        public Criteria andCancelTypeGreaterThanOrEqualTo(Byte value) {
             addCriterion("cancel_type >=", value, "cancelType");
             return (Criteria) this;
         }
 
-        public Criteria andCancelTypeLessThan(String value) {
+        public Criteria andCancelTypeLessThan(Byte value) {
             addCriterion("cancel_type <", value, "cancelType");
             return (Criteria) this;
         }
 
-        public Criteria andCancelTypeLessThanOrEqualTo(String value) {
+        public Criteria andCancelTypeLessThanOrEqualTo(Byte value) {
             addCriterion("cancel_type <=", value, "cancelType");
             return (Criteria) this;
         }
 
-        public Criteria andCancelTypeLike(String value) {
-            addCriterion("cancel_type like", value, "cancelType");
-            return (Criteria) this;
-        }
-
-        public Criteria andCancelTypeNotLike(String value) {
-            addCriterion("cancel_type not like", value, "cancelType");
-            return (Criteria) this;
-        }
-
-        public Criteria andCancelTypeIn(List<String> values) {
+        public Criteria andCancelTypeIn(List<Byte> values) {
             addCriterion("cancel_type in", values, "cancelType");
             return (Criteria) this;
         }
 
-        public Criteria andCancelTypeNotIn(List<String> values) {
+        public Criteria andCancelTypeNotIn(List<Byte> values) {
             addCriterion("cancel_type not in", values, "cancelType");
             return (Criteria) this;
         }
 
-        public Criteria andCancelTypeBetween(String value1, String value2) {
+        public Criteria andCancelTypeBetween(Byte value1, Byte value2) {
             addCriterion("cancel_type between", value1, value2, "cancelType");
             return (Criteria) this;
         }
 
-        public Criteria andCancelTypeNotBetween(String value1, String value2) {
+        public Criteria andCancelTypeNotBetween(Byte value1, Byte value2) {
             addCriterion("cancel_type not between", value1, value2, "cancelType");
             return (Criteria) this;
         }

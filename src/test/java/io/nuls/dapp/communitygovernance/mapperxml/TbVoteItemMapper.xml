@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="io.nuls.dapp.communitygovernance.model.TbVoteItem">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="vote_id" jdbcType="BIGINT" property="voteId" />
+    <result column="item_id" jdbcType="BIGINT" property="itemId" />
     <result column="content" jdbcType="VARCHAR" property="content" />
-    <result column="sort" jdbcType="TINYINT" property="sort" />
     <result column="counts" jdbcType="INTEGER" property="counts" />
     <result column="amount" jdbcType="DECIMAL" property="amount" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
@@ -70,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, vote_id, content, sort, counts, amount, create_time, update_time
+    id, vote_id, item_id, content, counts, amount, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteItemParam" resultMap="BaseResultMap">
     select
@@ -106,10 +106,10 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_vote_item (vote_id, content, sort, 
+    insert into tb_vote_item (vote_id, item_id, content, 
       counts, amount, create_time, 
       update_time)
-    values (#{voteId,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{sort,jdbcType=TINYINT}, 
+    values (#{voteId,jdbcType=BIGINT}, #{itemId,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, 
       #{counts,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{createTime,jdbcType=BIGINT}, 
       #{updateTime,jdbcType=BIGINT})
   </insert>
@@ -122,11 +122,11 @@
       <if test="voteId != null">
         vote_id,
       </if>
+      <if test="itemId != null">
+        item_id,
+      </if>
       <if test="content != null">
         content,
-      </if>
-      <if test="sort != null">
-        sort,
       </if>
       <if test="counts != null">
         counts,
@@ -145,11 +145,11 @@
       <if test="voteId != null">
         #{voteId,jdbcType=BIGINT},
       </if>
+      <if test="itemId != null">
+        #{itemId,jdbcType=BIGINT},
+      </if>
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="sort != null">
-        #{sort,jdbcType=TINYINT},
       </if>
       <if test="counts != null">
         #{counts,jdbcType=INTEGER},
@@ -180,11 +180,11 @@
       <if test="record.voteId != null">
         vote_id = #{record.voteId,jdbcType=BIGINT},
       </if>
+      <if test="record.itemId != null">
+        item_id = #{record.itemId,jdbcType=BIGINT},
+      </if>
       <if test="record.content != null">
         content = #{record.content,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sort != null">
-        sort = #{record.sort,jdbcType=TINYINT},
       </if>
       <if test="record.counts != null">
         counts = #{record.counts,jdbcType=INTEGER},
@@ -207,8 +207,8 @@
     update tb_vote_item
     set id = #{record.id,jdbcType=INTEGER},
       vote_id = #{record.voteId,jdbcType=BIGINT},
+      item_id = #{record.itemId,jdbcType=BIGINT},
       content = #{record.content,jdbcType=VARCHAR},
-      sort = #{record.sort,jdbcType=TINYINT},
       counts = #{record.counts,jdbcType=INTEGER},
       amount = #{record.amount,jdbcType=DECIMAL},
       create_time = #{record.createTime,jdbcType=BIGINT},
@@ -223,11 +223,11 @@
       <if test="voteId != null">
         vote_id = #{voteId,jdbcType=BIGINT},
       </if>
+      <if test="itemId != null">
+        item_id = #{itemId,jdbcType=BIGINT},
+      </if>
       <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="sort != null">
-        sort = #{sort,jdbcType=TINYINT},
       </if>
       <if test="counts != null">
         counts = #{counts,jdbcType=INTEGER},
@@ -247,8 +247,8 @@
   <update id="updateByPrimaryKey" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteItem">
     update tb_vote_item
     set vote_id = #{voteId,jdbcType=BIGINT},
+      item_id = #{itemId,jdbcType=BIGINT},
       content = #{content,jdbcType=VARCHAR},
-      sort = #{sort,jdbcType=TINYINT},
       counts = #{counts,jdbcType=INTEGER},
       amount = #{amount,jdbcType=DECIMAL},
       create_time = #{createTime,jdbcType=BIGINT},

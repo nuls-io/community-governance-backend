@@ -7,13 +7,13 @@ public class TbVoteRecord {
 
     private Long voteId;
 
-    private Integer itemId;
+    private Long itemId;
 
     private BigDecimal weight;
 
     private String voter;
 
-    private String cancelType;
+    private Byte cancelType;
 
     private Long createTime;
 
@@ -35,11 +35,11 @@ public class TbVoteRecord {
         this.voteId = voteId;
     }
 
-    public Integer getItemId() {
+    public Long getItemId() {
         return itemId;
     }
 
-    public void setItemId(Integer itemId) {
+    public void setItemId(Long itemId) {
         this.itemId = itemId;
     }
 
@@ -59,12 +59,12 @@ public class TbVoteRecord {
         this.voter = voter == null ? null : voter.trim();
     }
 
-    public String getCancelType() {
+    public Byte getCancelType() {
         return cancelType;
     }
 
-    public void setCancelType(String cancelType) {
-        this.cancelType = cancelType == null ? null : cancelType.trim();
+    public void setCancelType(Byte cancelType) {
+        this.cancelType = cancelType;
     }
 
     public Long getCreateTime() {
