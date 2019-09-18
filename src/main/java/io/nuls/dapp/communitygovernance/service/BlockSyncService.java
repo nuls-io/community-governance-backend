@@ -115,6 +115,10 @@ public class BlockSyncService {
         // 处理交易中的余额变动
         CoinData coinData;
         for(Transaction tx : txs) {
+            byte[] txCoinData = tx.getCoinData();
+            if(txCoinData == null) {
+                continue;
+            }
             coinData = tx.getCoinDataInstance();
             int type = tx.getType();
             // 账户余额处理器

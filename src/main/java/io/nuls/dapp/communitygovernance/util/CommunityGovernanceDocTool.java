@@ -38,7 +38,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Description: 生成rpc接口文档
  */
 public class CommunityGovernanceDocTool {
-    static String appName = "Pocm_Backend";
+    static String appName = "CommunityGovernance_Backend";
 
     static Set<String> exclusion = SetUtil.of("io.nuls.base.protocol.cmd", "io.nuls.core.rpc.cmd.kernel", "io.nuls.core.rpc.modulebootstrap");
 
@@ -365,6 +365,11 @@ public class CommunityGovernanceDocTool {
                     }
                     res.list = buildResultDes(parameter.requestType(), res.des, res.name, res.canNull);
                     res.type = parameter.requestType().value().getSimpleName().toLowerCase();
+                    // pierre add at 20190910 for duplicate `List<String>`
+                    if(parameter.requestType().value() == List.class && baseType.contains(parameter.requestType().collectionElement())) {
+                        res.type = res.list.get(0).type;
+                        res.list = null;
+                    }
                     param.add(res);
                 }
             });
@@ -612,6 +617,8 @@ public class CommunityGovernanceDocTool {
             }
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(mdFile, true))) {
                 writer.newLine();
+                writer.write(new Heading("接口列表",2).toString());
+                writer.newLine();
                 AtomicInteger i = new AtomicInteger(0);
                 for (CmdDes cmd : cmdDesList) {
                     writeMarkdown(cmd, writer, i, egMap);
@@ -640,14 +647,14 @@ public class CommunityGovernanceDocTool {
                     order = order.substring(0, 1) + "." + Integer.parseInt(order.substring(1)) + " ";
                 }
                 boolean jsonrpc = ApiType.JSONRPC.name().equals(cmd.cmdType);
-                writer.write(new Heading(order + cmd.des, 1).toString());
+                writer.write(new Heading(order + cmd.des, 3).toString());
                 writer.newLine();
-                writer.write(new Heading("Cmd: " + cmd.cmdName.replaceAll("_", "\\\\_"), 2).toString());
+                writer.write(new Heading("Cmd: " + cmd.cmdName.replaceAll("_", "\\\\_"), 4).toString());
                 writer.newLine();
                 writer.write(new Text("_**详细描述: " + cmd.detailDesc + "**_").toString());
                 writer.newLine();
                 if (!jsonrpc) {
-                    writer.write(new Heading("HttpMethod: " + cmd.httpMethod, 3).toString());
+                    writer.write(new Heading("HttpMethod: " + cmd.httpMethod, 4).toString());
                     writer.newLine();
                 }
                 buildParam(writer, cmd.parameters, jsonrpc);
@@ -681,7 +688,7 @@ public class CommunityGovernanceDocTool {
                     }
                 }
                 writer.newLine();
-                writer.write(new Heading("Example request data: ", 3).toString());
+                writer.write(new Heading("Example request data: ", 4).toString());
                 writer.newLine();
                 if (jsonrpc) {
                     if ("无".equals(egReqDesc)) {
@@ -717,7 +724,7 @@ public class CommunityGovernanceDocTool {
                 }
 
                 writer.newLine();
-                writer.write(new Heading("Example response data: ", 3).toString());
+                writer.write(new Heading("Example response data: ", 4).toString());
                 writer.newLine();
                 if ("略".equals(egRespDesc)) {
                     writer.write(new Text(egRespDesc).toString());
@@ -749,7 +756,7 @@ public class CommunityGovernanceDocTool {
         private static void buildResult(BufferedWriter writer, List<ResultDes> result) throws IOException {
             writer.newLine();
             writer.newLine();
-            writer.write(new Heading("返回值", 2).toString());
+            writer.write(new Heading("返回值", 4).toString());
             if (result == null) {
                 writer.newLine();
                 writer.write("无返回值");
@@ -778,7 +785,7 @@ public class CommunityGovernanceDocTool {
                     if (des.formJsonOfRestful != null) {
                         try {
                             writer.newLine();
-                            writer.write(new Heading("Form json data: ", 3).toString());
+                            writer.write(new Heading("Form json data: ", 4).toString());
                             writer.newLine();
                             writer.write(new Text("```json").toString());
                             writer.newLine();
@@ -793,7 +800,7 @@ public class CommunityGovernanceDocTool {
                 });
             }
             writer.newLine();
-            writer.write(new Heading("参数列表", 2).toString());
+            writer.write(new Heading("参数列表", 4).toString());
             if (parameters == null || parameters.isEmpty()) {
                 writer.newLine();
                 writer.write("无参数");

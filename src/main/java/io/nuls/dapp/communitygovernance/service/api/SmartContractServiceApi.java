@@ -1,6 +1,7 @@
 package io.nuls.dapp.communitygovernance.service.api;
 
 import io.nuls.dapp.communitygovernance.config.ServerContext;
+import io.nuls.dapp.communitygovernance.util.AppUtil;
 import io.nuls.v2.model.dto.RpcResult;
 import io.nuls.v2.util.JsonRpcUtil;
 import io.nuls.v2.util.ListUtil;
@@ -22,8 +23,8 @@ import java.util.Map;
 public class SmartContractServiceApi {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public RpcResult<Map<String, Map>> getContractTxResultList(List<String> hashList) {
-        RpcResult<Map<String, Map>> rpcResult = JsonRpcUtil.request("getContractTxResultList", ListUtil.of(ServerContext.chainId, hashList));
+    public RpcResult<Map<String, Map>> getContractTxResultList(List<String> hashList) throws InterruptedException {
+        RpcResult<Map<String, Map>> rpcResult = AppUtil.jsonRpcRequest("getContractTxResultList", ListUtil.of(ServerContext.chainId, hashList));
         return rpcResult;
     }
 

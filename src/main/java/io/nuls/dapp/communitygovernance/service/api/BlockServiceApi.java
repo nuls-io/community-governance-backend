@@ -1,22 +1,18 @@
 package io.nuls.dapp.communitygovernance.service.api;
 
-import com.alibaba.fastjson.JSONObject;
 import io.nuls.base.basic.NulsByteBuffer;
 import io.nuls.base.data.Block;
 import io.nuls.core.crypto.HexUtil;
-import io.nuls.core.exception.NulsException;
 import io.nuls.dapp.communitygovernance.config.ServerContext;
 import io.nuls.dapp.communitygovernance.model.SimpleBlockHeader;
+import io.nuls.dapp.communitygovernance.util.AppUtil;
 import io.nuls.v2.model.dto.RpcResult;
-import io.nuls.v2.util.JsonRpcUtil;
 import io.nuls.v2.util.ListUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * 区块接口服务
@@ -26,37 +22,28 @@ import javax.annotation.Resource;
 public class BlockServiceApi {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
-    /**
-     * 钱包接口地址
-     */
-    @Value("${app.provider.host}")
-    private String host;
-
-    @Resource
-    private RestTemplate restTemplate;
-
 
     /**
      * 获取最新区块头
      *
      * @return
      */
-    public SimpleBlockHeader getNewestBlockHeader() {
-        String url = host + "/api/block/header/newest";
-        JSONObject result = restTemplate.getForObject(url, JSONObject.class);
-        logger.info("result {}", result);
-        if (result.getBoolean("success")) {
-            JSONObject data = result.getJSONObject("data");
-            Long height = data.getLong("value");
-            SimpleBlockHeader header = new SimpleBlockHeader();
-            header.setHash(data.getString("hash"));
-            header.setPreHash(data.getString("preHash"));
-            header.setHeight(data.getLong("height"));
-            return header;
-        } else {
-            logger.error("result {}", result);
-            return null;
+    public SimpleBlockHeader getNewestBlockHeader() throws Exception {
+        RpcResult rpcResult = AppUtil.jsonRpcRequest("getBestBlockHeader", ListUtil.of(ServerContext.chainId));
+        if(rpcResult == null) {
+            logger.error("empty block about getting newest block!!!");
+            throw new Exception("empty Block");
         }
+        if(rpcResult.getError() != null) {
+            logger.error("error block about getting newest block !!! - {[]}", rpcResult.getError().toString());
+            throw new Exception(rpcResult.getError().toString());
+        }
+        Map result = (Map) rpcResult.getResult();
+        SimpleBlockHeader header = new SimpleBlockHeader();
+        header.setHash((String) result.get("hash"));
+        header.setPreHash((String) result.get("preHash"));
+        header.setHeight(Long.parseLong(result.get("height").toString()));
+        return header;
     }
 
     /**
@@ -64,8 +51,16 @@ public class BlockServiceApi {
      *
      * @return
      */
-    public Block getBlockByHeight(Long height) throws NulsException {
-        RpcResult rpcResult = JsonRpcUtil.request("getBlockSerializationByHeight", ListUtil.of(ServerContext.chainId, height));
+    public Block getBlockByHeight(Long height) throws Exception {
+        RpcResult rpcResult = AppUtil.jsonRpcRequest("getBlockSerializationByHeight", ListUtil.of(ServerContext.chainId, height));
+        if(rpcResult == null) {
+            logger.error("empty block about getting block by height!!!");
+            throw new Exception("empty Block");
+        }
+        if(rpcResult.getError() != null) {
+            logger.error("error block about getting block by height!!! - {[]}", rpcResult.getError().toString());
+            throw new Exception(rpcResult.getError().toString());
+        }
         String blockHex = (String) rpcResult.getResult();
         Block block = new Block();
         block.parse(new NulsByteBuffer(HexUtil.decode(blockHex)));
@@ -77,8 +72,8 @@ public class BlockServiceApi {
      *
      * @return
      */
-    public Block getBlockByHash(String hash) throws NulsException {
-        RpcResult rpcResult = JsonRpcUtil.request("getBlockSerializationByHash", ListUtil.of(ServerContext.chainId, hash));
+    public Block getBlockByHash(String hash) throws Exception {
+        RpcResult rpcResult = AppUtil.jsonRpcRequest("getBlockSerializationByHash", ListUtil.of(ServerContext.chainId, hash));
         String blockHex = (String) rpcResult.getResult();
         Block block = new Block();
         block.parse(new NulsByteBuffer(HexUtil.decode(blockHex)));

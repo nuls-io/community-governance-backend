@@ -30,14 +30,27 @@ import lombok.Setter;
  * @author: PierreLuo
  * @date: 2019-08-19
  */
-@Getter
-@Setter
 public class SyncError {
 
-    private boolean error;
+    @Getter
+    @Setter
     private Long errorHeight;
+    private int falseWaitTimes;
 
     public SyncError() {
-        this.error = false;
+        this.falseWaitTimes = 7;
+    }
+
+    public boolean isError() {
+        if(this.falseWaitTimes < 6) {
+            this.falseWaitTimes++;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void setError() {
+        this.falseWaitTimes = 0;
     }
 }

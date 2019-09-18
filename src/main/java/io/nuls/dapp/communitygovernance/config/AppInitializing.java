@@ -1,9 +1,9 @@
 package io.nuls.dapp.communitygovernance.config;
 
+import io.nuls.dapp.communitygovernance.util.AppUtil;
 import io.nuls.v2.NulsSDKBootStrap;
 import io.nuls.v2.SDKContext;
 import io.nuls.v2.model.dto.RpcResult;
-import io.nuls.v2.util.JsonRpcUtil;
 import io.nuls.v2.util.ListUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class AppInitializing implements InitializingBean {
         logger.info("contract address is {}", contractAddress);
         logger.info("provider host is {}", providerHost);
         SDKContext.wallet_url = providerHost;
-        RpcResult info = JsonRpcUtil.request("info", ListUtil.of());
+        RpcResult info = AppUtil.jsonRpcRequest("info", ListUtil.of());
         Map result = (Map) info.getResult();
         Integer chainId = (Integer) result.get("chainId");
         ServerContext.chainId = chainId != null ? chainId : ServerContext.chainId;

@@ -2,8 +2,8 @@ package io.nuls.dapp.communitygovernance.service.api;
 
 import io.nuls.dapp.communitygovernance.config.ServerContext;
 import io.nuls.dapp.communitygovernance.model.account.AccountPo;
+import io.nuls.dapp.communitygovernance.util.AppUtil;
 import io.nuls.v2.model.dto.RpcResult;
-import io.nuls.v2.util.JsonRpcUtil;
 import io.nuls.v2.util.ListUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,14 +28,9 @@ public class AccountServiceApi {
     public AccountPo getAccountBalance(String address) throws InterruptedException {
         String alias = null;
         BigDecimal balance = BigDecimal.ZERO;
-
-        RpcResult<Map> result = postData(address);
-        if(result == null) {
-            result = postData(address);
-            if(result == null) {
-                result = postData(address);
-            }
-        }
+        int chainId = ServerContext.chainId;
+        int assetId = ServerContext.assetId;
+        RpcResult<Map> result = AppUtil.jsonRpcRequest("getAccountBalance", ListUtil.of(chainId, assetId, assetId, address), 5);
         if(result == null) {
             logger.error("Post time out 6 times!!! address is {}", address);
             AccountPo po = new AccountPo(BigDecimal.ZERO, alias);
@@ -56,26 +51,5 @@ public class AccountServiceApi {
 
         AccountPo po = new AccountPo(balance, alias);
         return po;
-    }
-
-    private RpcResult<Map> postData(String address) throws InterruptedException {
-        RpcResult rpcResult = null;
-        int chainId = ServerContext.chainId;
-        int assetId = ServerContext.assetId;
-        try {
-            rpcResult = JsonRpcUtil.request("getAccountBalance", ListUtil.of(chainId, assetId, assetId, address));
-            return rpcResult;
-        } catch (Exception e) {
-            logger.info("post time out, address is {}", address);
-            Thread.sleep(500);
-            try {
-                rpcResult = JsonRpcUtil.request("getAccountBalance", ListUtil.of(chainId, assetId, assetId, address));
-            } catch (Exception e1) {
-                logger.info("post time out, address is {}", address);
-                Thread.sleep(500);
-            }
-            return rpcResult;
-        }
-
     }
 }

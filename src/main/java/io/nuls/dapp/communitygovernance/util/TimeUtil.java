@@ -23,18 +23,26 @@
  */
 package io.nuls.dapp.communitygovernance.util;
 
-import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDateTime;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author: PierreLuo
  * @date: 2019-08-16
  */
 public class TimeUtil {
+    private static final ZoneOffset ZONE = ZoneOffset.of("+8");
     private static final String PATTERN = "yyyyMMddHHmmss";
+    private static DateTimeFormatter df = DateTimeFormatter.ofPattern(PATTERN);
 
     public static Long now() {
-        LocalDateTime localDateTime = LocalDateTime.now(DateTimeZone.UTC).plusHours(8);
-        return Long.parseLong(localDateTime.toString(PATTERN));
+        LocalDateTime localDateTime = LocalDateTime.now(ZONE);
+        return Long.parseLong(localDateTime.format(df));
+    }
+
+    public static Long revertToTimeMillisUTC(Long now) {
+        LocalDateTime time = LocalDateTime.parse(now.toString(), df);
+        return time.toInstant(ZONE).toEpochMilli();
     }
 }

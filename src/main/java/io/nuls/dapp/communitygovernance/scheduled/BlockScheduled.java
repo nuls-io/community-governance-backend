@@ -42,31 +42,36 @@ public class BlockScheduled {
         initialLoad();
 
         Long localBlockHeight = blockSimpleService.getLocalBlockHeader().getHeight();
-        logger.info("每10秒检测区块高度,检测区块的高度变化 查询交易数据 height: {}", localBlockHeight);
-        Long height = blockServiceApi.getNewestBlockHeader().getHeight();
-        Long between = height - localBlockHeight;
-        logger.info("between {}", between);
-        SimpleBlockHeader simpleBlockHeader;
-        for (int i = 1; i <= between; i++) {
-            localBlockHeight = localBlockHeight + 1;
-            /**
-             * 同步并解析数据
-             *
-             */
-            try {
-                simpleBlockHeader = blockSyncService.syncBlock(localBlockHeight);
-                blockSimpleService.saveLocalBlockHeader(simpleBlockHeader);
-            } catch (Exception e) {
-                logger.error("syncHeight error ", e);
-                syncError.setError(true);
-                syncError.setErrorHeight(localBlockHeight);
-                break;
+        try {
+            logger.info("每10秒检测区块高度,检测区块的高度变化 查询交易数据 height: {}", localBlockHeight);
+            Long height = blockServiceApi.getNewestBlockHeader().getHeight();
+            Long between = height - localBlockHeight;
+            logger.info("between {}", between);
+            SimpleBlockHeader simpleBlockHeader;
+            for (int i = 1; i <= between; i++) {
+                localBlockHeight = localBlockHeight + 1;
+                /**
+                 * 同步并解析数据
+                 *
+                 */
+                try {
+                    simpleBlockHeader = blockSyncService.syncBlock(localBlockHeight);
+                    blockSimpleService.saveLocalBlockHeader(simpleBlockHeader);
+                } catch (Exception e) {
+                    logger.error("syncHeight error ", e);
+                    syncError.setError();
+                    syncError.setErrorHeight(localBlockHeight);
+                    break;
+                }
+                if(logger.isDebugEnabled()) {
+                    logger.debug("localBlockHeight {}", localBlockHeight);
+                }
             }
-            if(logger.isDebugEnabled()) {
-                logger.debug("localBlockHeight {}", localBlockHeight);
-            }
+        } catch (Exception e) {
+            logger.error("syncHeight error ", e);
+            syncError.setError();
+            syncError.setErrorHeight(localBlockHeight);
         }
-
     }
 
     private void initialLoad() {
