@@ -47,6 +47,25 @@ public class BlockServiceApi {
     }
 
     /**
+     * 获取最新高度
+     *
+     * @return
+     */
+    public Long getNewestBlockHeight() throws Exception {
+        RpcResult rpcResult = AppUtil.jsonRpcRequest("getLatestHeight", ListUtil.of(ServerContext.chainId));
+        if(rpcResult == null) {
+            logger.error("empty block about getting newest block height!!!");
+            throw new Exception("empty Block");
+        }
+        if(rpcResult.getError() != null) {
+            logger.error("error block about getting newest block height!!! - {[]}", rpcResult.getError().toString());
+            throw new Exception(rpcResult.getError().toString());
+        }
+        Long height = (Long) rpcResult.getResult();
+        return height;
+    }
+
+    /**
      * 根据高度获取区块
      *
      * @return
