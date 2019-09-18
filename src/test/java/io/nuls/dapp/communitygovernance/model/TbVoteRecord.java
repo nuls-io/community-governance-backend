@@ -11,7 +11,7 @@ public class TbVoteRecord {
 
     private String voter;
 
-    private BigDecimal count;
+    private BigDecimal amount;
 
     private Byte cancelType;
 
@@ -51,12 +51,12 @@ public class TbVoteRecord {
         this.voter = voter == null ? null : voter.trim();
     }
 
-    public BigDecimal getCount() {
-        return count;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setCount(BigDecimal count) {
-        this.count = count;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
     public Byte getCancelType() {

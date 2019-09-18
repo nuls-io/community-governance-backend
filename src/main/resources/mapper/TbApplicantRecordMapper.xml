@@ -5,7 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="applicant" jdbcType="VARCHAR" property="applicant" />
     <result column="voter" jdbcType="VARCHAR" property="voter" />
-    <result column="count" jdbcType="DECIMAL" property="count" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
@@ -69,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, applicant, voter, count, status, create_time, update_time
+    id, applicant, voter, amount, status, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbApplicantRecordParam" resultMap="BaseResultMap">
     select
@@ -105,10 +105,10 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_applicant_record (applicant, voter, count, 
+    insert into tb_applicant_record (applicant, voter, amount, 
       status, create_time, update_time
       )
-    values (#{applicant,jdbcType=VARCHAR}, #{voter,jdbcType=VARCHAR}, #{count,jdbcType=DECIMAL}, 
+    values (#{applicant,jdbcType=VARCHAR}, #{voter,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
       #{status,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}
       )
   </insert>
@@ -124,8 +124,8 @@
       <if test="voter != null">
         voter,
       </if>
-      <if test="count != null">
-        count,
+      <if test="amount != null">
+        amount,
       </if>
       <if test="status != null">
         status,
@@ -144,8 +144,8 @@
       <if test="voter != null">
         #{voter,jdbcType=VARCHAR},
       </if>
-      <if test="count != null">
-        #{count,jdbcType=DECIMAL},
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
@@ -176,8 +176,8 @@
       <if test="record.voter != null">
         voter = #{record.voter,jdbcType=VARCHAR},
       </if>
-      <if test="record.count != null">
-        count = #{record.count,jdbcType=DECIMAL},
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=DECIMAL},
       </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=TINYINT},
@@ -198,7 +198,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       applicant = #{record.applicant,jdbcType=VARCHAR},
       voter = #{record.voter,jdbcType=VARCHAR},
-      count = #{record.count,jdbcType=DECIMAL},
+      amount = #{record.amount,jdbcType=DECIMAL},
       status = #{record.status,jdbcType=TINYINT},
       create_time = #{record.createTime,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=BIGINT}
@@ -215,8 +215,8 @@
       <if test="voter != null">
         voter = #{voter,jdbcType=VARCHAR},
       </if>
-      <if test="count != null">
-        count = #{count,jdbcType=DECIMAL},
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=TINYINT},
@@ -234,7 +234,7 @@
     update tb_applicant_record
     set applicant = #{applicant,jdbcType=VARCHAR},
       voter = #{voter,jdbcType=VARCHAR},
-      count = #{count,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=DECIMAL},
       status = #{status,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=BIGINT}

@@ -27,13 +27,12 @@ import io.nuls.base.basic.AddressTool;
 import io.nuls.base.data.CoinData;
 import io.nuls.base.data.CoinFrom;
 import io.nuls.dapp.communitygovernance.config.ServerContext;
-import io.nuls.dapp.communitygovernance.mapper.TbApplicantMapper;
-import io.nuls.dapp.communitygovernance.mapper.TbApplicantRecordMapper;
-import io.nuls.dapp.communitygovernance.mapper.TbPlayerMapper;
-import io.nuls.dapp.communitygovernance.model.TbPlayer;
-import io.nuls.dapp.communitygovernance.model.TbPlayerParam;
+import io.nuls.dapp.communitygovernance.constant.Constant;
+import io.nuls.dapp.communitygovernance.mapper.*;
+import io.nuls.dapp.communitygovernance.model.*;
 import io.nuls.dapp.communitygovernance.service.IAccountBalanceProcessor;
 import io.nuls.dapp.communitygovernance.util.AppUtil;
+import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -56,6 +55,16 @@ public class CommunityGovernanceAccountProcessor implements IAccountBalanceProce
     private TbApplicantMapper tbApplicantMapper;
     @Resource
     private TbApplicantRecordMapper tbApplicantRecordMapper;
+    @Resource
+    private TbProposalMapper tbProposalMapper;
+    @Resource
+    private TbProposalVoteRecordMapper tbProposalVoteRecordMapper;
+    @Resource
+    private TbVoteMapper tbVoteMapper;
+    @Resource
+    private TbVoteItemMapper tbVoteItemMapper;
+    @Resource
+    private TbVoteRecordMapper tbVoteRecordMapper;
     @Override
     public void execute(int txType, CoinData coinData) {
         if (null == coinData) {
@@ -84,11 +93,45 @@ public class CommunityGovernanceAccountProcessor implements IAccountBalanceProce
                    continue;
                 }
                 BigDecimal amount = AppUtil.toNuls(coinFrom.getAmount());
+                long now = TimeUtil.now();
                 //理事会
                 tbApplicantMapper.updateAmountByVoter(address, amount);
+                TbApplicantRecord tbApplicantRecord = new TbApplicantRecord();
+                tbApplicantRecord.setAmount(amount);
+                tbApplicantRecord.setUpdateTime(now);
+                TbApplicantRecordParam tbApplicantRecordParam = new TbApplicantRecordParam();
+                tbApplicantRecordParam.createCriteria().andVoterEqualTo(address).andStatusEqualTo(Constant.YES);
+                tbApplicantRecordMapper.updateByExampleSelective(tbApplicantRecord, tbApplicantRecordParam);
+
                 //提案
+                TbProposalVoteRecordParam tbProposalVoteRecordParam = new TbProposalVoteRecordParam();
+                tbProposalVoteRecordParam.createCriteria().andVoterEqualTo(address);
+                List<TbProposalVoteRecord> tbProposalVoteRecordList = tbProposalVoteRecordMapper.selectByExample(tbProposalVoteRecordParam);
+                for(TbProposalVoteRecord tbProposalVoteRecord : tbProposalVoteRecordList){
+                    TbProposal tbProposal = tbProposalMapper.selectByPrimaryKey(tbProposalVoteRecord.getProposalId());
+                    switch (tbProposalVoteRecord.getResult()){
+                        case Constant.FAVOUR:
+                            tbProposal.setFavour(tbProposal.getFavour().subtract(amount));
+                        case Constant.AGAINST:
+                            tbProposal.setAgainst(tbProposal.getAgainst().subtract(amount));
+                        case Constant.ABSTENTION:
+                            tbProposal.setAbstention(tbProposal.getAbstention().subtract(amount));
+                    }
+                    tbProposal.setUpdateTime(now);
+                    tbProposalMapper.updateByPrimaryKeySelective(tbProposal);
+                }
+                TbProposalVoteRecord tbProposalVoteRecord = new TbProposalVoteRecord();
+                tbProposalVoteRecord.setAmount(amount);
+                tbProposalVoteRecord.setUpdateTime(now);
+                tbProposalVoteRecordMapper.updateByExampleSelective(tbProposalVoteRecord, tbProposalVoteRecordParam);
 
                 //普通投票
+                TbVoteRecord tbVoteRecord = new TbVoteRecord();
+                tbVoteRecord.setAmount(amount);
+                tbVoteRecord.setUpdateTime(now);
+                TbVoteRecordParam tbVoteRecordParam = new TbVoteRecordParam();
+                tbVoteRecordParam.createCriteria().andVoterEqualTo(address).andCancelTypeEqualTo(Constant.YES);
+
             }
         }
         if (!nonCoinTo) {

@@ -305,63 +305,63 @@ public class TbApplicantRecordParam {
             return (Criteria) this;
         }
 
-        public Criteria andCountIsNull() {
-            addCriterion("count is null");
+        public Criteria andAmountIsNull() {
+            addCriterion("amount is null");
             return (Criteria) this;
         }
 
-        public Criteria andCountIsNotNull() {
-            addCriterion("count is not null");
+        public Criteria andAmountIsNotNull() {
+            addCriterion("amount is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCountEqualTo(BigDecimal value) {
-            addCriterion("count =", value, "count");
+        public Criteria andAmountEqualTo(BigDecimal value) {
+            addCriterion("amount =", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andCountNotEqualTo(BigDecimal value) {
-            addCriterion("count <>", value, "count");
+        public Criteria andAmountNotEqualTo(BigDecimal value) {
+            addCriterion("amount <>", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andCountGreaterThan(BigDecimal value) {
-            addCriterion("count >", value, "count");
+        public Criteria andAmountGreaterThan(BigDecimal value) {
+            addCriterion("amount >", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andCountGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("count >=", value, "count");
+        public Criteria andAmountGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("amount >=", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andCountLessThan(BigDecimal value) {
-            addCriterion("count <", value, "count");
+        public Criteria andAmountLessThan(BigDecimal value) {
+            addCriterion("amount <", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andCountLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("count <=", value, "count");
+        public Criteria andAmountLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("amount <=", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andCountIn(List<BigDecimal> values) {
-            addCriterion("count in", values, "count");
+        public Criteria andAmountIn(List<BigDecimal> values) {
+            addCriterion("amount in", values, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andCountNotIn(List<BigDecimal> values) {
-            addCriterion("count not in", values, "count");
+        public Criteria andAmountNotIn(List<BigDecimal> values) {
+            addCriterion("amount not in", values, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andCountBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("count between", value1, value2, "count");
+        public Criteria andAmountBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("amount between", value1, value2, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andCountNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("count not between", value1, value2, "count");
+        public Criteria andAmountNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("amount not between", value1, value2, "amount");
             return (Criteria) this;
         }
 

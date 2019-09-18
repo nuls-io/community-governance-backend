@@ -74,7 +74,7 @@ public class ApplyEventProcessor implements IEventProcessor {
         tbApplicant.setDesc(applyEvent.getDesc());
         tbApplicant.setEmail(applyEvent.getEmail());
         tbApplicant.setDirector(Constant.NO);
-        tbApplicant.setCount(0);
+        tbApplicant.setCounts(0);
         tbApplicant.setAmount(BigDecimal.ZERO);
         tbApplicant.setStatus(Constant.VALID);
         long now = TimeUtil.now();

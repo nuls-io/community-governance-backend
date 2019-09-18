@@ -158,6 +158,7 @@ public class VoteEventProcessor implements IEventProcessor {
             tbVoteRecord.setVoteId(voteId);
             tbVoteRecord.setItemId(itemId);
             tbVoteRecord.setVoter(voteEvent.getVoterAddress());
+            tbVoteRecord.setAmount(number);
             tbVoteRecord.setCancelType(Constant.NO);
             tbVoteRecord.setCreateTime(now);
             tbVoteRecord.setUpdateTime(now);

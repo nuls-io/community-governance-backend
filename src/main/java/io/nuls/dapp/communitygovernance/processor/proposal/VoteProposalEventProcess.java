@@ -88,7 +88,7 @@ public class VoteProposalEventProcess implements IEventProcessor {
         tbProposalVoteRecord.setProposalId(voteProposalEvent.getId());
         tbProposalVoteRecord.setVoter(voteProposalEvent.getAddress());
         tbProposalVoteRecord.setResult((byte) voteProposalEvent.getResult());
-        tbProposalVoteRecord.setCount(number);
+        tbProposalVoteRecord.setAmount(number);
         long now = TimeUtil.now();
         tbProposalVoteRecord.setCreateTime(now);
         tbProposalVoteRecord.setUpdateTime(now);

@@ -6,7 +6,7 @@
     <result column="proposal_id" jdbcType="INTEGER" property="proposalId" />
     <result column="voter" jdbcType="VARCHAR" property="voter" />
     <result column="result" jdbcType="TINYINT" property="result" />
-    <result column="count" jdbcType="DECIMAL" property="count" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
   </resultMap>
@@ -69,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, proposal_id, voter, result, count, create_time, update_time
+    id, proposal_id, voter, result, amount, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbProposalVoteRecordParam" resultMap="BaseResultMap">
     select
@@ -106,10 +106,10 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_proposal_vote_record (proposal_id, voter, result, 
-      count, create_time, update_time
+      amount, create_time, update_time
       )
     values (#{proposalId,jdbcType=INTEGER}, #{voter,jdbcType=VARCHAR}, #{result,jdbcType=TINYINT}, 
-      #{count,jdbcType=DECIMAL}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}
+      #{amount,jdbcType=DECIMAL}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="io.nuls.dapp.communitygovernance.model.TbProposalVoteRecord">
@@ -127,8 +127,8 @@
       <if test="result != null">
         result,
       </if>
-      <if test="count != null">
-        count,
+      <if test="amount != null">
+        amount,
       </if>
       <if test="createTime != null">
         create_time,
@@ -147,8 +147,8 @@
       <if test="result != null">
         #{result,jdbcType=TINYINT},
       </if>
-      <if test="count != null">
-        #{count,jdbcType=DECIMAL},
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=BIGINT},
@@ -179,8 +179,8 @@
       <if test="record.result != null">
         result = #{record.result,jdbcType=TINYINT},
       </if>
-      <if test="record.count != null">
-        count = #{record.count,jdbcType=DECIMAL},
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=DECIMAL},
       </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=BIGINT},
@@ -199,7 +199,7 @@
       proposal_id = #{record.proposalId,jdbcType=INTEGER},
       voter = #{record.voter,jdbcType=VARCHAR},
       result = #{record.result,jdbcType=TINYINT},
-      count = #{record.count,jdbcType=DECIMAL},
+      amount = #{record.amount,jdbcType=DECIMAL},
       create_time = #{record.createTime,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=BIGINT}
     <if test="_parameter != null">
@@ -218,8 +218,8 @@
       <if test="result != null">
         result = #{result,jdbcType=TINYINT},
       </if>
-      <if test="count != null">
-        count = #{count,jdbcType=DECIMAL},
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=BIGINT},
@@ -235,7 +235,7 @@
     set proposal_id = #{proposalId,jdbcType=INTEGER},
       voter = #{voter,jdbcType=VARCHAR},
       result = #{result,jdbcType=TINYINT},
-      count = #{count,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=DECIMAL},
       create_time = #{createTime,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=INTEGER}

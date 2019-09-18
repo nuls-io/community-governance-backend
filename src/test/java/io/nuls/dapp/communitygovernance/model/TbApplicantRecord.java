@@ -9,7 +9,7 @@ public class TbApplicantRecord {
 
     private String voter;
 
-    private BigDecimal count;
+    private BigDecimal amount;
 
     private Byte status;
 
@@ -41,12 +41,12 @@ public class TbApplicantRecord {
         this.voter = voter == null ? null : voter.trim();
     }
 
-    public BigDecimal getCount() {
-        return count;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setCount(BigDecimal count) {
-        this.count = count;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
     public Byte getStatus() {

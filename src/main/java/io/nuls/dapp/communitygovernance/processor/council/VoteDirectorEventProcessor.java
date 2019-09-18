@@ -93,41 +93,43 @@ public class VoteDirectorEventProcessor implements IEventProcessor {
         TbApplicantRecordParam tbApplicantRecordParam = new TbApplicantRecordParam();
         tbApplicantRecordParam.createCriteria().andVoterEqualTo(voteDirectorEvent.getVoterAddress()).andStatusEqualTo(Constant.VALID);
         List<TbApplicantRecord> tbApplicantRecords = tbApplicantRecordMapper.selectByExample(tbApplicantRecordParam);
-        //统计本次投票后，失效的投票记录
-        List<String> delList = new ArrayList<>();
-        for(TbApplicantRecord tbApplicantRecord : tbApplicantRecords){
-            boolean exist = false;
-            for(String applicant : voteDirectorEvent.getApplicantAddress()){
-                if(applicant.equals(tbApplicantRecord.getApplicant())){
-                    exist = true;
-                    break;
+        if(!tbApplicantRecords.isEmpty()) {
+            //统计本次投票后，失效的投票记录
+            List<String> delList = new ArrayList<>();
+            for (TbApplicantRecord tbApplicantRecord : tbApplicantRecords) {
+                boolean exist = false;
+                for (String applicant : voteDirectorEvent.getApplicantAddress()) {
+                    if (applicant.equals(tbApplicantRecord.getApplicant())) {
+                        exist = true;
+                        break;
+                    }
+                }
+                if (!exist) {
+                    //记录需要失效的id,该申请者本次没有被投票者投票,需要解除之前的投票记录
+                    delList.add(tbApplicantRecord.getApplicant());
                 }
             }
-            if(!exist){
-                //记录需要失效的id,该申请者本次没有被投票者投票,需要解除之前的投票记录
-                delList.add(tbApplicantRecord.getApplicant());
+
+            //从投票记录中记为失效
+            TbApplicantRecordParam arParam = new TbApplicantRecordParam();
+            arParam.createCriteria().andApplicantIn(delList).andStatusEqualTo(Constant.VALID);
+            TbApplicantRecord ar = new TbApplicantRecord();
+            ar.setStatus(Constant.INVALID);
+            ar.setUpdateTime(TimeUtil.now());
+            tbApplicantRecordMapper.updateByExampleSelective(ar, arParam);
+
+            //从申请者总票数中减去对应的票数
+            TbApplicantParam tbApplicantParam = new TbApplicantParam();
+            tbApplicantParam.createCriteria().andAddressIn(delList).andStatusEqualTo(Constant.VALID);
+            List<TbApplicant> tbApplicantDecreaseList = tbApplicantMapper.selectByExample(tbApplicantParam);
+            for (TbApplicant tbApplicant : tbApplicantDecreaseList) {
+                BigDecimal current = tbApplicant.getAmount().subtract(number);
+                BigDecimal surplus = current.compareTo(BigDecimal.ZERO) > 0 ? current : BigDecimal.ZERO;
+                tbApplicant.setAmount(surplus);
+                tbApplicant.setCounts(tbApplicant.getCounts() - 1);
+                tbApplicant.setUpdateTime(TimeUtil.now());
+                tbApplicantMapper.updateByExampleSelective(tbApplicant, tbApplicantParam);
             }
-        }
-
-        //从投票记录中记为失效
-        TbApplicantRecordParam arParam = new TbApplicantRecordParam();
-        arParam.createCriteria().andApplicantIn(delList).andStatusEqualTo(Constant.VALID);
-        TbApplicantRecord ar = new TbApplicantRecord();
-        ar.setStatus(Constant.INVALID);
-        ar.setUpdateTime(TimeUtil.now());
-        tbApplicantRecordMapper.updateByExampleSelective(ar, arParam);
-
-        //从申请者总票数中减去对应的票数
-        TbApplicantParam tbApplicantParam = new TbApplicantParam();
-        tbApplicantParam.createCriteria().andAddressIn(delList).andStatusEqualTo(Constant.VALID);
-        List<TbApplicant> tbApplicantDecreaseList = tbApplicantMapper.selectByExample(tbApplicantParam);
-        for(TbApplicant tbApplicant : tbApplicantDecreaseList){
-            BigDecimal current = tbApplicant.getAmount().subtract(number);
-            BigDecimal surplus = current.compareTo(BigDecimal.ZERO) > 0 ? current : BigDecimal.ZERO;
-            tbApplicant.setAmount(surplus);
-            tbApplicant.setCount(tbApplicant.getCount() - 1);
-            tbApplicant.setUpdateTime(TimeUtil.now());
-            tbApplicantMapper.updateByExampleSelective(tbApplicant, tbApplicantParam);
         }
 
         //统计新增的投票记录
@@ -147,6 +149,7 @@ public class VoteDirectorEventProcessor implements IEventProcessor {
                 long now = TimeUtil.now();
                 record.setStatus(Constant.VALID);
                 record.setCreateTime(now);
+                record.setAmount(number);
                 record.setUpdateTime(now);
                 tbApplicantRecordMapper.insert(record);
             }
@@ -162,9 +165,9 @@ public class VoteDirectorEventProcessor implements IEventProcessor {
             tbApplicant.setUpdateTime(TimeUtil.now());
             //如果是投票者本次新增的被投票者，则为被投票者计算投票人总数
             if(!newSet.contains(tbApplicant.getAddress())){
-                tbApplicant.setCount(tbApplicant.getCount() + 1);
+                tbApplicant.setCounts(tbApplicant.getCounts() + 1);
             }
-            tbApplicantMapper.updateByExampleSelective(tbApplicant, tbApplicantParam);
+            tbApplicantMapper.updateByExampleSelective(tbApplicant, tbApplicantParamNew);
         }
 
         //记录新投票参与者

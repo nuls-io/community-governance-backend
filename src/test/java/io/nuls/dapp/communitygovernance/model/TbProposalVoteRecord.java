@@ -11,7 +11,7 @@ public class TbProposalVoteRecord {
 
     private Byte result;
 
-    private BigDecimal count;
+    private BigDecimal amount;
 
     private Long createTime;
 
@@ -49,12 +49,12 @@ public class TbProposalVoteRecord {
         this.result = result;
     }
 
-    public BigDecimal getCount() {
-        return count;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setCount(BigDecimal count) {
-        this.count = count;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
     public Long getCreateTime() {

@@ -2,14 +2,16 @@ package io.nuls.dapp.communitygovernance.model;
 
 import java.math.BigDecimal;
 
-public class TbProposalVoteRecord {
+public class TbVoteItem {
     private Integer id;
 
-    private Integer proposalId;
+    private Long voteId;
 
-    private String voter;
+    private Long itemId;
 
-    private Byte result;
+    private String content;
+
+    private Integer counts;
 
     private BigDecimal amount;
 
@@ -25,28 +27,36 @@ public class TbProposalVoteRecord {
         this.id = id;
     }
 
-    public Integer getProposalId() {
-        return proposalId;
+    public Long getVoteId() {
+        return voteId;
     }
 
-    public void setProposalId(Integer proposalId) {
-        this.proposalId = proposalId;
+    public void setVoteId(Long voteId) {
+        this.voteId = voteId;
     }
 
-    public String getVoter() {
-        return voter;
+    public Long getItemId() {
+        return itemId;
     }
 
-    public void setVoter(String voter) {
-        this.voter = voter == null ? null : voter.trim();
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
-    public Byte getResult() {
-        return result;
+    public String getContent() {
+        return content;
     }
 
-    public void setResult(Byte result) {
-        this.result = result;
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
+
+    public Integer getCounts() {
+        return counts;
+    }
+
+    public void setCounts(Integer counts) {
+        this.counts = counts;
     }
 
     public BigDecimal getAmount() {

@@ -6,7 +6,7 @@
     <result column="vote_id" jdbcType="BIGINT" property="voteId" />
     <result column="item_id" jdbcType="BIGINT" property="itemId" />
     <result column="voter" jdbcType="VARCHAR" property="voter" />
-    <result column="count" jdbcType="DECIMAL" property="count" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
     <result column="cancel_type" jdbcType="TINYINT" property="cancelType" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
@@ -70,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, vote_id, item_id, voter, count, cancel_type, create_time, update_time
+    id, vote_id, item_id, voter, amount, cancel_type, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteRecordParam" resultMap="BaseResultMap">
     select
@@ -107,10 +107,10 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_vote_record (vote_id, item_id, voter, 
-      count, cancel_type, create_time, 
+      amount, cancel_type, create_time, 
       update_time)
     values (#{voteId,jdbcType=BIGINT}, #{itemId,jdbcType=BIGINT}, #{voter,jdbcType=VARCHAR}, 
-      #{count,jdbcType=DECIMAL}, #{cancelType,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, 
+      #{amount,jdbcType=DECIMAL}, #{cancelType,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, 
       #{updateTime,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteRecord">
@@ -128,8 +128,8 @@
       <if test="voter != null">
         voter,
       </if>
-      <if test="count != null">
-        count,
+      <if test="amount != null">
+        amount,
       </if>
       <if test="cancelType != null">
         cancel_type,
@@ -151,8 +151,8 @@
       <if test="voter != null">
         #{voter,jdbcType=VARCHAR},
       </if>
-      <if test="count != null">
-        #{count,jdbcType=DECIMAL},
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
       </if>
       <if test="cancelType != null">
         #{cancelType,jdbcType=TINYINT},
@@ -186,8 +186,8 @@
       <if test="record.voter != null">
         voter = #{record.voter,jdbcType=VARCHAR},
       </if>
-      <if test="record.count != null">
-        count = #{record.count,jdbcType=DECIMAL},
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=DECIMAL},
       </if>
       <if test="record.cancelType != null">
         cancel_type = #{record.cancelType,jdbcType=TINYINT},
@@ -209,7 +209,7 @@
       vote_id = #{record.voteId,jdbcType=BIGINT},
       item_id = #{record.itemId,jdbcType=BIGINT},
       voter = #{record.voter,jdbcType=VARCHAR},
-      count = #{record.count,jdbcType=DECIMAL},
+      amount = #{record.amount,jdbcType=DECIMAL},
       cancel_type = #{record.cancelType,jdbcType=TINYINT},
       create_time = #{record.createTime,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=BIGINT}
@@ -229,8 +229,8 @@
       <if test="voter != null">
         voter = #{voter,jdbcType=VARCHAR},
       </if>
-      <if test="count != null">
-        count = #{count,jdbcType=DECIMAL},
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
       </if>
       <if test="cancelType != null">
         cancel_type = #{cancelType,jdbcType=TINYINT},
@@ -249,7 +249,7 @@
     set vote_id = #{voteId,jdbcType=BIGINT},
       item_id = #{itemId,jdbcType=BIGINT},
       voter = #{voter,jdbcType=VARCHAR},
-      count = #{count,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=DECIMAL},
       cancel_type = #{cancelType,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=BIGINT}
