@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `tb_player` (
 CREATE TABLE IF NOT EXISTS `tb_proposal` (
   `proposal_id` int(11) NOT NULL COMMENT '合约提案id',
   `name` varchar(255) NOT NULL COMMENT '提案名称',
-  `type` tinyint(4) NOT NULL COMMENT '提案类型 1;角色, 2:系统参数, 3:社区基金, 4:其他',
+  `type` tinyint(4) NOT NULL COMMENT '提案类型 1:角色, 2:系统参数, 3:社区基金, 4:其他',
   `desc` text NOT NULL COMMENT '提案简介',
   `email` varchar(255) NOT NULL COMMENT '邮箱',
   `owner` varchar(40) NOT NULL COMMENT '提案发起人地址',

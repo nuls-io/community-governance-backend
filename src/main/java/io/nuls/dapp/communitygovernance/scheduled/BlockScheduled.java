@@ -44,7 +44,7 @@ public class BlockScheduled {
         Long localBlockHeight = blockSimpleService.getLocalBlockHeader().getHeight();
         try {
             logger.info("每10秒检测区块高度,检测区块的高度变化 查询交易数据 height: {}", localBlockHeight);
-            Long height = blockServiceApi.getNewestBlockHeader().getHeight();
+            Long height = blockServiceApi.getNewestBlockHeight();
             Long between = height - localBlockHeight;
             logger.info("between {}", between);
             SimpleBlockHeader simpleBlockHeader;
