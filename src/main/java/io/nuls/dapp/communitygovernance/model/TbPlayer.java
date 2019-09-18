@@ -17,4 +17,9 @@ public class TbPlayer {
     public void setAddress(String address) {
         this.address = address == null ? null : address.trim();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.address.equals(((TbPlayer)obj).getAddress());
+    }
 }

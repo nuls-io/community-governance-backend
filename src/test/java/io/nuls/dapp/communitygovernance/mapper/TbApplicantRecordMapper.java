@@ -2,9 +2,8 @@ package io.nuls.dapp.communitygovernance.mapper;
 
 import io.nuls.dapp.communitygovernance.model.TbApplicantRecord;
 import io.nuls.dapp.communitygovernance.model.TbApplicantRecordParam;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface TbApplicantRecordMapper {
     long countByExample(TbApplicantRecordParam example);

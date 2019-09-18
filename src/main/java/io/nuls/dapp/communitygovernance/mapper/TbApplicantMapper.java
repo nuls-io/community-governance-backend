@@ -4,6 +4,7 @@ import io.nuls.dapp.communitygovernance.model.TbApplicant;
 import io.nuls.dapp.communitygovernance.model.TbApplicantParam;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface TbApplicantMapper {
@@ -34,4 +35,10 @@ public interface TbApplicantMapper {
     int updateByPrimaryKeyWithBLOBs(TbApplicant record);
 
     int updateByPrimaryKey(TbApplicant record);
+
+    List<TbApplicant> selectByVoter(@Param("voter") String voter);
+
+    int updateAmountByVoter(@Param("voter") String voter, @Param("amount") BigDecimal amount);
+
+
 }

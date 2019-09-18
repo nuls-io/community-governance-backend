@@ -337,4 +337,16 @@
       update_time = #{updateTime,jdbcType=BIGINT}
     where address = #{address,jdbcType=VARCHAR}
   </update>
+  <update id="updateAmountByVoter">
+     update tb_applicant a, tb_applicant_record r
+        set a.amount = a.amount - #{amount,jdbcType=DECIMAL}
+        where a.address = r.applicant and r.status = 1 and a.status = 1 and r.voter = #{voter,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectByVoter" parameterType="java.lang.String"  resultMap="BaseResultMap">
+    select a.address, a.desc, a.type, a.director, a.email, a.count, a.amount, a.status, a.create_time, a.update_time
+    from tb_applicant a, tb_applicant_record r
+    where a.address = r.applicant and r.status = 1 and a.status = 1
+    and r.voter = #{voter,jdbcType=VARCHAR}
+  </select>
 </mapper>
