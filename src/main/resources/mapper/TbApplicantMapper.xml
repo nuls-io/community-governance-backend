@@ -337,9 +337,20 @@
       update_time = #{updateTime,jdbcType=BIGINT}
     where address = #{address,jdbcType=VARCHAR}
   </update>
-  <update id="updateAmountByVoter">
+  <update id="updateSubtractAmountByVoter">
      update tb_applicant a, tb_applicant_record r
-        set a.amount = a.amount - #{amount,jdbcType=DECIMAL}
+        set a.amount = a.amount - #{amount,jdbcType=DECIMAL},
+            a.update_time = #{now, jdbcType=BIGINT},
+            r.amount = r.amount - #{amount,jdbcType=DECIMAL},
+            r.update_time = #{now, jdbcType=BIGINT}
+        where a.address = r.applicant and r.status = 1 and a.status = 1 and r.voter = #{voter,jdbcType=VARCHAR}
+  </update>
+  <update id="updateAddAmountByVoter">
+     update tb_applicant a, tb_applicant_record r
+        set a.amount = a.amount + #{amount,jdbcType=DECIMAL},
+            a.update_time = #{now, jdbcType=BIGINT},
+            r.amount = r.amount + #{amount,jdbcType=DECIMAL},
+            r.update_time = #{now, jdbcType=BIGINT}
         where a.address = r.applicant and r.status = 1 and a.status = 1 and r.voter = #{voter,jdbcType=VARCHAR}
   </update>
 
