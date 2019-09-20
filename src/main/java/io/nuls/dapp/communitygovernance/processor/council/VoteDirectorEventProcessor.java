@@ -29,6 +29,7 @@ import io.nuls.core.basic.Result;
 import io.nuls.dapp.communitygovernance.config.ServerContext;
 import io.nuls.dapp.communitygovernance.constant.Constant;
 import io.nuls.dapp.communitygovernance.event.council.VoteDirectorEvent;
+import io.nuls.dapp.communitygovernance.mapper.TbAliasMapper;
 import io.nuls.dapp.communitygovernance.mapper.TbApplicantMapper;
 import io.nuls.dapp.communitygovernance.mapper.TbApplicantRecordMapper;
 import io.nuls.dapp.communitygovernance.mapper.TbPlayerMapper;
@@ -60,6 +61,8 @@ public class VoteDirectorEventProcessor implements IEventProcessor {
     private TbApplicantRecordMapper tbApplicantRecordMapper;
     @Resource
     private TbPlayerMapper tbPlayerMapper;
+    @Resource
+    private TbAliasMapper tbAliasMapper;
     @Value("${app.contract.address}")
     private String contractAddress;
 
@@ -175,6 +178,12 @@ public class VoteDirectorEventProcessor implements IEventProcessor {
         tbPlayerParam.createCriteria().andAddressEqualTo(voterAddress);
         if(tbPlayerMapper.countByExample(tbPlayerParam) == 0L){
             tbPlayerMapper.insert(new TbPlayer(voterAddress));
+        }
+        
+        TbAliasParam tbAliasParam = new TbAliasParam();
+        tbAliasParam.createCriteria().andAddressEqualTo(voterAddress);
+        if(tbAliasMapper.countByExample(tbAliasParam) == 0L) {
+            tbAliasMapper.insert(new TbAlias(voterAddress, "alias"));
         }
 
         logger.debug("VoteDirectorEvent success height:{}", eventJson.getBlockNumber());

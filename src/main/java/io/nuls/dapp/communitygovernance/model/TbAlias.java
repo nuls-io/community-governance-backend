@@ -5,6 +5,14 @@ public class TbAlias {
 
     private String alias;
 
+    public TbAlias() {
+    }
+
+    public TbAlias(String address, String alias) {
+        this.address = address;
+        this.alias = alias;
+    }
+
     public String getAddress() {
         return address;
     }
