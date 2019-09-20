@@ -23,6 +23,8 @@
  */
 package io.nuls.dapp.communitygovernance.constant;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author Niels
@@ -64,7 +66,7 @@ public interface Constant {
     /** 审核通过*/
     byte AUDIT_YES = 1;
 
-
+    //提案
     /** 审核中*/
     byte INREVIEW = 1;
     /** 审核拒绝*/
@@ -75,13 +77,16 @@ public interface Constant {
     byte ADOPTED = 4;
     /** 未通过*/
     byte REJECTED = 5;
+    /** 提案通过需要的支持率阈值*/
+    BigDecimal ADOPTED_THRESHOLD = new BigDecimal("0.7");
 
+    //普通投票
     /** 投票待确认*/
-    int STATUS_WAIT_INIT = 0;
+    byte STATUS_WAIT_INIT = 0;
     /** 投票未开始*/
-    int STATUS_WAIT_VOTE = 1;
+    byte STATUS_WAIT_VOTE = 1;
     /** 投票中*/
-    int STATUS_VOTEING = 2;
+    byte STATUS_VOTEING = 2;
     /** 投票已结束*/
-    int STATUS_CLOSE = 3;
+    byte STATUS_CLOSE = 3;
 }
