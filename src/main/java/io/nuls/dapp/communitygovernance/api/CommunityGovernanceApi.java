@@ -272,7 +272,7 @@ public class CommunityGovernanceApi {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @PostMapping("/voter/record/list")
-    @ApiOperation(description = "查询我的投票记录列表",order = 401)
+    @ApiOperation(description = "查询我的投票记录列表",order = 501)
     @Parameters({
             @Parameter(parameterName = "查询我的投票记录列表", parameterDes = "查询我的投票记录列表表单", requestType = @TypeDescriptor(value = VoterSearch.class))
     })

@@ -25,6 +25,7 @@ package io.nuls.dapp.communitygovernance.model.dto;
 
 import io.nuls.core.rpc.model.ApiModel;
 import io.nuls.core.rpc.model.ApiModelProperty;
+import io.nuls.core.rpc.model.TypeDescriptor;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -50,7 +51,6 @@ public class VoteDetailDto extends VoteDto{
     private String deposit;
     @ApiModelProperty(description = "关联的提案")
     private ProposalShortDto proposal;
-    @ApiModelProperty(description = "选项列表")
+    @ApiModelProperty(description = "选项列表", type = @TypeDescriptor(value = List.class, collectionElement = VoteItemDto.class))
     private List<VoteItemDto> itemList;
-    //TODO pierre 投票详情 多选 单选 是否允许更改投票....
 }

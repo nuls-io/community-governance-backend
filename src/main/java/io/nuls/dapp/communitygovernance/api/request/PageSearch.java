@@ -24,6 +24,7 @@
 package io.nuls.dapp.communitygovernance.api.request;
 
 import io.nuls.core.rpc.model.ApiModel;
+import io.nuls.core.rpc.model.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
@@ -36,9 +37,11 @@ import javax.validation.constraints.Min;
 @ApiModel
 public class PageSearch {
 
+    @ApiModelProperty(description = "当前页")
     @Min(value = 1)
-    private Integer page = 1;//当前页
+    private Integer page = 1;
 
+    @ApiModelProperty(description = "分页大小")
     @Min(value = 1)
-    private Integer pageSize = 11;//分页大小
+    private Integer pageSize = 11;
 }

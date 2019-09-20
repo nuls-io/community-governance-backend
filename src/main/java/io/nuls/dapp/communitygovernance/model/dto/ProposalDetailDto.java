@@ -25,6 +25,7 @@ package io.nuls.dapp.communitygovernance.model.dto;
 
 import io.nuls.core.rpc.model.ApiModel;
 import io.nuls.core.rpc.model.ApiModelProperty;
+import io.nuls.core.rpc.model.TypeDescriptor;
 import lombok.Data;
 
 import java.util.List;
@@ -36,7 +37,7 @@ import java.util.List;
 @Data
 @ApiModel
 public class ProposalDetailDto extends ProposalDto{
-    @ApiModelProperty(description = "关联的普通投票列表")
+    @ApiModelProperty(description = "关联的普通投票列表", type = @TypeDescriptor(value = List.class, collectionElement = OrdinaryVoteDto.class))
     private List<OrdinaryVoteDto> ordinaryVoteDtoList;
     @ApiModelProperty(description = "同意选项")
     private VoteItemDto favour;
