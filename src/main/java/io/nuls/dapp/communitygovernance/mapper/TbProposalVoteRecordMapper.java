@@ -2,10 +2,12 @@ package io.nuls.dapp.communitygovernance.mapper;
 
 import io.nuls.dapp.communitygovernance.model.TbProposalVoteRecord;
 import io.nuls.dapp.communitygovernance.model.TbProposalVoteRecordParam;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface TbProposalVoteRecordMapper {
     long countByExample(TbProposalVoteRecordParam example);
 

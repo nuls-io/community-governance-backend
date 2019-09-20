@@ -2,10 +2,12 @@ package io.nuls.dapp.communitygovernance.mapper;
 
 import io.nuls.dapp.communitygovernance.model.TbProposalAudit;
 import io.nuls.dapp.communitygovernance.model.TbProposalAuditParam;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface TbProposalAuditMapper {
     long countByExample(TbProposalAuditParam example);
 

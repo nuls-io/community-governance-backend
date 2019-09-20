@@ -116,27 +116,30 @@
     </if>
   </delete>
   <insert id="insert" parameterType="io.nuls.dapp.communitygovernance.model.TbVote">
-    insert into tb_vote (id, contract_address, contract_vote_id, 
-      title, description, has_multiple_select, 
-      min_select_count, max_select_count, vote_can_modify, 
-      start_time, end_time, deposit, 
-      status, counts, amount, 
-      block_height, creator, create_time, 
-      update_time)
-    values (#{id,jdbcType=INTEGER}, #{contractAddress,jdbcType=VARCHAR}, #{contractVoteId,jdbcType=BIGINT}, 
-      #{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{hasMultipleSelect,jdbcType=TINYINT}, 
-      #{minSelectCount,jdbcType=TINYINT}, #{maxSelectCount,jdbcType=TINYINT}, #{voteCanModify,jdbcType=TINYINT}, 
-      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{deposit,jdbcType=BIGINT}, 
-      #{status,jdbcType=TINYINT}, #{counts,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, 
-      #{blockHeight,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
-      #{updateTime,jdbcType=BIGINT})
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_vote (contract_address, contract_vote_id, title, 
+      description, has_multiple_select, min_select_count, 
+      max_select_count, vote_can_modify, start_time, 
+      end_time, deposit, status, 
+      counts, amount, block_height, 
+      creator, create_time, update_time
+      )
+    values (#{contractAddress,jdbcType=VARCHAR}, #{contractVoteId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{hasMultipleSelect,jdbcType=TINYINT}, #{minSelectCount,jdbcType=TINYINT}, 
+      #{maxSelectCount,jdbcType=TINYINT}, #{voteCanModify,jdbcType=TINYINT}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{deposit,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
+      #{counts,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{blockHeight,jdbcType=BIGINT}, 
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="io.nuls.dapp.communitygovernance.model.TbVote">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into tb_vote
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="contractAddress != null">
         contract_address,
       </if>
@@ -193,9 +196,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="contractAddress != null">
         #{contractAddress,jdbcType=VARCHAR},
       </if>

@@ -134,7 +134,7 @@ public class CommunityGovernanceAccountProcessor implements IAccountBalanceProce
     /**
      * 处理提案票数更新
      *
-     * @param add     true  处理coinTo 加票, false 处理coinFrom 减票
+     * @param add  true  处理coinTo 加票, false 处理coinFrom 减票
      * @param address
      * @param amount
      * @param now
@@ -171,7 +171,7 @@ public class CommunityGovernanceAccountProcessor implements IAccountBalanceProce
     /**
      * 处理普通投票
      *
-     * @param add
+     * @param add  true  处理coinTo 加票, false 处理coinFrom 减票
      * @param address
      * @param amount
      * @param now

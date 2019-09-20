@@ -2,11 +2,13 @@ package io.nuls.dapp.communitygovernance.mapper;
 
 import io.nuls.dapp.communitygovernance.model.TbApplicant;
 import io.nuls.dapp.communitygovernance.model.TbApplicantParam;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Mapper
 public interface TbApplicantMapper {
     long countByExample(TbApplicantParam example);
 

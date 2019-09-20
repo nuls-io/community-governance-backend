@@ -3,10 +3,12 @@ package io.nuls.dapp.communitygovernance.mapper;
 import io.nuls.dapp.communitygovernance.model.TbProposal;
 import io.nuls.dapp.communitygovernance.model.TbProposalParam;
 import io.nuls.dapp.communitygovernance.model.proposal.ProposalAmountPO;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface TbProposalMapper {
     long countByExample(TbProposalParam example);
 
