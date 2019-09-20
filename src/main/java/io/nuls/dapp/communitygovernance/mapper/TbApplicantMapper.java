@@ -38,5 +38,7 @@ public interface TbApplicantMapper {
 
     List<TbApplicant> selectByVoter(@Param("voter") String voter);
 
-    int updateAmountByVoter(@Param("voter") String voter, @Param("amount") BigDecimal amount);
+    int updateSubtractAmountByVoter(@Param("voter") String voter, @Param("amount") BigDecimal amount, @Param("now") long now);
+
+    int updateAddAmountByVoter(@Param("voter") String voter, @Param("amount") BigDecimal amount, @Param("now") long now);
 }

@@ -2,6 +2,7 @@ package io.nuls.dapp.communitygovernance.mapper;
 
 import io.nuls.dapp.communitygovernance.model.TbProposal;
 import io.nuls.dapp.communitygovernance.model.TbProposalParam;
+import io.nuls.dapp.communitygovernance.model.proposal.ProposalAmountPO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -34,4 +35,6 @@ public interface TbProposalMapper {
     int updateByPrimaryKeyWithBLOBs(TbProposal record);
 
     int updateByPrimaryKey(TbProposal record);
+
+    List<ProposalAmountPO> selectVotingByVoter(@Param("voter") String voter);
 }

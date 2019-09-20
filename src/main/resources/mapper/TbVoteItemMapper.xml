@@ -255,10 +255,23 @@
       update_time = #{updateTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateAmountByVoter">
-     update tb_vote_item v, tb_vote_record r
-	    set r.amount =  #{amount,jdbcType=DECIMAL}, v.amount = v.amount - #{amount,jdbcType=DECIMAL}
-	    where v.vote_id = r.vote_id and v.item_id = r.item_id and r.cancel_type = 0
+  <update id="updateSubtractAmountByVoter">
+     update tb_vote_item v, tb_vote_record r, tb_vote t
+	    set r.amount = r.amount - #{amount,jdbcType=DECIMAL},
+	        r.update_time = #{now,jdbcType=BIGINT},
+	        v.amount = v.amount - #{amount,jdbcType=DECIMAL},
+	        v.update_time = #{now,jdbcType=BIGINT}
+	    where v.vote_id = r.vote_id and t.contract_vote_id = r.vote_id and v.item_id = r.item_id and r.cancel_type = 0 and t.status = 3
+	    and r.voter = #{voter,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateAddAmountByVoter">
+     update tb_vote_item v, tb_vote_record r, tb_vote t
+	    set r.amount = r.amount + #{amount,jdbcType=DECIMAL},
+	        r.update_time = #{now,jdbcType=BIGINT},
+	        v.amount = v.amount + #{amount,jdbcType=DECIMAL},
+	        v.update_time = #{now,jdbcType=BIGINT}
+	    where v.vote_id = r.vote_id and t.contract_vote_id = r.vote_id and v.item_id = r.item_id and r.cancel_type = 0 and t.status = 3
 	    and r.voter = #{voter,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -444,4 +444,10 @@
       update_time = #{updateTime,jdbcType=BIGINT}
     where proposal_id = #{proposalId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectVotingByVoter" parameterType="java.lang.String" resultType="io.nuls.dapp.communitygovernance.model.proposal.ProposalAmountPO">
+    select p.proposal_id, p.favour, p.`against`, p.abstention, r.id, r.amount, r.result
+    from tb_proposal p, tb_proposal_vote_record r
+    where p.proposal_id=r.proposal_id and p.`status`= 3 and r.voter = #{voter,jdbcType=VARCHAR}
+  </select>
 </mapper>

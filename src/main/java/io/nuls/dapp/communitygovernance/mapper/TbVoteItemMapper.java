@@ -30,5 +30,7 @@ public interface TbVoteItemMapper {
 
     int updateByPrimaryKey(TbVoteItem record);
 
-    int updateCountByVoter(@Param("voter") String voter, @Param("amount") BigDecimal amount);
+    int updateSubtractAmountByVoter(@Param("voter") String voter, @Param("amount") BigDecimal amount, @Param("now") long now);
+
+    int updateAddAmountByVoter(@Param("voter") String voter, @Param("amount") BigDecimal amount, @Param("now") long now);
 }
