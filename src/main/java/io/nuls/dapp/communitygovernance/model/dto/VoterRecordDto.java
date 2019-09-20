@@ -35,7 +35,7 @@ import lombok.Data;
 @ApiModel
 public class VoterRecordDto {
 
-    @ApiModelProperty(description = "类型 0:全部, 1:理事会, 2:提案, 3:普通投票")
+    @ApiModelProperty(description = "类型 1:理事会, 2:提案, 3:普通投票")
     private Byte type;
     @ApiModelProperty(description = "标题")
     private String title;
