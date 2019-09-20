@@ -27,30 +27,20 @@ import io.nuls.core.rpc.model.ApiModel;
 import io.nuls.core.rpc.model.ApiModelProperty;
 import lombok.Data;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 /**
  * @author: PierreLuo
- * @date: 2019-09-18
+ * @date: 2019-09-20
  */
 @Data
 @ApiModel
-public class VoteDetailDto extends VoteDto{
+public class VoterRecordDto {
 
-    @ApiModelProperty(description = "单选或者是多选")
-    private Boolean hasMultipleSelect;
-    @ApiModelProperty(description = "至少可选几个选项")
-    private Integer minSelectCount;
-    @ApiModelProperty(description = "最多可选几个选项")
-    private Integer maxSelectCount;
-    @ApiModelProperty(description = "投票后是否允许改票")
-    private Boolean voteCanModify;
-    @ApiModelProperty(description = "保证金(押金)")
-    private String deposit;
-    @ApiModelProperty(description = "关联的提案")
-    private ProposalShortDto proposal;
-    @ApiModelProperty(description = "选项列表")
-    private List<VoteItemDto> itemList;
-    //TODO pierre 投票详情 多选 单选 是否允许更改投票....
+    @ApiModelProperty(description = "类型 0:全部, 1:理事会, 2:提案, 3:普通投票")
+    private Byte type;
+    @ApiModelProperty(description = "标题")
+    private String title;
+    @ApiModelProperty(description = "投票数")
+    private String votesNumber;
+    @ApiModelProperty(description = "投票时间")
+    private long voteTime;
 }

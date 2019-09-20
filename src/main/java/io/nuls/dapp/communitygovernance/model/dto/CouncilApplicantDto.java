@@ -35,6 +35,8 @@ import lombok.Data;
 @ApiModel
 public class CouncilApplicantDto {
 
+    @ApiModelProperty(description = "头像URL")
+    private String logoUrl;
     @ApiModelProperty(description = "理事申请人地址")
     private String address;
     @ApiModelProperty(description = "理事申请人名称")

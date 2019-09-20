@@ -37,6 +37,7 @@ public class ProposalDto {
 
     @ApiModelProperty(description = "提案ID")
     private Integer proposalId;
+    //TODO pierre 没有LOGO
     @ApiModelProperty(description = "提案图标URL")
     private String logoUrl;
     @ApiModelProperty(description = "提案标题")
@@ -47,8 +48,10 @@ public class ProposalDto {
     private String address;
     @ApiModelProperty(description = "提案类型")
     private String type;
-    @ApiModelProperty(description = "提案状态")
+    @ApiModelProperty(description = "提案状态 0待确认 1未开始，2进行中，3 暂停挂起 4 已结束")
     private String status;
+    @ApiModelProperty(description = "提案开始时间")
+    private long startTime;
     @ApiModelProperty(description = "提案结束时间")
     private long endTime;
 }
