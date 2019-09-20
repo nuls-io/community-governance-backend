@@ -19,6 +19,7 @@
     <result column="amount" jdbcType="DECIMAL" property="amount" />
     <result column="block_height" jdbcType="BIGINT" property="blockHeight" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="refund" jdbcType="TINYINT" property="refund" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="update_time" jdbcType="BIGINT" property="updateTime" />
   </resultMap>
@@ -83,7 +84,7 @@
   <sql id="Base_Column_List">
     id, contract_address, contract_vote_id, title, description, has_multiple_select, 
     min_select_count, max_select_count, vote_can_modify, start_time, end_time, deposit, 
-    status, counts, amount, block_height, creator, create_time, update_time
+    status, counts, amount, block_height, creator, refund, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="io.nuls.dapp.communitygovernance.model.TbVoteParam" resultMap="BaseResultMap">
     select
@@ -124,15 +125,15 @@
       max_select_count, vote_can_modify, start_time, 
       end_time, deposit, status, 
       counts, amount, block_height, 
-      creator, create_time, update_time
-      )
+      creator, refund, create_time, 
+      update_time)
     values (#{contractAddress,jdbcType=VARCHAR}, #{contractVoteId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR}, #{hasMultipleSelect,jdbcType=TINYINT}, #{minSelectCount,jdbcType=TINYINT}, 
       #{maxSelectCount,jdbcType=TINYINT}, #{voteCanModify,jdbcType=TINYINT}, #{startTime,jdbcType=TIMESTAMP}, 
       #{endTime,jdbcType=TIMESTAMP}, #{deposit,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
       #{counts,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{blockHeight,jdbcType=BIGINT}, 
-      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}
-      )
+      #{creator,jdbcType=VARCHAR}, #{refund,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="io.nuls.dapp.communitygovernance.model.TbVote">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -187,6 +188,9 @@
       </if>
       <if test="creator != null">
         creator,
+      </if>
+      <if test="refund != null">
+        refund,
       </if>
       <if test="createTime != null">
         create_time,
@@ -243,6 +247,9 @@
       </if>
       <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="refund != null">
+        #{refund,jdbcType=TINYINT},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=BIGINT},
@@ -312,6 +319,9 @@
       <if test="record.creator != null">
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
+      <if test="record.refund != null">
+        refund = #{record.refund,jdbcType=TINYINT},
+      </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=BIGINT},
       </if>
@@ -342,6 +352,7 @@
       amount = #{record.amount,jdbcType=DECIMAL},
       block_height = #{record.blockHeight,jdbcType=BIGINT},
       creator = #{record.creator,jdbcType=VARCHAR},
+      refund = #{record.refund,jdbcType=TINYINT},
       create_time = #{record.createTime,jdbcType=BIGINT},
       update_time = #{record.updateTime,jdbcType=BIGINT}
     <if test="_parameter != null">
@@ -399,6 +410,9 @@
       <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
       </if>
+      <if test="refund != null">
+        refund = #{refund,jdbcType=TINYINT},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=BIGINT},
       </if>
@@ -426,6 +440,7 @@
       amount = #{amount,jdbcType=DECIMAL},
       block_height = #{blockHeight,jdbcType=BIGINT},
       creator = #{creator,jdbcType=VARCHAR},
+      refund = #{refund,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=BIGINT}
     where id = #{id,jdbcType=INTEGER}

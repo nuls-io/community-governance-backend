@@ -26,38 +26,37 @@ package io.nuls.dapp.communitygovernance.processor.vote;
 
 import com.alibaba.fastjson.JSONObject;
 import io.nuls.dapp.communitygovernance.constant.Constant;
-import io.nuls.dapp.communitygovernance.event.vote.VoteCreateEvent;
-import io.nuls.dapp.communitygovernance.mapper.TbVoteItemMapper;
+import io.nuls.dapp.communitygovernance.event.vote.RedemptionVoteEvent;
 import io.nuls.dapp.communitygovernance.mapper.TbVoteMapper;
 import io.nuls.dapp.communitygovernance.model.TbVote;
-import io.nuls.dapp.communitygovernance.model.TbVoteItem;
+import io.nuls.dapp.communitygovernance.model.TbVoteParam;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
-import io.nuls.dapp.communitygovernance.model.vote.VoteItem;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
 import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import io.nuls.v2.txdata.ContractData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 
 /**
  * @author: Charlie
- * @date: 2019/8/30
+ * @date: 2019/9/20
  */
-public class VoteCreateEventProcessor implements IEventProcessor {
+@Service
+public class RedemptionVoteEventProcessor implements IEventProcessor {
+
     final Logger logger = LoggerFactory.getLogger(getClass());
     @Resource
     private TbVoteMapper tbVoteMapper;
-    @Resource
-    private TbVoteItemMapper tbVoteItemMapper;
 
     @Value("${app.contract.address}")
     private String contractAddress;
 
-    private static final String VOTE_CREATE_EVENT = "VoteCreateEvent";
+    private static final String REDEMPTION_VOTE_EVENT = "RedemptionVoteEvent";
+
     @Override
     public void execute(String hash, int txType, ContractData contractData, EventJson eventJson) throws Exception {
         String contractAddress = eventJson.getContractAddress();
@@ -65,37 +64,17 @@ public class VoteCreateEventProcessor implements IEventProcessor {
             return;
         }
         String event = eventJson.getEvent();
-        if(!VOTE_CREATE_EVENT.equals(event)){
+        if(!REDEMPTION_VOTE_EVENT.equals(event)){
             return;
         }
         JSONObject payload = eventJson.getPayload();
-        VoteCreateEvent voteCreateEvent = payload.toJavaObject(VoteCreateEvent.class);
-        TbVote tbVote = new TbVote();
-        tbVote.setContractAddress(contractAddress);
-        tbVote.setContractVoteId(voteCreateEvent.getVoteId());
-        tbVote.setTitle(voteCreateEvent.getTitle());
-        tbVote.setDescription(voteCreateEvent.getDesc());
-        tbVote.setRefund(Constant.NO);
-        tbVote.setDeposit(voteCreateEvent.getRecognizance());
-        tbVote.setStatus((byte) voteCreateEvent.getStatus());
-        tbVote.setCounts(0);
-        tbVote.setAmount(new BigDecimal("0"));
-        tbVote.setBlockHeight(eventJson.getBlockNumber());
-        tbVote.setCreator(voteCreateEvent.getOwner());
-        long now = TimeUtil.now();
-        tbVote.setCreateTime(now);
-        tbVote.setUpdateTime(now);
-        tbVoteMapper.insertSelective(tbVote);
-        for(VoteItem voteItem : voteCreateEvent.getItems()) {
-            TbVoteItem tbVoteItem = new TbVoteItem();
-            tbVoteItem.setVoteId(voteItem.getId());
-            tbVoteItem.setContent(voteItem.getContent());
-            tbVoteItem.setAmount(new BigDecimal("0"));
-            tbVoteItem.setCounts(0);
-            tbVoteItem.setCreateTime(now);
-            tbVoteItem.setUpdateTime(now);
-            tbVoteItemMapper.insertSelective(tbVoteItem);
-        }
-        logger.debug("VoteCreateEvent success height:{}", eventJson.getBlockNumber());
+        RedemptionVoteEvent redemptionVoteEvent = payload.toJavaObject(RedemptionVoteEvent.class);
+        TbVoteParam tbVoteParam = new TbVoteParam();
+        tbVoteParam.createCriteria().andContractVoteIdEqualTo(redemptionVoteEvent.getVoteId());
+        TbVote tbVote = tbVoteMapper.selectByExample(tbVoteParam).get(0);
+        tbVote.setRefund(Constant.YES);
+        tbVote.setUpdateTime(TimeUtil.now());
+        tbVoteMapper.updateByPrimaryKeySelective(tbVote);
+        logger.debug("RedemptionVoteEvent success height:{}", eventJson.getBlockNumber());
     }
 }

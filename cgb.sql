@@ -10,6 +10,11 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+-- 导出 cg 的数据库结构
+CREATE DATABASE IF NOT EXISTS `cg` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `cg`;
+
+
 -- 导出  表 cg.tb_agency_relation 结构
 CREATE TABLE IF NOT EXISTS `tb_agency_relation` (
   `agent` varchar(40) NOT NULL COMMENT '代理人地址',
@@ -18,6 +23,16 @@ CREATE TABLE IF NOT EXISTS `tb_agency_relation` (
   `create_time` bigint(15) NOT NULL COMMENT 'DB数据创建时间',
   `update_time` bigint(15) NOT NULL COMMENT 'DB数据修改时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='代理地址与委托人关系表';
+
+-- 数据导出被取消选择。
+
+
+-- 导出  表 cg.tb_alias 结构
+CREATE TABLE IF NOT EXISTS `tb_alias` (
+  `address` varchar(40) NOT NULL COMMENT '账户地址',
+  `alias` varchar(20) NOT NULL COMMENT '账户别名',
+  PRIMARY KEY (`address`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='地址对应别名';
 
 -- 数据导出被取消选择。
 
@@ -71,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `tb_block_header` (
 CREATE TABLE IF NOT EXISTS `tb_player` (
   `address` varchar(40) NOT NULL COMMENT '社区治理所有投票参与者(需要维护票数)',
   PRIMARY KEY (`address`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='社区治理所有投票参与者(需要维护票数)';
 
 -- 数据导出被取消选择。
 
@@ -80,11 +95,11 @@ CREATE TABLE IF NOT EXISTS `tb_player` (
 CREATE TABLE IF NOT EXISTS `tb_proposal` (
   `proposal_id` int(11) NOT NULL COMMENT '合约提案id',
   `name` varchar(255) NOT NULL COMMENT '提案名称',
-  `type` tinyint(4) NOT NULL COMMENT '提案类型 1:角色, 2:系统参数, 3:社区基金, 4:其他',
+  `type` tinyint(4) NOT NULL COMMENT '提案类型 1;角色, 2:系统参数, 3:社区基金, 4:其他',
   `desc` text NOT NULL COMMENT '提案简介',
   `email` varchar(255) NOT NULL COMMENT '邮箱',
   `owner` varchar(40) NOT NULL COMMENT '提案发起人地址',
-  `status` tinyint(4) NOT NULL COMMENT '状态 1:审核中, 2:审核拒绝, 3:投票中, 4:投票通过, 5:投票未通过',
+  `status` tinyint(4) NOT NULL COMMENT '状态 1:审核中, 2:审核拒绝, 3:投票中, 4:投票通过,执行中, 5:投票未通过, 6:已执行',
   `start_time` datetime DEFAULT NULL COMMENT '投票开始时间',
   `end_time` datetime DEFAULT NULL COMMENT '投票结束时间',
   `counts` int(11) NOT NULL COMMENT '投票人总数',
@@ -148,6 +163,7 @@ CREATE TABLE IF NOT EXISTS `tb_vote` (
   `amount` decimal(20,4) NOT NULL COMMENT '总投票数(后期是按照用户所有余额来统计的)',
   `block_height` bigint(10) DEFAULT NULL COMMENT '创建投票时区块高度',
   `creator` varchar(90) NOT NULL COMMENT '创建人钱包地址',
+  `refund` tinyint(4) NOT NULL COMMENT '是否退还押金 0未退还, 1：已退还',
   `create_time` bigint(15) NOT NULL COMMENT 'DB数据创建时间',
   `update_time` bigint(15) NOT NULL COMMENT 'DB数据更新时间',
   PRIMARY KEY (`id`)

@@ -1167,6 +1167,66 @@ public class TbVoteParam {
             return (Criteria) this;
         }
 
+        public Criteria andRefundIsNull() {
+            addCriterion("refund is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefundIsNotNull() {
+            addCriterion("refund is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefundEqualTo(Byte value) {
+            addCriterion("refund =", value, "refund");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefundNotEqualTo(Byte value) {
+            addCriterion("refund <>", value, "refund");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefundGreaterThan(Byte value) {
+            addCriterion("refund >", value, "refund");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefundGreaterThanOrEqualTo(Byte value) {
+            addCriterion("refund >=", value, "refund");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefundLessThan(Byte value) {
+            addCriterion("refund <", value, "refund");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefundLessThanOrEqualTo(Byte value) {
+            addCriterion("refund <=", value, "refund");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefundIn(List<Byte> values) {
+            addCriterion("refund in", values, "refund");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefundNotIn(List<Byte> values) {
+            addCriterion("refund not in", values, "refund");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefundBetween(Byte value1, Byte value2) {
+            addCriterion("refund between", value1, value2, "refund");
+            return (Criteria) this;
+        }
+
+        public Criteria andRefundNotBetween(Byte value1, Byte value2) {
+            addCriterion("refund not between", value1, value2, "refund");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateTimeIsNull() {
             addCriterion("create_time is null");
             return (Criteria) this;

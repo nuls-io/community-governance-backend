@@ -73,10 +73,12 @@ public interface Constant {
     byte UNAPPROVED = 2;
     /** 投票中*/
     byte VOTING = 3;
-    /** 通过*/
+    /** 通过, 执行中*/
     byte ADOPTED = 4;
     /** 未通过*/
     byte REJECTED = 5;
+    /** 已执行*/
+    byte COMPLETED  = 6;
     /** 提案通过需要的支持率阈值*/
     BigDecimal ADOPTED_THRESHOLD = new BigDecimal("0.7");
 

@@ -39,6 +39,8 @@ public class TbVote {
 
     private String creator;
 
+    private Byte refund;
+
     private Long createTime;
 
     private Long updateTime;
@@ -177,6 +179,14 @@ public class TbVote {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Byte getRefund() {
+        return refund;
+    }
+
+    public void setRefund(Byte refund) {
+        this.refund = refund;
     }
 
     public Long getCreateTime() {
