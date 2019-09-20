@@ -26,10 +26,7 @@ package io.nuls.dapp.communitygovernance.api;
 import io.nuls.core.rpc.model.Parameter;
 import io.nuls.core.rpc.model.Parameters;
 import io.nuls.core.rpc.model.TypeDescriptor;
-import io.nuls.dapp.communitygovernance.api.request.CouncilApplicantSearch;
-import io.nuls.dapp.communitygovernance.api.request.MandatorsSearch;
-import io.nuls.dapp.communitygovernance.api.request.ProposaListSearch;
-import io.nuls.dapp.communitygovernance.api.request.VoteListSearch;
+import io.nuls.dapp.communitygovernance.api.request.*;
 import io.nuls.dapp.communitygovernance.api.response.ResponseData;
 import io.nuls.dapp.communitygovernance.model.dto.*;
 import io.nuls.v2.model.annotation.ApiOperation;
@@ -264,6 +261,27 @@ public class CommunityGovernanceApi {
             VoteItemDetailDto dto = new VoteItemDetailDto();
             ResponseData result = ResponseData.success();
             result.setData(dto);
+            return result;
+        } catch (Exception e) {
+            logger.error("system error", e);
+            return ResponseData.error(e.getMessage());
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @PostMapping("/voter/record/list")
+    @ApiOperation(description = "查询我的投票记录列表",order = 401)
+    @Parameters({
+            @Parameter(parameterName = "查询我的投票记录列表", parameterDes = "查询我的投票记录列表表单", requestType = @TypeDescriptor(value = VoterSearch.class))
+    })
+    @io.nuls.core.rpc.model.ResponseData(name = "返回值", description = "我的投票记录列表", responseType = @TypeDescriptor(value = List.class, collectionElement = VoterRecordDto.class))
+    public ResponseData voterRecordList(@RequestBody VoterSearch voterSearch) {
+        try {
+            List<VoterRecordDto> voterRecordList = new ArrayList<>();
+            ResponseData result = ResponseData.success();
+            result.setData(voterRecordList);
             return result;
         } catch (Exception e) {
             logger.error("system error", e);

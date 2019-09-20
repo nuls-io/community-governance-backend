@@ -37,16 +37,19 @@ public class VoteDto {
 
     @ApiModelProperty(description = "投票ID")
     private Integer voteId;
+    //TODO pierre 没有LOGO
     @ApiModelProperty(description = "投票图标URL")
     private String logoUrl;
     @ApiModelProperty(description = "投票标题")
     private String title;
     @ApiModelProperty(description = "投票介绍")
     private String desc;
-    @ApiModelProperty(description = "投票人地址")
-    private String address;
-    @ApiModelProperty(description = "投票状态")
+    @ApiModelProperty(description = "创建人地址")
+    private String creatorAddress;
+    @ApiModelProperty(description = "投票状态 0待确认 1未开始，2进行中，3 暂停挂起 4 已结束")
     private String status;
+    @ApiModelProperty(description = "投票开始时间")
+    private long startTime;
     @ApiModelProperty(description = "投票结束时间")
     private long endTime;
 }
