@@ -41,8 +41,10 @@ public class CouncilMemberDto {
     private String address;
     @ApiModelProperty(description = "理事成员名称")
     private String name;
-    @ApiModelProperty(description = "理事类型")
+    @ApiModelProperty(description = "理事类型 1:管理 2:运营 3:技术")
     private Byte type;
+    @ApiModelProperty(description = "是否是理事成员")
+    private Boolean isCouncil;
     @ApiModelProperty(description = "理事成员介绍")
     private String desc;
     @ApiModelProperty(description = "票数")

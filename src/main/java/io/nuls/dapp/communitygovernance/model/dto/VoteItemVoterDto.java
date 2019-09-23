@@ -16,6 +16,8 @@ public class VoteItemVoterDto implements Serializable {
 
     @ApiModelProperty(description = "投票人地址")
     private String address;
+    @ApiModelProperty(description = "投票人别名")
+    private String alias;
     @ApiModelProperty(description = "投票数")
     private String votesNumber;
 }

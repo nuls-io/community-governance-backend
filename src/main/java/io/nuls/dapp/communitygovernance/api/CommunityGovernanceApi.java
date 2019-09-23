@@ -67,10 +67,10 @@ public class CommunityGovernanceApi {
     @PostMapping("/mandator/list")
     @ApiOperation(description = "查询代理人的委托地址列表",order = 101)
     @Parameters({
-            @Parameter(parameterName = "查询代理人的委托地址列表", parameterDes = "查询代理人的委托地址列表表单", requestType = @TypeDescriptor(value = MandatorsSearch.class))
+            @Parameter(parameterName = "查询代理人的委托地址列表", parameterDes = "查询代理人的委托地址列表表单", requestType = @TypeDescriptor(value = MandatorsPageSearch.class))
     })
     @io.nuls.core.rpc.model.ResponseData(name = "返回值", description = "代理人的委托地址列表", responseType = @TypeDescriptor(value = List.class, collectionElement = MandatorDto.class))
-    public ResponseData mandatorList(@RequestBody MandatorsSearch mandatorsSearch) {
+    public ResponseData mandatorList(@RequestBody MandatorsPageSearch mandatorsSearch) {
         try {
             List<MandatorDto> mandatorList = new ArrayList<>();
             ResponseData result = ResponseData.success();
@@ -133,7 +133,7 @@ public class CommunityGovernanceApi {
         }
     }
 
-    @PostMapping("/council/applicant/list")
+    /*@PostMapping("/council/applicant/list")
     @ApiOperation(description = "查询理事会申请人列表",order = 203)
     @Parameters({
             @Parameter(parameterName = "查询理事会申请人列表", parameterDes = "查询理事会申请人列表表单", requestType = @TypeDescriptor(value = CouncilApplicantPageSearch.class))
@@ -149,10 +149,10 @@ public class CommunityGovernanceApi {
             logger.error("system error", e);
             return ResponseData.error(e.getMessage());
         }
-    }
+    }*/
 
     @GetMapping("/council/member/{address}")
-    @ApiOperation(description = "理事详情",order = 204)
+    @ApiOperation(description = "理事详情",order = 203)
     @Parameters({
             @Parameter(parameterName = "address", parameterDes = "理事成员地址")
     })
@@ -220,6 +220,24 @@ public class CommunityGovernanceApi {
             ProposalItemDetailDto dto = new ProposalItemDetailDto();
             ResponseData result = ResponseData.success();
             result.setData(dto);
+            return result;
+        } catch (Exception e) {
+            logger.error("system error", e);
+            return ResponseData.error(e.getMessage());
+        }
+    }
+
+    @GetMapping("/proposal/all")
+    @ApiOperation(description = "查询所有提案",order = 304)
+    @Parameters({
+            @Parameter(parameterName = "查询所有提案", parameterDes = "查询所有提案表单", requestType = @TypeDescriptor(value = ProposaListPageSearch.class))
+    })
+    @io.nuls.core.rpc.model.ResponseData(name = "返回值", description = "所有提案", responseType = @TypeDescriptor(value = List.class, collectionElement = ProposalShortDto.class))
+    public ResponseData proposalAll(@RequestBody ProposaWholeSearch proposaWholeSearch) {
+        try {
+            List<ProposalShortDto> proposalShortList = new ArrayList<>();
+            ResponseData result = ResponseData.success();
+            result.setData(proposalShortList);
             return result;
         } catch (Exception e) {
             logger.error("system error", e);
