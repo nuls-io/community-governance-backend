@@ -52,4 +52,30 @@ public class AccountServiceApi {
         AccountPo po = new AccountPo(balance, alias);
         return po;
     }
+
+    /**
+     * 根据地址获取别名
+     * @param address
+     * @return
+     * @throws InterruptedException
+     */
+    public String getAddressAlias(String address) throws InterruptedException {
+        String alias = null;
+        int chainId = ServerContext.chainId;
+        RpcResult<Map> result = AppUtil.jsonRpcRequest(ServerContext.public_service_url,"getAccount", ListUtil.of(chainId, address));
+        if(result == null) {
+            logger.error("Post time out times!!! address is {}", address);
+            return alias;
+        }
+        if(result.getError() != null) {
+            logger.error("getAccount error, address is {}, error is {}", address, result.getError().toString());
+            return alias;
+        }
+        Map info = result.getResult();
+
+        if(info != null) {
+            alias = info.get("alias").toString();
+        }
+        return alias;
+    }
 }

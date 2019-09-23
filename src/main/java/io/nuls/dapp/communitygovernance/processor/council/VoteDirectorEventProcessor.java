@@ -26,6 +26,7 @@ package io.nuls.dapp.communitygovernance.processor.council;
 
 import com.alibaba.fastjson.JSONObject;
 import io.nuls.core.basic.Result;
+import io.nuls.core.model.StringUtils;
 import io.nuls.dapp.communitygovernance.config.ServerContext;
 import io.nuls.dapp.communitygovernance.constant.Constant;
 import io.nuls.dapp.communitygovernance.event.council.VoteDirectorEvent;
@@ -36,6 +37,7 @@ import io.nuls.dapp.communitygovernance.mapper.TbPlayerMapper;
 import io.nuls.dapp.communitygovernance.model.*;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
+import io.nuls.dapp.communitygovernance.service.api.AccountServiceApi;
 import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import io.nuls.v2.txdata.ContractData;
 import io.nuls.v2.util.NulsSDKTool;
@@ -63,6 +65,8 @@ public class VoteDirectorEventProcessor implements IEventProcessor {
     private TbPlayerMapper tbPlayerMapper;
     @Resource
     private TbAliasMapper tbAliasMapper;
+    @Resource
+    private AccountServiceApi accountServiceApi;
     @Value("${app.contract.address}")
     private String contractAddress;
 
@@ -179,13 +183,18 @@ public class VoteDirectorEventProcessor implements IEventProcessor {
         if(tbPlayerMapper.countByExample(tbPlayerParam) == 0L){
             tbPlayerMapper.insert(new TbPlayer(voterAddress));
         }
-        
+        //记录地址别名
         TbAliasParam tbAliasParam = new TbAliasParam();
         tbAliasParam.createCriteria().andAddressEqualTo(voterAddress);
         if(tbAliasMapper.countByExample(tbAliasParam) == 0L) {
-            tbAliasMapper.insert(new TbAlias(voterAddress, "alias"));
+            //查别名
+            String alias = accountServiceApi.getAddressAlias(voterAddress);
+            if(StringUtils.isNotBlank(alias)) {
+                tbAliasMapper.insert(new TbAlias(voterAddress, alias));
+            }
         }
 
         logger.debug("VoteDirectorEvent success height:{}", eventJson.getBlockNumber());
     }
+
 }

@@ -25,12 +25,17 @@
 package io.nuls.dapp.communitygovernance.processor.proposal;
 
 import com.alibaba.fastjson.JSONObject;
+import io.nuls.core.model.StringUtils;
 import io.nuls.dapp.communitygovernance.constant.Constant;
 import io.nuls.dapp.communitygovernance.event.proposal.CreateProposalEvent;
+import io.nuls.dapp.communitygovernance.mapper.TbAliasMapper;
 import io.nuls.dapp.communitygovernance.mapper.TbProposalMapper;
+import io.nuls.dapp.communitygovernance.model.TbAlias;
+import io.nuls.dapp.communitygovernance.model.TbAliasParam;
 import io.nuls.dapp.communitygovernance.model.TbProposal;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
+import io.nuls.dapp.communitygovernance.service.api.AccountServiceApi;
 import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import io.nuls.v2.txdata.ContractData;
 import org.slf4j.Logger;
@@ -50,6 +55,10 @@ public class CreateProposalEventProcessor implements IEventProcessor {
     final Logger logger = LoggerFactory.getLogger(getClass());
     @Resource
     private TbProposalMapper tbProposalMapper;
+    @Resource
+    private TbAliasMapper tbAliasMapper;
+    @Resource
+    private AccountServiceApi accountServiceApi;
     @Value("${app.contract.address}")
     private String contractAddress;
 
@@ -67,13 +76,14 @@ public class CreateProposalEventProcessor implements IEventProcessor {
         }
         JSONObject payload = eventJson.getPayload();
         CreateProposalEvent createProposalEvent = payload.toJavaObject(CreateProposalEvent.class);
+        String address =  createProposalEvent.getOwner();
         TbProposal tbProposal = new TbProposal();
         tbProposal.setProposalId(createProposalEvent.getId());
         tbProposal.setName(createProposalEvent.getName());
         tbProposal.setDesc(createProposalEvent.getDesc());
         tbProposal.setType((byte) createProposalEvent.getType());
         tbProposal.setEmail(createProposalEvent.getEmail());
-        tbProposal.setOwner(createProposalEvent.getOwner());
+        tbProposal.setOwner(address);
         tbProposal.setStatus(Constant.INREVIEW);
         tbProposal.setCounts(0);
         tbProposal.setFavour(BigDecimal.ZERO);
@@ -83,6 +93,17 @@ public class CreateProposalEventProcessor implements IEventProcessor {
         long now = TimeUtil.now();
         tbProposal.setCreateTime(now);
         tbProposal.setUpdateTime(now);
+
+        //记录地址别名
+        TbAliasParam tbAliasParam = new TbAliasParam();
+        tbAliasParam.createCriteria().andAddressEqualTo(address);
+        if(tbAliasMapper.countByExample(tbAliasParam) == 0L) {
+            //查别名
+            String alias = accountServiceApi.getAddressAlias(address);
+            if(StringUtils.isNotBlank(alias)) {
+                tbAliasMapper.insert(new TbAlias(address, alias));
+            }
+        }
         logger.debug("CreateProposalEvent success height:{}", eventJson.getBlockNumber());
     }
 }
