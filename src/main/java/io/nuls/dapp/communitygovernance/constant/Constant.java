@@ -24,6 +24,7 @@
 package io.nuls.dapp.communitygovernance.constant;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  *
@@ -91,4 +92,20 @@ public interface Constant {
     byte STATUS_VOTEING = 2;
     /** 投票已结束*/
     byte STATUS_CLOSE = 3;
+
+    //理事
+    /** 管理*/
+    int MANAGEMENT = 1;
+    /**
+     * 运营理事
+     */
+    int OPERATIONS = 2;
+    /**
+     * 技术理事
+     */
+    int TECHNOLOGY = 3;
+
+    int COUNCIL_MEMBERS = 11;
+    BigInteger TECHNOLOGY_ENTRY_MINIMUM = new BigInteger("2500000000000");
+    BigInteger NON_TECHNOLOGY_ENTRY_MINIMUM = new BigInteger("5000000000000");
 }

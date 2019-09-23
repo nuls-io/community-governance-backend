@@ -189,7 +189,6 @@ public class VoteEventProcessor implements IEventProcessor {
             tbPlayerMapper.insert(new TbPlayer(voterAddress));
         }
 
-
         //记录地址别名
         TbAliasParam tbAliasParam = new TbAliasParam();
         tbAliasParam.createCriteria().andAddressEqualTo(voterAddress);
