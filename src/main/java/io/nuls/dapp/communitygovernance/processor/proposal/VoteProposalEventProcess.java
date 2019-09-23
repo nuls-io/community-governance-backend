@@ -109,11 +109,11 @@ public class VoteProposalEventProcess implements IEventProcessor {
         TbProposal tbProposal = new TbProposal();
         tbProposal.setCounts(proposal.getCounts() + 1);
         int result = voteProposalEvent.getResult();
-        if(result == Constant.FAVOUR){
+        if (result == Constant.FAVOUR) {
             tbProposal.setFavour(proposal.getFavour().add(number));
-        }else if(result == Constant.AGAINST){
+        } else if (result == Constant.AGAINST) {
             tbProposal.setAgainst(proposal.getAgainst().add(number));
-        }else if(result == Constant.ABSTENTION){
+        } else if (result == Constant.ABSTENTION) {
             tbProposal.setAbstention(proposal.getAbstention().add(number));
         }
         tbProposal.setUpdateTime(TimeUtil.now());
@@ -122,16 +122,16 @@ public class VoteProposalEventProcess implements IEventProcessor {
         //记录新投票参与者
         TbPlayerParam tbPlayerParam = new TbPlayerParam();
         tbPlayerParam.createCriteria().andAddressEqualTo(voterAddress);
-        if(tbPlayerMapper.countByExample(tbPlayerParam) == 0L){
+        if (tbPlayerMapper.countByExample(tbPlayerParam) == 0L) {
             tbPlayerMapper.insert(new TbPlayer(voterAddress));
         }
         //记录地址别名
         TbAliasParam tbAliasParam = new TbAliasParam();
         tbAliasParam.createCriteria().andAddressEqualTo(voterAddress);
-        if(tbAliasMapper.countByExample(tbAliasParam) == 0L) {
+        if (tbAliasMapper.countByExample(tbAliasParam) == 0L) {
             //查别名
             String alias = accountServiceApi.getAddressAlias(voterAddress);
-            if(StringUtils.isNotBlank(alias)) {
+            if (StringUtils.isNotBlank(alias)) {
                 tbAliasMapper.insert(new TbAlias(voterAddress, alias));
             }
         }
