@@ -42,6 +42,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
 /**
+ * 新增了一个理事
  * @author: Charlie
  * @date: 2019/8/23
  */

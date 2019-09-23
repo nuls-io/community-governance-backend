@@ -25,12 +25,17 @@
 package io.nuls.dapp.communitygovernance.processor.proxy;
 
 import com.alibaba.fastjson.JSONObject;
+import io.nuls.core.model.StringUtils;
 import io.nuls.dapp.communitygovernance.constant.Constant;
 import io.nuls.dapp.communitygovernance.event.proxy.SetAgentEvent;
 import io.nuls.dapp.communitygovernance.mapper.TbAgencyRelationMapper;
-import io.nuls.dapp.communitygovernance.model.contract.EventJson;
+import io.nuls.dapp.communitygovernance.mapper.TbAliasMapper;
 import io.nuls.dapp.communitygovernance.model.TbAgencyRelation;
+import io.nuls.dapp.communitygovernance.model.TbAlias;
+import io.nuls.dapp.communitygovernance.model.TbAliasParam;
+import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
+import io.nuls.dapp.communitygovernance.service.api.AccountServiceApi;
 import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import io.nuls.v2.txdata.ContractData;
 import org.slf4j.Logger;
@@ -52,7 +57,10 @@ public class SetAgentEventProcessor implements IEventProcessor {
 
     @Resource
     private TbAgencyRelationMapper tbAgencyRelationMapper;
-
+    @Resource
+    private TbAliasMapper tbAliasMapper;
+    @Resource
+    private AccountServiceApi accountServiceApi;
     @Value("${app.contract.address}")
     private String contractAddress;
 
@@ -70,14 +78,36 @@ public class SetAgentEventProcessor implements IEventProcessor {
         }
         JSONObject payload = eventJson.getPayload();
         SetAgentEvent setAgentEvent = payload.toJavaObject(SetAgentEvent.class);
+        String agentAddress = setAgentEvent.getAgentAddress();
+        String mandatorAddress = setAgentEvent.getMandatorAddress();
         TbAgencyRelation tbAgencyRelation = new TbAgencyRelation();
-        tbAgencyRelation.setAgent(setAgentEvent.getAgentAddress());
-        tbAgencyRelation.setMandator(setAgentEvent.getMandatorAddress());
+        tbAgencyRelation.setAgent(agentAddress);
+        tbAgencyRelation.setMandator(mandatorAddress);
         tbAgencyRelation.setStatus(Constant.VALID);
         Long now = TimeUtil.now();
         tbAgencyRelation.setCreateTime(now);
         tbAgencyRelation.setUpdateTime(now);
         tbAgencyRelationMapper.insert(tbAgencyRelation);
+
+        //记录地址别名
+        TbAliasParam tbAliasParam = new TbAliasParam();
+        tbAliasParam.createCriteria().andAddressEqualTo(agentAddress);
+        if(tbAliasMapper.countByExample(tbAliasParam) == 0L) {
+            //查别名
+            String alias = accountServiceApi.getAddressAlias(agentAddress);
+            if(StringUtils.isNotBlank(alias)) {
+                tbAliasMapper.insert(new TbAlias(agentAddress, alias));
+            }
+        }
+        tbAliasParam.clear();
+        tbAliasParam.createCriteria().andAddressEqualTo(mandatorAddress);
+        if(tbAliasMapper.countByExample(tbAliasParam) == 0L) {
+            //查别名
+            String alias = accountServiceApi.getAddressAlias(mandatorAddress);
+            if(StringUtils.isNotBlank(alias)) {
+                tbAliasMapper.insert(new TbAlias(mandatorAddress, alias));
+            }
+        }
         logger.debug("SetAgentEvent success height:{}", eventJson.getBlockNumber());
     }
 }

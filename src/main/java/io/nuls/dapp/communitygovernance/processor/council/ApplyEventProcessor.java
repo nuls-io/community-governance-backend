@@ -25,12 +25,17 @@
 package io.nuls.dapp.communitygovernance.processor.council;
 
 import com.alibaba.fastjson.JSONObject;
+import io.nuls.core.model.StringUtils;
 import io.nuls.dapp.communitygovernance.constant.Constant;
 import io.nuls.dapp.communitygovernance.event.council.ApplyEvent;
+import io.nuls.dapp.communitygovernance.mapper.TbAliasMapper;
 import io.nuls.dapp.communitygovernance.mapper.TbApplicantMapper;
+import io.nuls.dapp.communitygovernance.model.TbAlias;
+import io.nuls.dapp.communitygovernance.model.TbAliasParam;
 import io.nuls.dapp.communitygovernance.model.TbApplicant;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
+import io.nuls.dapp.communitygovernance.service.api.AccountServiceApi;
 import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import io.nuls.v2.txdata.ContractData;
 import org.slf4j.Logger;
@@ -50,7 +55,10 @@ public class ApplyEventProcessor implements IEventProcessor {
     final Logger logger = LoggerFactory.getLogger(getClass());
     @Resource
     private TbApplicantMapper tbApplicantMapper;
-
+    @Resource
+    private TbAliasMapper tbAliasMapper;
+    @Resource
+    private AccountServiceApi accountServiceApi;
     @Value("${app.contract.address}")
     private String contractAddress;
 
@@ -68,8 +76,9 @@ public class ApplyEventProcessor implements IEventProcessor {
         }
         JSONObject payload = eventJson.getPayload();
         ApplyEvent applyEvent = payload.toJavaObject(ApplyEvent.class);
+        String address = applyEvent.getAddress();
         TbApplicant tbApplicant = new TbApplicant();
-        tbApplicant.setAddress(applyEvent.getAddress());
+        tbApplicant.setAddress(address);
         tbApplicant.setType((byte) applyEvent.getType());
         tbApplicant.setDesc(applyEvent.getDesc());
         tbApplicant.setEmail(applyEvent.getEmail());
@@ -81,6 +90,16 @@ public class ApplyEventProcessor implements IEventProcessor {
         tbApplicant.setCreateTime(now);
         tbApplicant.setUpdateTime(now);
         tbApplicantMapper.insert(tbApplicant);
+        //记录地址别名
+        TbAliasParam tbAliasParam = new TbAliasParam();
+        tbAliasParam.createCriteria().andAddressEqualTo(address);
+        if(tbAliasMapper.countByExample(tbAliasParam) == 0L) {
+            //查别名
+            String alias = accountServiceApi.getAddressAlias(address);
+            if(StringUtils.isNotBlank(alias)) {
+                tbAliasMapper.insert(new TbAlias(address, alias));
+            }
+        }
         logger.debug("ApplyEvent success height:{}", eventJson.getBlockNumber());
     }
 }

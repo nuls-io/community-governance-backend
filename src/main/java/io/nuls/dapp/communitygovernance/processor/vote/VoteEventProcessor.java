@@ -26,16 +26,15 @@ package io.nuls.dapp.communitygovernance.processor.vote;
 
 import com.alibaba.fastjson.JSONObject;
 import io.nuls.core.basic.Result;
+import io.nuls.core.model.StringUtils;
 import io.nuls.dapp.communitygovernance.config.ServerContext;
 import io.nuls.dapp.communitygovernance.constant.Constant;
 import io.nuls.dapp.communitygovernance.event.vote.VoteEvent;
-import io.nuls.dapp.communitygovernance.mapper.TbPlayerMapper;
-import io.nuls.dapp.communitygovernance.mapper.TbVoteItemMapper;
-import io.nuls.dapp.communitygovernance.mapper.TbVoteMapper;
-import io.nuls.dapp.communitygovernance.mapper.TbVoteRecordMapper;
+import io.nuls.dapp.communitygovernance.mapper.*;
 import io.nuls.dapp.communitygovernance.model.*;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
+import io.nuls.dapp.communitygovernance.service.api.AccountServiceApi;
 import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import io.nuls.v2.txdata.ContractData;
 import io.nuls.v2.util.NulsSDKTool;
@@ -63,6 +62,10 @@ public class VoteEventProcessor implements IEventProcessor {
     private TbVoteRecordMapper tbVoteRecordMapper;
     @Resource
     private TbPlayerMapper tbPlayerMapper;
+    @Resource
+    private TbAliasMapper tbAliasMapper;
+    @Resource
+    private AccountServiceApi accountServiceApi;
     @Value("${app.contract.address}")
     private String contractAddress;
     private static final String VOTE_EVENT = "VoteEvent";
@@ -93,6 +96,7 @@ public class VoteEventProcessor implements IEventProcessor {
         JSONObject payload = eventJson.getPayload();
         VoteEvent voteEvent = payload.toJavaObject(VoteEvent.class);
         long voteId = voteEvent.getVoteId();
+        String voterAddress = voteEvent.getVoterAddress();
 
         TbVoteParam tbVoteParam = new TbVoteParam();
         tbVoteParam.createCriteria().andContractVoteIdEqualTo(voteId);
@@ -104,13 +108,13 @@ public class VoteEventProcessor implements IEventProcessor {
         TbVoteRecordParam tbVoteRecordParam = new TbVoteRecordParam();
         tbVoteRecordParam.createCriteria()
                 .andVoteIdEqualTo(voteId)
-                .andVoterEqualTo(voteEvent.getVoterAddress())
+                .andVoterEqualTo(voterAddress)
                 .andCancelTypeEqualTo(Constant.NO);
         //查询历史投票
         List<TbVoteRecord> recordList = tbVoteRecordMapper.selectByExample(tbVoteRecordParam);
         long now = TimeUtil.now();
         //获取投票者当前持有的票数
-        String voterAddress = voteEvent.getVoterAddress();
+
         Result rs = NulsSDKTool.getAccountBalance(voterAddress, ServerContext.chainId, ServerContext.assetId);
         Map map = (Map) rs.getData();
         //获取余额对应投票数
@@ -139,7 +143,7 @@ public class VoteEventProcessor implements IEventProcessor {
                 recordParam.createCriteria()
                         .andVoteIdEqualTo(voteId)
                         .andItemIdEqualTo(tbVoteRecord.getItemId())
-                        .andVoterEqualTo(voteEvent.getVoterAddress())
+                        .andVoterEqualTo(voterAddress)
                         .andCancelTypeEqualTo(Constant.NO);
                 TbVoteRecord record = new TbVoteRecord();
                 record.setCancelType(Constant.YES);
@@ -157,7 +161,7 @@ public class VoteEventProcessor implements IEventProcessor {
             TbVoteRecord tbVoteRecord = new TbVoteRecord();
             tbVoteRecord.setVoteId(voteId);
             tbVoteRecord.setItemId(itemId);
-            tbVoteRecord.setVoter(voteEvent.getVoterAddress());
+            tbVoteRecord.setVoter(voterAddress);
             tbVoteRecord.setAmount(number);
             tbVoteRecord.setCancelType(Constant.NO);
             tbVoteRecord.setCreateTime(now);
@@ -180,9 +184,21 @@ public class VoteEventProcessor implements IEventProcessor {
 
         //记录新投票参与者
         TbPlayerParam tbPlayerParam = new TbPlayerParam();
-        tbPlayerParam.createCriteria().andAddressEqualTo(voteEvent.getVoterAddress());
+        tbPlayerParam.createCriteria().andAddressEqualTo(voterAddress);
         if(tbPlayerMapper.countByExample(tbPlayerParam) == 0L){
-            tbPlayerMapper.insert(new TbPlayer(voteEvent.getVoterAddress()));
+            tbPlayerMapper.insert(new TbPlayer(voterAddress));
+        }
+
+
+        //记录地址别名
+        TbAliasParam tbAliasParam = new TbAliasParam();
+        tbAliasParam.createCriteria().andAddressEqualTo(voterAddress);
+        if(tbAliasMapper.countByExample(tbAliasParam) == 0L) {
+            //查别名
+            String alias = accountServiceApi.getAddressAlias(voterAddress);
+            if(StringUtils.isNotBlank(alias)) {
+                tbAliasMapper.insert(new TbAlias(voterAddress, alias));
+            }
         }
         logger.debug("VoteEvent success height:{}", eventJson.getBlockNumber());
     }

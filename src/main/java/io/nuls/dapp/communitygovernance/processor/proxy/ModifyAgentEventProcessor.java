@@ -25,13 +25,18 @@
 package io.nuls.dapp.communitygovernance.processor.proxy;
 
 import com.alibaba.fastjson.JSONObject;
+import io.nuls.core.model.StringUtils;
 import io.nuls.dapp.communitygovernance.constant.Constant;
 import io.nuls.dapp.communitygovernance.event.proxy.ModifyAgentEvent;
 import io.nuls.dapp.communitygovernance.mapper.TbAgencyRelationMapper;
+import io.nuls.dapp.communitygovernance.mapper.TbAliasMapper;
 import io.nuls.dapp.communitygovernance.model.TbAgencyRelation;
 import io.nuls.dapp.communitygovernance.model.TbAgencyRelationParam;
+import io.nuls.dapp.communitygovernance.model.TbAlias;
+import io.nuls.dapp.communitygovernance.model.TbAliasParam;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
+import io.nuls.dapp.communitygovernance.service.api.AccountServiceApi;
 import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import io.nuls.v2.txdata.ContractData;
 import org.slf4j.Logger;
@@ -50,7 +55,10 @@ public class ModifyAgentEventProcessor implements IEventProcessor {
     final Logger logger = LoggerFactory.getLogger(getClass());
     @Resource
     private TbAgencyRelationMapper tbAgencyRelationMapper;
-
+    @Resource
+    private TbAliasMapper tbAliasMapper;
+    @Resource
+    private AccountServiceApi accountServiceApi;
     @Value("${app.contract.address}")
     private String contractAddress;
 
@@ -69,6 +77,8 @@ public class ModifyAgentEventProcessor implements IEventProcessor {
         JSONObject payload = eventJson.getPayload();
         ModifyAgentEvent modifyAgentEvent = payload.toJavaObject(ModifyAgentEvent.class);
         TbAgencyRelationParam tbAgencyRelationParam = new TbAgencyRelationParam();
+        String newAgentAddress = modifyAgentEvent.getNewAgentAddress();
+
         tbAgencyRelationParam.createCriteria().andMandatorEqualTo(modifyAgentEvent.getMandatorAddress()).andStatusEqualTo(Constant.VALID);
        /* List<TbAgencyRelation> tbAgencyRelations = tbAgencyRelationMapper.selectByExample(tbAgencyRelationParam);
         if(tbAgencyRelations.size() > 1){
@@ -83,6 +93,18 @@ public class ModifyAgentEventProcessor implements IEventProcessor {
         tbAgencyRelation.setAgent(modifyAgentEvent.getNewAgentAddress());
         tbAgencyRelation.setUpdateTime(TimeUtil.now());
         tbAgencyRelationMapper.updateByExampleSelective(tbAgencyRelation, tbAgencyRelationParam);
+
+        //记录地址别名
+        TbAliasParam tbAliasParam = new TbAliasParam();
+        tbAliasParam.createCriteria().andAddressEqualTo(newAgentAddress);
+        if(tbAliasMapper.countByExample(tbAliasParam) == 0L) {
+            //查别名
+            String alias = accountServiceApi.getAddressAlias(newAgentAddress);
+            if(StringUtils.isNotBlank(alias)) {
+                tbAliasMapper.insert(new TbAlias(newAgentAddress, alias));
+            }
+        }
+
         logger.debug("ModifyAgentEvent success height:{}", eventJson.getBlockNumber());
     }
 }

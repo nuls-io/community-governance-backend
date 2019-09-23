@@ -25,15 +25,20 @@
 package io.nuls.dapp.communitygovernance.processor.vote;
 
 import com.alibaba.fastjson.JSONObject;
+import io.nuls.core.model.StringUtils;
 import io.nuls.dapp.communitygovernance.constant.Constant;
 import io.nuls.dapp.communitygovernance.event.vote.VoteCreateEvent;
+import io.nuls.dapp.communitygovernance.mapper.TbAliasMapper;
 import io.nuls.dapp.communitygovernance.mapper.TbVoteItemMapper;
 import io.nuls.dapp.communitygovernance.mapper.TbVoteMapper;
+import io.nuls.dapp.communitygovernance.model.TbAlias;
+import io.nuls.dapp.communitygovernance.model.TbAliasParam;
 import io.nuls.dapp.communitygovernance.model.TbVote;
 import io.nuls.dapp.communitygovernance.model.TbVoteItem;
 import io.nuls.dapp.communitygovernance.model.contract.EventJson;
 import io.nuls.dapp.communitygovernance.model.vote.VoteItem;
 import io.nuls.dapp.communitygovernance.service.IEventProcessor;
+import io.nuls.dapp.communitygovernance.service.api.AccountServiceApi;
 import io.nuls.dapp.communitygovernance.util.TimeUtil;
 import io.nuls.v2.txdata.ContractData;
 import org.slf4j.Logger;
@@ -53,7 +58,10 @@ public class VoteCreateEventProcessor implements IEventProcessor {
     private TbVoteMapper tbVoteMapper;
     @Resource
     private TbVoteItemMapper tbVoteItemMapper;
-
+    @Resource
+    private TbAliasMapper tbAliasMapper;
+    @Resource
+    private AccountServiceApi accountServiceApi;
     @Value("${app.contract.address}")
     private String contractAddress;
 
@@ -70,6 +78,7 @@ public class VoteCreateEventProcessor implements IEventProcessor {
         }
         JSONObject payload = eventJson.getPayload();
         VoteCreateEvent voteCreateEvent = payload.toJavaObject(VoteCreateEvent.class);
+        String ownerAddress = voteCreateEvent.getOwner();
         TbVote tbVote = new TbVote();
         tbVote.setContractAddress(contractAddress);
         tbVote.setContractVoteId(voteCreateEvent.getVoteId());
@@ -95,6 +104,17 @@ public class VoteCreateEventProcessor implements IEventProcessor {
             tbVoteItem.setCreateTime(now);
             tbVoteItem.setUpdateTime(now);
             tbVoteItemMapper.insertSelective(tbVoteItem);
+        }
+
+        //记录地址别名
+        TbAliasParam tbAliasParam = new TbAliasParam();
+        tbAliasParam.createCriteria().andAddressEqualTo(ownerAddress);
+        if(tbAliasMapper.countByExample(tbAliasParam) == 0L) {
+            //查别名
+            String alias = accountServiceApi.getAddressAlias(ownerAddress);
+            if(StringUtils.isNotBlank(alias)) {
+                tbAliasMapper.insert(new TbAlias(ownerAddress, alias));
+            }
         }
         logger.debug("VoteCreateEvent success height:{}", eventJson.getBlockNumber());
     }
