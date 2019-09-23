@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.nuls.dapp.communitygovernance.api.request;
+package io.nuls.dapp.communitygovernance.model.dto;
 
 import io.nuls.core.rpc.model.ApiModel;
 import io.nuls.core.rpc.model.ApiModelProperty;
@@ -29,16 +29,11 @@ import lombok.Data;
 
 /**
  * @author: PierreLuo
- * @date: 2019-09-18
+ * @date: 2019-09-23
  */
 @Data
 @ApiModel
-public class VoterSearch extends PageSearch{
-
-    @ApiModelProperty(description = "投票人地址")
-    private String address;
-    @ApiModelProperty(description = "类型 0:全部, 1:理事会, 2:提案, 3:普通投票")
-    private Byte type;
-    @ApiModelProperty(description = "标题")
-    private String title;
+public class SystemInfoDto {
+    @ApiModelProperty(description = "合约地址")
+    private String contractAddress;
 }

@@ -46,6 +46,23 @@ import java.util.List;
 public class CommunityGovernanceApi {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
+    @GetMapping("/info")
+    @ApiOperation(description = "查询系统基本信息",order = 001)
+    @io.nuls.core.rpc.model.ResponseData(name = "返回值", description = "系统基本信息", responseType = @TypeDescriptor(value = SystemInfoDto.class))
+    public ResponseData info() {
+        try {
+            SystemInfoDto dto = new SystemInfoDto();
+            ResponseData result = ResponseData.success();
+            result.setData(dto);
+            return result;
+        } catch (Exception e) {
+            logger.error("system error", e);
+            return ResponseData.error(e.getMessage());
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @PostMapping("/mandator/list")
     @ApiOperation(description = "查询代理人的委托地址列表",order = 101)
@@ -119,10 +136,10 @@ public class CommunityGovernanceApi {
     @PostMapping("/council/applicant/list")
     @ApiOperation(description = "查询理事会申请人列表",order = 203)
     @Parameters({
-            @Parameter(parameterName = "查询理事会申请人列表", parameterDes = "查询理事会申请人列表表单", requestType = @TypeDescriptor(value = CouncilApplicantSearch.class))
+            @Parameter(parameterName = "查询理事会申请人列表", parameterDes = "查询理事会申请人列表表单", requestType = @TypeDescriptor(value = CouncilApplicantPageSearch.class))
     })
     @io.nuls.core.rpc.model.ResponseData(name = "返回值", description = "理事会成员列表", responseType = @TypeDescriptor(value = List.class, collectionElement = CouncilApplicantDto.class))
-    public ResponseData councilApplicantList(@RequestBody CouncilApplicantSearch councilApplicantSearch) {
+    public ResponseData councilApplicantList(@RequestBody CouncilApplicantPageSearch councilApplicantSearch) {
         try {
             List<CouncilApplicantDto> applicantList = new ArrayList<>();
             ResponseData result = ResponseData.success();
@@ -158,10 +175,10 @@ public class CommunityGovernanceApi {
     @PostMapping("/proposal/list")
     @ApiOperation(description = "查询提案列表",order = 301)
     @Parameters({
-            @Parameter(parameterName = "查询提案列表", parameterDes = "查询提案列表表单", requestType = @TypeDescriptor(value = ProposaListSearch.class))
+            @Parameter(parameterName = "查询提案列表", parameterDes = "查询提案列表表单", requestType = @TypeDescriptor(value = ProposaListPageSearch.class))
     })
     @io.nuls.core.rpc.model.ResponseData(name = "返回值", description = "提案列表", responseType = @TypeDescriptor(value = List.class, collectionElement = ProposalDto.class))
-    public ResponseData proposalList(@RequestBody ProposaListSearch proposaListSearch) {
+    public ResponseData proposalList(@RequestBody ProposaListPageSearch proposaListSearch) {
         try {
             List<ProposalDto> proposalList = new ArrayList<>();
             ResponseData result = ResponseData.success();
@@ -216,10 +233,10 @@ public class CommunityGovernanceApi {
     @PostMapping("/vote/list")
     @ApiOperation(description = "查询普通投票列表",order = 401)
     @Parameters({
-            @Parameter(parameterName = "查询普通投票列表", parameterDes = "查询普通投票列表表单", requestType = @TypeDescriptor(value = VoteListSearch.class))
+            @Parameter(parameterName = "查询普通投票列表", parameterDes = "查询普通投票列表表单", requestType = @TypeDescriptor(value = VoteListPageSearch.class))
     })
     @io.nuls.core.rpc.model.ResponseData(name = "返回值", description = "普通投票列表", responseType = @TypeDescriptor(value = List.class, collectionElement = VoteDto.class))
-    public ResponseData voteList(@RequestBody VoteListSearch voteListSearch) {
+    public ResponseData voteList(@RequestBody VoteListPageSearch voteListSearch) {
         try {
             List<VoteDto> voteList = new ArrayList<>();
             ResponseData result = ResponseData.success();
@@ -274,10 +291,10 @@ public class CommunityGovernanceApi {
     @PostMapping("/voter/record/list")
     @ApiOperation(description = "查询我的投票记录列表",order = 501)
     @Parameters({
-            @Parameter(parameterName = "查询我的投票记录列表", parameterDes = "查询我的投票记录列表表单", requestType = @TypeDescriptor(value = VoterSearch.class))
+            @Parameter(parameterName = "查询我的投票记录列表", parameterDes = "查询我的投票记录列表表单", requestType = @TypeDescriptor(value = VoterPageSearch.class))
     })
     @io.nuls.core.rpc.model.ResponseData(name = "返回值", description = "我的投票记录列表", responseType = @TypeDescriptor(value = List.class, collectionElement = VoterRecordDto.class))
-    public ResponseData voterRecordList(@RequestBody VoterSearch voterSearch) {
+    public ResponseData voterRecordList(@RequestBody VoterPageSearch voterSearch) {
         try {
             List<VoterRecordDto> voterRecordList = new ArrayList<>();
             ResponseData result = ResponseData.success();
@@ -288,4 +305,5 @@ public class CommunityGovernanceApi {
             return ResponseData.error(e.getMessage());
         }
     }
+
 }

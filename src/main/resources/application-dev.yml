@@ -1,7 +1,6 @@
 spring:
   resources:
-    static-locations:
-    - file:/data/html
+    static-locations: classpath:/img/,classpath:/META-INF/resources/
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/cg?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root

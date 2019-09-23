@@ -33,7 +33,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel
-public class VoteListSearch extends PageSearch{
+public class VoteListPageSearch extends PageSearch{
 
     @ApiModelProperty(description = "投票状态 0:全部, 1:投票中, 2:投票结束")
     private Byte status;

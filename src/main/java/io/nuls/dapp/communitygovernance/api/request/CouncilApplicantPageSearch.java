@@ -37,6 +37,6 @@ import javax.validation.constraints.Min;
  */
 @Data
 @ApiModel
-public class CouncilApplicantSearch extends PageSearch{
+public class CouncilApplicantPageSearch extends PageSearch{
 
 }
