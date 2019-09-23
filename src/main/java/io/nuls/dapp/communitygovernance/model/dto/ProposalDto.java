@@ -46,7 +46,7 @@ public class ProposalDto {
     private String desc;
     @ApiModelProperty(description = "提案人地址")
     private String address;
-    @ApiModelProperty(description = "提案类型")
+    @ApiModelProperty(description = "提案类型 1:角色 2:系统参数 3:社区基金 4:其他类型")
     private String type;
     @ApiModelProperty(description = "提案状态 0待确认 1未开始，2进行中，3 暂停挂起 4 已结束")
     private String status;

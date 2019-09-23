@@ -1,6 +1,29 @@
 # Community Governance Backend
 接口列表
 ----
+### 0.1 查询系统基本信息
+#### Cmd: /cg/info
+_**详细描述: 查询系统基本信息**_
+#### HttpMethod: GET
+
+#### 参数列表
+无参数
+
+#### 返回值
+| 字段名                   |  字段类型  | 参数描述 |
+| --------------------- |:------:| ---- |
+| &nbsp;contractAddress | string | 合约地址 |
+#### Example request data: 
+
+_**request path:**_
+略
+
+_**request form data:**_
+无
+
+#### Example response data: 
+略
+
 ### 1.1 查询代理人的委托地址列表
 #### Cmd: /cg/mandator/list
 _**详细描述: 查询代理人的委托地址列表**_
@@ -9,15 +32,19 @@ _**详细描述: 查询代理人的委托地址列表**_
 #### Form json data: 
 ```json
 {
+  "page" : 1,
+  "pageSize" : 11,
   "agentAddress" : null
 }
 ```
 
 #### 参数列表
-| 参数名                                                                |      参数类型       | 参数描述           | 是否必填 |
-| ------------------------------------------------------------------ |:---------------:| -------------- |:----:|
-| &nbsp;查询代理人的委托地址列表                                                 | mandatorssearch | 查询代理人的委托地址列表表单 |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;agentAddress |     string      | 代理人地址          |  是   |
+| 参数名                                                                |        参数类型         | 参数描述           | 是否必填 |
+| ------------------------------------------------------------------ |:-------------------:| -------------- |:----:|
+| &nbsp;查询代理人的委托地址列表                                                 | mandatorspagesearch | 查询代理人的委托地址列表表单 |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;page         |       integer       | 当前页            |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pageSize     |       integer       | 分页大小           |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;agentAddress |       string        | 代理人地址          |  是   |
 
 #### 返回值
 | 字段名                   |  字段类型  | 参数描述  |
@@ -95,14 +122,15 @@ _**详细描述: 查询理事会成员列表**_
 无参数
 
 #### 返回值
-| 字段名               |  字段类型  | 参数描述   |
-| ----------------- |:------:| ------ |
-| &nbsp;logoUrl     | string | 头像URL  |
-| &nbsp;address     | string | 理事成员地址 |
-| &nbsp;name        | string | 理事成员名称 |
-| &nbsp;type        |  byte  | 理事类型   |
-| &nbsp;desc        | string | 理事成员介绍 |
-| &nbsp;votesNumber | string | 票数     |
+| 字段名               |  字段类型   | 参数描述                |
+| ----------------- |:-------:| ------------------- |
+| &nbsp;logoUrl     | string  | 头像URL               |
+| &nbsp;address     | string  | 理事成员地址              |
+| &nbsp;name        | string  | 理事成员名称              |
+| &nbsp;type        |  byte   | 理事类型 1:管理 2:运营 3:技术 |
+| &nbsp;isCouncil   | boolean | 是否是理事成员             |
+| &nbsp;desc        | string  | 理事成员介绍              |
+| &nbsp;votesNumber | string  | 票数                  |
 #### Example request data: 
 
 _**request path:**_
@@ -114,47 +142,7 @@ _**request form data:**_
 #### Example response data: 
 略
 
-### 2.3 查询理事会申请人列表
-#### Cmd: /cg/council/applicant/list
-_**详细描述: 查询理事会申请人列表**_
-#### HttpMethod: POST
-
-#### Form json data: 
-```json
-{
-  "page" : 1,
-  "pageSize" : 11
-}
-```
-
-#### 参数列表
-| 参数名                                                            |          参数类型          | 参数描述         | 是否必填 |
-| -------------------------------------------------------------- |:----------------------:| ------------ |:----:|
-| &nbsp;查询理事会申请人列表                                               | councilapplicantsearch | 查询理事会申请人列表表单 |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;page     |        integer         | 当前页          |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pageSize |        integer         | 分页大小         |  是   |
-
-#### 返回值
-| 字段名               |  字段类型  | 参数描述    |
-| ----------------- |:------:| ------- |
-| &nbsp;logoUrl     | string | 头像URL   |
-| &nbsp;address     | string | 理事申请人地址 |
-| &nbsp;name        | string | 理事申请人名称 |
-| &nbsp;type        |  byte  | 理事类型    |
-| &nbsp;desc        | string | 理事申请人介绍 |
-| &nbsp;votesNumber | string | 票数      |
-#### Example request data: 
-
-_**request path:**_
-略
-
-_**request form data:**_
-无
-
-#### Example response data: 
-略
-
-### 2.4 理事详情
+### 2.3 理事详情
 #### Cmd: /cg/council/member/{address}
 _**详细描述: 理事详情**_
 #### HttpMethod: GET
@@ -165,16 +153,16 @@ _**详细描述: 理事详情**_
 | &nbsp;address | string | 理事成员地址 |  是   |
 
 #### 返回值
-| 字段名               |  字段类型  | 参数描述  |
-| ----------------- |:------:| ----- |
-| &nbsp;address     | string | 地址    |
-| &nbsp;name        | string | 名称    |
-| &nbsp;ranking     | string | 排名    |
-| &nbsp;votesNumber | string | 票数    |
-| &nbsp;type        |  byte  | 理事类型  |
-| &nbsp;email       | string | 邮箱    |
-| &nbsp;logoUrl     | string | 头像URL |
-| &nbsp;desc        | string | 介绍    |
+| 字段名               |  字段类型   | 参数描述                |
+| ----------------- |:-------:| ------------------- |
+| &nbsp;address     | string  | 地址                  |
+| &nbsp;name        | string  | 名称                  |
+| &nbsp;votesNumber | string  | 票数                  |
+| &nbsp;type        |  byte   | 理事类型 1:管理 2:运营 3:技术 |
+| &nbsp;isCouncil   | boolean | 是否是理事成员             |
+| &nbsp;email       | string  | 邮箱                  |
+| &nbsp;logoUrl     | string  | 头像URL               |
+| &nbsp;desc        | string  | 介绍                  |
 #### Example request data: 
 
 _**request path:**_
@@ -197,18 +185,20 @@ _**详细描述: 查询提案列表**_
   "page" : 1,
   "pageSize" : 11,
   "type" : null,
-  "status" : null
+  "status" : null,
+  "title" : null
 }
 ```
 
 #### 参数列表
-| 参数名                                                            |       参数类型        | 参数描述                                             | 是否必填 |
-| -------------------------------------------------------------- |:-----------------:| ------------------------------------------------ |:----:|
-| &nbsp;查询提案列表                                                   | proposalistsearch | 查询提案列表表单                                         |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;page     |      integer      | 当前页                                              |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pageSize |      integer      | 分页大小                                             |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type     |       byte        | 提案类型 0:全部, 1:角色, 2:系统参数, 3:社区基金, 4:其他            |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status   |       byte        | 提案状态 0:全部, 1:审核中, 2:审核拒绝, 3:投票中, 4:投票通过, 5:投票未通过 |  是   |
+| 参数名                                                            |         参数类型          | 参数描述                                             | 是否必填 |
+| -------------------------------------------------------------- |:---------------------:| ------------------------------------------------ |:----:|
+| &nbsp;查询提案列表                                                   | proposalistpagesearch | 查询提案列表表单                                         |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;page     |        integer        | 当前页                                              |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pageSize |        integer        | 分页大小                                             |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type     |         byte          | 提案类型 0:全部, 1:角色, 2:系统参数, 3:社区基金, 4:其他            |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status   |         byte          | 提案状态 0:全部, 1:审核中, 2:审核拒绝, 3:投票中, 4:投票通过, 5:投票未通过 |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;title    |        string         | 提案标题                                             |  是   |
 
 #### 返回值
 | 字段名              |  字段类型   | 参数描述                             |
@@ -218,7 +208,7 @@ _**详细描述: 查询提案列表**_
 | &nbsp;title      | string  | 提案标题                             |
 | &nbsp;desc       | string  | 提案介绍                             |
 | &nbsp;address    | string  | 提案人地址                            |
-| &nbsp;type       | string  | 提案类型                             |
+| &nbsp;type       | string  | 提案类型 1:角色 2:系统参数 3:社区基金 4:其他类型   |
 | &nbsp;status     | string  | 提案状态 0待确认 1未开始，2进行中，3 暂停挂起 4 已结束 |
 | &nbsp;startTime  |  long   | 提案开始时间                           |
 | &nbsp;endTime    |  long   | 提案结束时间                           |
@@ -251,7 +241,7 @@ _**详细描述: 查询提案详情**_
 | &nbsp;title                                                       |     string      | 提案标题                             |
 | &nbsp;desc                                                        |     string      | 提案介绍                             |
 | &nbsp;address                                                     |     string      | 提案人地址                            |
-| &nbsp;type                                                        |     string      | 提案类型                             |
+| &nbsp;type                                                        |     string      | 提案类型 1:角色 2:系统参数 3:社区基金 4:其他类型   |
 | &nbsp;status                                                      |     string      | 提案状态 0待确认 1未开始，2进行中，3 暂停挂起 4 已结束 |
 | &nbsp;startTime                                                   |      long       | 提案开始时间                           |
 | &nbsp;endTime                                                     |      long       | 提案结束时间                           |
@@ -297,7 +287,50 @@ _**详细描述: 查询提案选项详情**_
 | ----------------------------------------------------------------- |:---------------:| ----- |
 | &nbsp;voterList                                                   | list&lt;object> | 投票人列表 |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address     |     string      | 投票人地址 |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alias       |     string      | 投票人别名 |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;votesNumber |     string      | 投票数   |
+#### Example request data: 
+
+_**request path:**_
+略
+
+_**request form data:**_
+无
+
+#### Example response data: 
+略
+
+### 3.4 查询所有提案
+#### Cmd: /cg/proposal/all
+_**详细描述: 查询所有提案**_
+#### HttpMethod: GET
+
+#### Form json data: 
+```json
+{
+  "page" : 1,
+  "pageSize" : 11,
+  "type" : null,
+  "status" : null,
+  "title" : null
+}
+```
+
+#### 参数列表
+| 参数名                                                            |         参数类型          | 参数描述                                             | 是否必填 |
+| -------------------------------------------------------------- |:---------------------:| ------------------------------------------------ |:----:|
+| &nbsp;查询所有提案                                                   | proposalistpagesearch | 查询所有提案表单                                         |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;page     |        integer        | 当前页                                              |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pageSize |        integer        | 分页大小                                             |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type     |         byte          | 提案类型 0:全部, 1:角色, 2:系统参数, 3:社区基金, 4:其他            |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status   |         byte          | 提案状态 0:全部, 1:审核中, 2:审核拒绝, 3:投票中, 4:投票通过, 5:投票未通过 |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;title    |        string         | 提案标题                                             |  是   |
+
+#### 返回值
+| 字段名              |  字段类型   | 参数描述 |
+| ---------------- |:-------:| ---- |
+| &nbsp;proposalId | integer | 提案ID |
+| &nbsp;title      | string  | 提案标题 |
 #### Example request data: 
 
 _**request path:**_
@@ -319,17 +352,19 @@ _**详细描述: 查询普通投票列表**_
 {
   "page" : 1,
   "pageSize" : 11,
-  "status" : null
+  "status" : null,
+  "title" : null
 }
 ```
 
 #### 参数列表
-| 参数名                                                            |      参数类型      | 参数描述                     | 是否必填 |
-| -------------------------------------------------------------- |:--------------:| ------------------------ |:----:|
-| &nbsp;查询普通投票列表                                                 | votelistsearch | 查询普通投票列表表单               |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;page     |    integer     | 当前页                      |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pageSize |    integer     | 分页大小                     |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status   |      byte      | 投票状态 0:全部, 1:投票中, 2:投票结束 |  是   |
+| 参数名                                                            |        参数类型        | 参数描述                     | 是否必填 |
+| -------------------------------------------------------------- |:------------------:| ------------------------ |:----:|
+| &nbsp;查询普通投票列表                                                 | votelistpagesearch | 查询普通投票列表表单               |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;page     |      integer       | 当前页                      |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pageSize |      integer       | 分页大小                     |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;status   |        byte        | 投票状态 0:全部, 1:投票中, 2:投票结束 |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;title    |       string       | 投票标题                     |  是   |
 
 #### 返回值
 | 字段名                  |  字段类型   | 参数描述                             |
@@ -413,6 +448,7 @@ _**详细描述: 查询投票选项详情**_
 | ----------------------------------------------------------------- |:---------------:| ----- |
 | &nbsp;voterList                                                   | list&lt;object> | 投票人列表 |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address     |     string      | 投票人地址 |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alias       |     string      | 投票人别名 |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;votesNumber |     string      | 投票数   |
 #### Example request data: 
 
@@ -442,14 +478,14 @@ _**详细描述: 查询我的投票记录列表**_
 ```
 
 #### 参数列表
-| 参数名                                                            |    参数类型     | 参数描述                         | 是否必填 |
-| -------------------------------------------------------------- |:-----------:| ---------------------------- |:----:|
-| &nbsp;查询我的投票记录列表                                               | votersearch | 查询我的投票记录列表表单                 |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;page     |   integer   | 当前页                          |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pageSize |   integer   | 分页大小                         |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address  |   string    | 投票人地址                        |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type     |    byte     | 类型 0:全部, 1:理事会, 2:提案, 3:普通投票 |  是   |
-| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;title    |   string    | 标题                           |  是   |
+| 参数名                                                            |      参数类型       | 参数描述                         | 是否必填 |
+| -------------------------------------------------------------- |:---------------:| ---------------------------- |:----:|
+| &nbsp;查询我的投票记录列表                                               | voterpagesearch | 查询我的投票记录列表表单                 |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;page     |     integer     | 当前页                          |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pageSize |     integer     | 分页大小                         |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address  |     string      | 投票人地址                        |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type     |      byte       | 类型 0:全部, 1:理事会, 2:提案, 3:普通投票 |  是   |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;title    |     string      | 标题                           |  是   |
 
 #### 返回值
 | 字段名               |  字段类型  | 参数描述                   |

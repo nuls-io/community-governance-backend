@@ -41,7 +41,7 @@ public class CouncilApplicantDto {
     private String address;
     @ApiModelProperty(description = "理事申请人名称")
     private String name;
-    @ApiModelProperty(description = "理事类型")
+    @ApiModelProperty(description = "理事类型 1:管理 2:运营 3:技术")
     private Byte type;
     @ApiModelProperty(description = "理事申请人介绍")
     private String desc;

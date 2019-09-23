@@ -33,12 +33,8 @@ import lombok.Data;
  */
 @Data
 @ApiModel
-public class ProposaListPageSearch extends PageSearch{
+public class ProposaWholeSearch {
 
-    @ApiModelProperty(description = "提案类型 0:全部, 1:角色, 2:系统参数, 3:社区基金, 4:其他")
-    private Byte type;
-    @ApiModelProperty(description = "提案状态 0:全部, 1:审核中, 2:审核拒绝, 3:投票中, 4:投票通过, 5:投票未通过")
-    private Byte status;
     @ApiModelProperty(description = "提案标题")
     private String title;
 }

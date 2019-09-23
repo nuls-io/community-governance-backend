@@ -33,7 +33,7 @@ import lombok.Data;
  */
 @Data
 @ApiModel
-public class MandatorsSearch {
+public class MandatorsPageSearch extends PageSearch{
 
     @ApiModelProperty(description = "代理人地址")
     private String agentAddress;

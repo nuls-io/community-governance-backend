@@ -39,12 +39,12 @@ public class CouncilMemberDetailDto {
     private String address;
     @ApiModelProperty(description = "名称")
     private String name;
-    @ApiModelProperty(description = "排名")
-    private String ranking;
     @ApiModelProperty(description = "票数")
     private String votesNumber;
-    @ApiModelProperty(description = "理事类型")
+    @ApiModelProperty(description = "理事类型 1:管理 2:运营 3:技术")
     private Byte type;
+    @ApiModelProperty(description = "是否是理事成员")
+    private Boolean isCouncil;
     @ApiModelProperty(description = "邮箱")
     private String email;
     @ApiModelProperty(description = "头像URL")
