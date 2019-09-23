@@ -13,4 +13,5 @@ public class ServerContext {
     public static int assetId = 1;
 
     public static String public_service_url = "http://beta.nulscan.io/api/";
+    public static String contract_address = "";
 }

@@ -25,15 +25,19 @@ public class AppInitializing implements InitializingBean {
 
     @Value("${app.contract.address}")
     private String contractAddress;
-
-    @Value("${app.provider.host}")
-    private String providerHost;
+    @Value("${app.nulsApi.host}")
+    private String nulsApiHost;
+    @Value("${app.publicService.host}")
+    private String publicServiceHost;
 
     @Override
     public void afterPropertiesSet() throws Exception {
         logger.info("contract address is {}", contractAddress);
-        logger.info("provider host is {}", providerHost);
-        SDKContext.wallet_url = providerHost;
+        logger.info("nuls api host is {}", nulsApiHost);
+        logger.info("public service host is {}", publicServiceHost);
+        ServerContext.public_service_url = publicServiceHost;
+        ServerContext.contract_address = contractAddress;
+        SDKContext.wallet_url = nulsApiHost;
         RpcResult info = AppUtil.jsonRpcRequest("info", ListUtil.of());
         Map result = (Map) info.getResult();
         Integer chainId = (Integer) result.get("chainId");
@@ -41,7 +45,7 @@ public class AppInitializing implements InitializingBean {
         Integer assetId = (Integer) result.get("assetId");
         ServerContext.assetId = assetId != null ? assetId : ServerContext.assetId;
         // initial SDK
-        NulsSDKBootStrap.init(ServerContext.chainId, providerHost);
+        NulsSDKBootStrap.init(ServerContext.chainId, nulsApiHost);
     }
 
 }

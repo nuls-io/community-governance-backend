@@ -12,8 +12,10 @@ logging:
 #app config
 app:
   devMode: false
-  provider:
-    host: http://127.0.0.1:6001
+  nulsApi:
+    host: https://api.nuls.io/
+  publicService:
+    host: https://nulscan.io/api/
   contract:
     address: "NseQih5xZa6vAWsL6uY5drozyW4tqzQx"
     refund-address: "Nse6NAJnhSmGqvx3prJf3yVWAvMY6zd8"
