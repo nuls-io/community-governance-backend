@@ -24,7 +24,7 @@ public class TransactionServiceApi {
     /**
      * wallet接口调用地址
      */
-    @Value("${app.provider.host}")
+    @Value("${app.nulsApi.host}")
     private String host;
 
     @Resource
